@@ -5,11 +5,10 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 
-import io.github.sebastiantoepfer.ddd.common.Media;
-import io.github.sebastiantoepfer.ddd.common.Printable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 
@@ -53,16 +52,7 @@ class HashMapMediaTest {
     @Test
     void should_add_printable() {
         assertThat(
-            new HashMapMedia()
-                .withValue(
-                    "name",
-                    new Printable() {
-                        @Override
-                        public <T extends Media<T>> T printOn(final T media) {
-                            return media.withValue("test", "hello");
-                        }
-                    }
-                ),
+            new HashMapMedia().withValue("name", new TestPrintable(Map.of("test", "hello"))),
             hasEntry(is("name"), (Matcher) hasEntry("test", "hello"))
         );
     }
@@ -77,6 +67,14 @@ class HashMapMediaTest {
         assertThat(
             new HashMapMedia().withValue("test", new HashMapMedia().withValue("sub", "test")),
             hasEntry(is("test"), (Matcher) hasEntry("sub", "test"))
+        );
+    }
+
+    @Test
+    void sould_add_printables_from_collection_as_map_into_map() {
+        assertThat(
+            new HashMapMedia().withValue("test", List.of(new TestPrintable(Map.of("name", "value")))),
+            hasEntry(is("test"), (Matcher) contains(hasEntry("name", "value")))
         );
     }
 }
