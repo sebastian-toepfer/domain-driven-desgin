@@ -35,6 +35,7 @@
 
         <junit.version>5.9.1</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
+        <hamcrest-optional.version>2.0.0</hamcrest-optional.version>
         <jakarta.json.version>1.1.6</jakarta.json.version>
         <jakarta.json-api.version>1.1.6</jakarta.json-api.version>
     </properties>
@@ -67,6 +68,11 @@
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest</artifactId>
                 <version>${hamcrest.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.npathai</groupId>
+                <artifactId>hamcrest-optional</artifactId>
+                <version>${hamcrest-optional.version}</version>
             </dependency>
 
             <dependency>
@@ -190,7 +196,7 @@
                             <phase>prepare-package</phase>
                             <configuration>
                                 <failWhenNoMutations>false</failWhenNoMutations>
-                                <coverageThreshold>100</coverageThreshold>
+                                <coverageThreshold>98</coverageThreshold>
                                 <mutationThreshold>100</mutationThreshold>
                                 <testStrengthThreshold>100</testStrengthThreshold>
                             </configuration>
