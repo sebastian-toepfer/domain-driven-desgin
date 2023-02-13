@@ -13,6 +13,9 @@
     <packaging>pom</packaging>
 
     <properties>
+        <sonar.organization>sebastian-toepfer</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
         <prettier.goal>write</prettier.goal>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -264,6 +267,10 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
