@@ -74,8 +74,8 @@
         <junit.version>5.9.1</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
         <hamcrest-optional.version>2.0.0</hamcrest-optional.version>
-        <jakarta.json.version>1.1.6</jakarta.json.version>
-        <jakarta.json-api.version>1.1.6</jakarta.json-api.version>
+        <parsson.version>1.1.1</parsson.version>
+        <jakarta.json-api.version>2.1.1</jakarta.json-api.version>
     </properties>
 
     <modules>
@@ -114,9 +114,9 @@
             </dependency>
 
             <dependency>
-                <groupId>org.glassfish</groupId>
-                <artifactId>jakarta.json</artifactId>
-                <version>${jakarta.json.version}</version>
+                <groupId>org.eclipse.parsson</groupId>
+                <artifactId>parsson</artifactId>
+                <version>${parsson.version}</version>
             </dependency>
 
             <dependency>

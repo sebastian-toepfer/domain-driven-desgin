@@ -5,11 +5,11 @@ import static org.hamcrest.Matchers.is;
 
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
+import jakarta.json.Json;
+import jakarta.json.JsonValue;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
-import javax.json.Json;
-import javax.json.JsonValue;
 import org.junit.jupiter.api.Test;
 
 class JsonObjectMediaTest {
