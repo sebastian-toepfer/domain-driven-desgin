@@ -1,22 +1,22 @@
 package io.github.sebastiantoepfer.ddd.media.json;
 
-import static javax.json.stream.JsonCollectors.toJsonArray;
+import static jakarta.json.stream.JsonCollectors.toJsonArray;
 
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Set;
 import java.util.function.Predicate;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonString;
-import javax.json.JsonValue;
 
 public class JsonObjectMedia extends AbstractMap<String, JsonValue> implements Media<JsonObjectMedia>, JsonObject {
 
