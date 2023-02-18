@@ -58,7 +58,7 @@
         <directory-maven-plugin.version>1.0</directory-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <spotbugs-maven-plugin.version>4.6.0.0</spotbugs-maven-plugin.version>
-        <pitest-maven.version>1.7.6</pitest-maven.version>
+        <pitest-maven.version>1.11.0</pitest-maven.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <versions-maven-plugin.version>2.14.1</versions-maven-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
@@ -69,7 +69,7 @@
 
         <prettierJavaVersion>2.0.0</prettierJavaVersion>
         <checkstyle.version>10.7.0</checkstyle.version>
-        <pitest-junit5-plugin.version>0.15</pitest-junit5-plugin.version>
+        <pitest-junit5-plugin.version>1.1.2</pitest-junit5-plugin.version>
 
         <junit.version>5.9.2</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
