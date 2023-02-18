@@ -35,19 +35,18 @@ jobs:
 
       - name: setup maven settings.xml
         uses: whelk-io/maven-settings-xml-action@v20
-        env:
-          USERNAME: ${{ secrets.mvn_username }}
-          PASSWORD: ${{ secrets.mvn_password }}
         with:
           servers: >
             [
               {
                 "id": "ossrh",
-                "username": "${env.USERNAME}",
-                "password": "${env.PASSWORD}",
+                "username": "${{ secrets.mvn_username }}",
+                "password": "${{ secrets.mvn_password }}"
               }
             ]
-          output_file: .m2/settings.xml
+
+      - name: print
+        run: cat ~/.m2/settings.xml
 
       - name: build and publish
         run: |
