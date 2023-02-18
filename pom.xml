@@ -39,7 +39,7 @@
         <junit.version>5.9.1</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
         <hamcrest-optional.version>2.0.0</hamcrest-optional.version>
-        <jakarta.json.version>1.1.6</jakarta.json.version>
+        <jakarta.json.version>2.0.1</jakarta.json.version>
         <jakarta.json-api.version>1.1.6</jakarta.json-api.version>
     </properties>
 
