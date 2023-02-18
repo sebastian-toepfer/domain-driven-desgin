@@ -45,9 +45,6 @@ jobs:
               }
             ]
 
-      - name: print
-        run: cat ~/.m2/settings.xml
-
       - name: build and publish
         run: |
           mvn -B -Possrh deploy
