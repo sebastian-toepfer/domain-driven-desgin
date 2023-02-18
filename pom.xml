@@ -58,7 +58,7 @@
         <directory-maven-plugin.version>1.0</directory-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <spotbugs-maven-plugin.version>4.6.0.0</spotbugs-maven-plugin.version>
-        <pitest-maven.version>1.7.6</pitest-maven.version>
+        <pitest-maven.version>1.11.0</pitest-maven.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <versions-maven-plugin.version>2.14.1</versions-maven-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
