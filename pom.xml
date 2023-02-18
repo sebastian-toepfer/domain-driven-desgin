@@ -68,7 +68,7 @@
         <build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
 
         <prettierJavaVersion>2.0.0</prettierJavaVersion>
-        <checkstyle.version>10.5.0</checkstyle.version>
+        <checkstyle.version>10.7.0</checkstyle.version>
         <pitest-junit5-plugin.version>0.15</pitest-junit5-plugin.version>
 
         <junit.version>5.9.2</junit.version>
