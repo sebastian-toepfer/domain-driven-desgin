@@ -1,0 +1,138 @@
+---
+on:
+  milestone:
+    types:
+      - closed
+      
+env:
+  BRANCH_NAME: main
+
+jobs:
+  release:
+    name: create a release
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+            token: ${{ secrets.unprotect_the_protected }}
+            ref: $BRANCH_NAME
+
+      - name: determine version number
+        id: determine_version
+        env:
+          MILESTONE_TITLE: ${{ github.event.milestone.title }}
+        run: |
+          if [ -z $MILESTONE_TITLE ];
+          then
+            exit 1
+          else
+            echo "::set-output name=version::$RELEASE_VERSION"
+          fi
+
+      - name: configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Release Action [bot]"
+
+      - name: set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: adopt-hotspot
+
+      - name: cache maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: set release version number
+        run: |
+          mvn -DnewVersion=${{ steps.determine_version.outputs.version }} versions:set
+          git commit -a -m "bump version to ${{ steps.determine_version.outputs.version }}"
+
+      - name: temporarily disable "include administrators" branch protection for $BRANCH_NAME
+        uses: benjefferies/branch-protection-bot@1.0.7
+        with:
+          access-token: ${{ secrets.unprotect_the_protected }}
+          branch: $BRANCH_NAME
+          enforce_admins: false
+
+      - name: push to $BRANCH_NAME
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.unprotect_the_protected }}
+          branch: $BRANCH_NAME
+
+      - name: enable "include administrators" branch protection for $BRANCH_NAME
+        uses: benjefferies/branch-protection-bot@1.0.7
+        if: always()
+        with:
+          access-token: ${{ secrets.unprotect_the_protected }}
+          branch: $BRANCH_NAME
+          enforce_admins: true
+
+      - name: create a release
+        uses: actions/github-script@v6
+        env:
+            TAG_NAME: ${{ steps.determine_version.outputs.version }}
+        with:
+          github-token: ${{ secrets.unprotect_the_protected }}
+          script: |
+              try {
+                const TAG_NAME = process.env.TAG_NAME
+                const release_name = `Release ${TAG_NAME}`;
+                // Create a release
+                // API Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
+                // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-repos-create-release
+                const createReleaseResponse = await github.repos.createRelease({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  tag_name: ${TAG_NAME},
+                  name: release_name,
+                  draft: false,
+                  target_commitish: process.env.BRANCH_NAME
+                });
+
+                // Get the ID, html_url, and upload URL for the created Release from the response
+                const {
+                  data: { id: releaseId, html_url: htmlUrl, upload_url: uploadUrl }
+                } = createReleaseResponse;
+
+                // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
+                core.setOutput('id', releaseId);
+                core.setOutput('html_url', htmlUrl);
+                core.setOutput('upload_url', uploadUrl);
+              });
+              } catch (error) {
+                core.setFailed(error.message);
+              }
+
+      - name: bump version for next development
+        run: |
+          mvn -B --non-recursive -Pbump-minor
+          MVN_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+          git commit -a -m "bump version to ${MVN_VERSION}"
+
+      - name: temporarily disable "include administrators" branch protection for $BRANCH_NAME
+        uses: benjefferies/branch-protection-bot@1.0.7
+        with:
+          access-token: ${{ secrets.unprotect_the_protected }}
+          branch: $BRANCH_NAME
+          enforce_admins: false
+
+      - name: push to $BRANCH_NAME
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.unprotect_the_protected }}
+          branch: $BRANCH_NAME
+
+      - name: enable "include administrators" branch protection for $BRANCH_NAME
+        uses: benjefferies/branch-protection-bot@1.0.7
+        if: always()
+        with:
+          access-token: ${{ secrets.unprotect_the_protected }}
+          branch: $BRANCH_NAME
+          enforce_admins: true
