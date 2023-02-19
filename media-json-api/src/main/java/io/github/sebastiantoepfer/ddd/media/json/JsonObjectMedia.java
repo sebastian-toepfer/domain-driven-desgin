@@ -1,7 +1,5 @@
 package io.github.sebastiantoepfer.ddd.media.json;
 
-import static jakarta.json.stream.JsonCollectors.toJsonArray;
-
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import jakarta.json.Json;
@@ -16,7 +14,6 @@ import java.math.BigInteger;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Set;
-import java.util.function.Predicate;
 
 public class JsonObjectMedia extends AbstractMap<String, JsonValue> implements Media<JsonObjectMedia>, JsonObject {
 
@@ -72,46 +69,14 @@ public class JsonObjectMedia extends AbstractMap<String, JsonValue> implements M
 
     @Override
     public JsonObjectMedia withValue(final String name, final Collection<?> values) {
-        return new JsonObjectMedia(Json.createObjectBuilder(json).add(name, asJsonArray(values)));
+        return new JsonObjectMedia(
+            Json.createObjectBuilder(json).add(name, new CollectionToJsonValueMapper(values).asJsonValue())
+        );
     }
 
     @Override
     public JsonObjectMedia withValue(final String name, final JsonObjectMedia value) {
         return new JsonObjectMedia(Json.createObjectBuilder(json).add(name, value));
-    }
-
-    private static JsonArray asJsonArray(final Collection<?> values) {
-        return values.stream().map(JsonObjectMedia::asJsonValue).filter(nonNull()).collect(toJsonArray());
-    }
-
-    private static Predicate<JsonValue> nonNull() {
-        return value -> value.getValueType() != ValueType.NULL;
-    }
-
-    private static JsonValue asJsonValue(final Object o) {
-        final JsonValue result;
-        if (o instanceof String stringValue) {
-            result = Json.createValue(stringValue);
-        } else if (o instanceof Integer intValue) {
-            result = Json.createValue(intValue);
-        } else if (o instanceof Long longValue) {
-            result = Json.createValue(longValue);
-        } else if (o instanceof Double doubleValue) {
-            result = Json.createValue(doubleValue);
-        } else if (o instanceof Float floatValue) {
-            result = Json.createValue(floatValue.doubleValue());
-        } else if (o instanceof BigDecimal decimalValue) {
-            result = Json.createValue(decimalValue);
-        } else if (o instanceof BigInteger intValue) {
-            result = Json.createValue(intValue);
-        } else if (o instanceof Boolean boolValue) {
-            result = boolValue ? JsonValue.TRUE : JsonValue.FALSE;
-        } else if (o instanceof Printable printable) {
-            result = printable.printOn(new JsonObjectMedia());
-        } else {
-            result = JsonValue.NULL;
-        }
-        return result;
     }
 
     @Override

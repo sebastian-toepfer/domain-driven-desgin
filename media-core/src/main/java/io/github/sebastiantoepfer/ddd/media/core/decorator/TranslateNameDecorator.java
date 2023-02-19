@@ -2,7 +2,7 @@ package io.github.sebastiantoepfer.ddd.media.core.decorator;
 
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
-import io.github.sebastiantoepfer.ddd.media.core.utils.PrintableReplacer;
+import io.github.sebastiantoepfer.ddd.media.core.utils.PrintableToObjectMapper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
@@ -66,7 +66,11 @@ public class TranslateNameDecorator<T extends Media<T>> extends MediaDecorator<T
             decoratedMedia()
                 .withValue(
                     translate(name),
-                    new PrintableReplacer(values).replacePrintables(TranslatedNamePrintableDecorator::new)
+                    values
+                        .stream()
+                        .map(PrintableToObjectMapper::new)
+                        .map(mapper -> mapper.toValue(TranslatedNamePrintableDecorator::new))
+                        .toList()
                 ),
             translator
         );
