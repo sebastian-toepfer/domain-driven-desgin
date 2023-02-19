@@ -46,6 +46,8 @@
         <sonar.organization>sebastian-toepfer</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
+        <nexusUrl>https://s01.oss.sonatype.org</nexusUrl>
+
         <prettier.goal>write</prettier.goal>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -365,6 +367,17 @@
                         </execution>
                     </executions>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.6.13</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -406,6 +419,10 @@
 
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -516,11 +533,11 @@
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <url>${nexusUrl}/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>${nexusUrl}/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 </project>
