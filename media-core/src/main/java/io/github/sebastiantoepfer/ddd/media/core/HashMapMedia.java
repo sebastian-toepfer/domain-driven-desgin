@@ -4,7 +4,7 @@ import static java.util.Map.copyOf;
 
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
-import io.github.sebastiantoepfer.ddd.media.core.utils.PrintableReplacer;
+import io.github.sebastiantoepfer.ddd.media.core.utils.PrintableToObjectMapper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.AbstractMap;
@@ -69,7 +69,11 @@ public class HashMapMedia extends AbstractMap<String, Object> implements Media<H
     public HashMapMedia withValue(final String name, final Collection<?> values) {
         return createCopyWithNewValue(
             name,
-            new PrintableReplacer(values).replacePrintables(p -> p.printOn(new HashMapMedia()))
+            values
+                .stream()
+                .map(PrintableToObjectMapper::new)
+                .map(mapper -> mapper.toValue(p -> p.printOn(new HashMapMedia())))
+                .toList()
         );
     }
 
