@@ -181,4 +181,12 @@ class JsonObjectMediaTest {
         assertThat(media.getBoolean("other_boolean", Boolean.FALSE), is(false));
         assertThat(media.getBoolean("other_boolean", Boolean.TRUE), is(true));
     }
+
+    @Test
+    void should_generate_correct_jsonstring() {
+        assertThat(
+            new JsonObjectMedia().withValue("name", "name").toString(),
+            is(Json.createObjectBuilder().add("name", "name").build().toString())
+        );
+    }
 }

@@ -115,6 +115,11 @@ public class JsonObjectMedia extends AbstractMap<String, JsonValue> implements M
     }
 
     @Override
+    public String toString() {
+        return json.toString();
+    }
+
+    @Override
     public JsonArray getJsonArray(final String string) {
         return json.getJsonArray(string);
     }
