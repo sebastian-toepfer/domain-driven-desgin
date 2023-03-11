@@ -1,4 +1,4 @@
-package io.github.sebastiantoepfer.ddd.media.logging;
+package io.github.sebastiantoepfer.ddd.media.logging.jul;
 
 import java.util.Collection;
 import java.util.HashSet;

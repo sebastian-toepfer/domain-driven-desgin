@@ -1,9 +1,10 @@
-package io.github.sebastiantoepfer.ddd.media.logging;
+package io.github.sebastiantoepfer.ddd.media.logging.jul;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
 import io.github.sebastiantoepfer.ddd.media.core.TestPrintable;
+import io.github.sebastiantoepfer.ddd.media.logging.LogEntryMedia;
 import io.github.sebastiantoepfer.ddd.media.message.DefaultNamedMessageFormat;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -14,7 +15,7 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class DynamicLogLevelLogEntryMediaTest {
+class JULogEntryMediaTest {
 
     private InMemoryHandler inMemoryHandler;
     private Logger logger;
@@ -22,16 +23,16 @@ class DynamicLogLevelLogEntryMediaTest {
     @BeforeEach
     void initLogger() {
         inMemoryHandler = new InMemoryHandler();
-        logger = Logger.getLogger(LogEntryMediaTest.class.getName());
+        logger = Logger.getLogger(JULogEntryMediaTest.class.getName());
         logger.addHandler(inMemoryHandler);
     }
 
     @Test
     void should_log_string_at_info() {
-        new DynamicLogLevelLogEntryMedia(
+        new JULogEntryMedia(
             new DefaultNamedMessageFormat("${test}"),
-            Level.SEVERE,
-            new DefaultLogLevelDecisionMaker(
+            new DefaultLogLevelDecision(
+                Level.SEVERE,
                 "test",
                 v -> {
                     if ("info".equals(v)) {
@@ -50,10 +51,10 @@ class DynamicLogLevelLogEntryMediaTest {
 
     @Test
     void should_log_string_at_warn() {
-        new DynamicLogLevelLogEntryMedia(
+        new JULogEntryMedia(
             new DefaultNamedMessageFormat("${test}"),
-            Level.SEVERE,
-            new DefaultLogLevelDecisionMaker(
+            new DefaultLogLevelDecision(
+                Level.SEVERE,
                 "test",
                 v -> {
                     if ("info".equals(v)) {
@@ -72,10 +73,10 @@ class DynamicLogLevelLogEntryMediaTest {
 
     @Test
     void should_log_int_at_warn() {
-        new DynamicLogLevelLogEntryMedia(
+        new JULogEntryMedia(
             new DefaultNamedMessageFormat("${test}"),
-            Level.SEVERE,
-            new DefaultLogLevelDecisionMaker(
+            new DefaultLogLevelDecision(
+                Level.SEVERE,
                 "test",
                 v -> {
                     if (Integer.valueOf(12).equals(v)) {
@@ -94,10 +95,10 @@ class DynamicLogLevelLogEntryMediaTest {
 
     @Test
     void should_log_long_at_warn() {
-        new DynamicLogLevelLogEntryMedia(
+        new JULogEntryMedia(
             new DefaultNamedMessageFormat("${test}"),
-            Level.SEVERE,
-            new DefaultLogLevelDecisionMaker(
+            new DefaultLogLevelDecision(
+                Level.SEVERE,
                 "test",
                 v -> {
                     if (Long.valueOf(12L).equals(v)) {
@@ -116,10 +117,10 @@ class DynamicLogLevelLogEntryMediaTest {
 
     @Test
     void should_log_double_at_warn() {
-        new DynamicLogLevelLogEntryMedia(
+        new JULogEntryMedia(
             new DefaultNamedMessageFormat("${test}"),
-            Level.SEVERE,
-            new DefaultLogLevelDecisionMaker(
+            new DefaultLogLevelDecision(
+                Level.SEVERE,
                 "test",
                 v -> {
                     if (Double.valueOf(12.1).equals(v)) {
@@ -138,10 +139,10 @@ class DynamicLogLevelLogEntryMediaTest {
 
     @Test
     void should_log_bigdecimal_at_warn() {
-        new DynamicLogLevelLogEntryMedia(
+        new JULogEntryMedia(
             new DefaultNamedMessageFormat("${test}"),
-            Level.SEVERE,
-            new DefaultLogLevelDecisionMaker(
+            new DefaultLogLevelDecision(
+                Level.SEVERE,
                 "test",
                 v -> {
                     if (BigDecimal.valueOf(12.1).equals(v)) {
@@ -160,10 +161,10 @@ class DynamicLogLevelLogEntryMediaTest {
 
     @Test
     void should_log_biginteger_at_info() {
-        new DynamicLogLevelLogEntryMedia(
+        new JULogEntryMedia(
             new DefaultNamedMessageFormat("${test}"),
-            Level.SEVERE,
-            new DefaultLogLevelDecisionMaker(
+            new DefaultLogLevelDecision(
+                Level.SEVERE,
                 "test",
                 v -> {
                     if (BigInteger.valueOf(121).equals(v)) {
@@ -182,10 +183,10 @@ class DynamicLogLevelLogEntryMediaTest {
 
     @Test
     void should_log_boolean_at_warn() {
-        new DynamicLogLevelLogEntryMedia(
+        new JULogEntryMedia(
             new DefaultNamedMessageFormat("${success}"),
-            Level.SEVERE,
-            new DefaultLogLevelDecisionMaker(
+            new DefaultLogLevelDecision(
+                Level.SEVERE,
                 "test",
                 v -> {
                     if (Boolean.TRUE.equals(v)) {
@@ -208,10 +209,10 @@ class DynamicLogLevelLogEntryMediaTest {
 
     @Test
     void should_log_printable_at_info() {
-        new DynamicLogLevelLogEntryMedia(
+        new JULogEntryMedia(
             new DefaultNamedMessageFormat("${person.firstname} ${person.lastname}"),
-            Level.SEVERE,
-            new DefaultLogLevelDecisionMaker(
+            new DefaultLogLevelDecision(
+                Level.SEVERE,
                 "test",
                 v -> {
                     if ("WARN".equals(v)) {
@@ -234,10 +235,10 @@ class DynamicLogLevelLogEntryMediaTest {
 
     @Test
     void should_log_collection_at_info() {
-        new DynamicLogLevelLogEntryMedia(
+        new JULogEntryMedia(
             new DefaultNamedMessageFormat("${fruits}"),
-            Level.SEVERE,
-            new DefaultLogLevelDecisionMaker(
+            new DefaultLogLevelDecision(
+                Level.SEVERE,
                 "test",
                 v -> {
                     if ("WARN".equals(v)) {
@@ -260,10 +261,10 @@ class DynamicLogLevelLogEntryMediaTest {
 
     @Test
     void should_not_change_log_with_sublogger() {
-        final DynamicLogLevelLogEntryMedia logMedia = new DynamicLogLevelLogEntryMedia(
+        final LogEntryMedia logMedia = new JULogEntryMedia(
             new DefaultNamedMessageFormat("${fruits}"),
-            Level.SEVERE,
-            new DefaultLogLevelDecisionMaker(
+            new DefaultLogLevelDecision(
+                Level.SEVERE,
                 "test",
                 v -> {
                     if ("WARN".equals(v)) {
@@ -283,6 +284,18 @@ class DynamicLogLevelLogEntryMediaTest {
         assertThat(
             inMemoryHandler,
             contains(new LogRecordMatchers().hasMessage("bananas, apples").and().hasLevel(Level.INFO))
+        );
+    }
+
+    @Test
+    void should_log_at_given_level() {
+        new JULogEntryMedia(new DefaultNamedMessageFormat("Test message for ${name}"), Level.INFO)
+            .withValue("name", "Jane")
+            .logTo(logger);
+
+        assertThat(
+            inMemoryHandler,
+            contains(new LogRecordMatchers().hasMessage("Test message for Jane").and().hasLevel(Level.INFO))
         );
     }
 }

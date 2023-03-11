@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.joining;
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.core.HashMapMedia;
+import io.github.sebastiantoepfer.ddd.media.core.Writeable;
 import io.github.sebastiantoepfer.ddd.media.core.utils.CopyMap;
 import java.io.IOException;
 import java.io.Writer;
@@ -14,7 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessageMedia implements Media<MessageMedia> {
+public class MessageMedia implements Media<MessageMedia>, Writeable {
 
     private final NamedMessageFormat format;
     private final CopyMap<String, Object> map;
@@ -28,7 +29,8 @@ public class MessageMedia implements Media<MessageMedia> {
         this.map = map;
     }
 
-    public Writer writeTo(final Writer write) throws IOException {
+    @Override
+    public final Writer writeTo(final Writer write) throws IOException {
         write.write(format.format(map));
         return write;
     }

@@ -1,31 +1,24 @@
-package io.github.sebastiantoepfer.ddd.media.logging;
+package io.github.sebastiantoepfer.ddd.media.message;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 
 import io.github.sebastiantoepfer.ddd.media.core.TestPrintable;
-import io.github.sebastiantoepfer.ddd.media.message.DefaultNamedMessageFormat;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
 
-class LogEntryMediaTest {
+class MessageMediaExtensionTest {
 
     @Test
-    void should_write_formated_message_as_log() {
-        final InMemoryHandler inMemoryHandler = new InMemoryHandler();
-        final Logger logger = Logger.getLogger(LogEntryMediaTest.class.getName());
-        logger.addHandler(inMemoryHandler);
-
-        final FixedLevelLogEntryMedia logEntry = new FixedLevelLogEntryMedia(
+    void should_decorated_message_media() throws Exception {
+        final TestMessageMediaExtension message = new TestMessageMediaExtension(
             new DefaultNamedMessageFormat(
                 """
                 Hello my name is ${name} and i am ${age} years old.
@@ -48,24 +41,18 @@ class LogEntryMediaTest {
             .withValue("abool", false)
             .withValue("person", new TestPrintable(Map.of("firstname", "Joe", "lastname", "Doe")))
             .withValue("list", List.of("bananas", "apples"));
-        logEntry.atLevel(Level.INFO).logTo(logger);
 
         assertThat(
-            inMemoryHandler,
-            contains(
-                new LogRecordMatchers()
-                    .hasMessage(
-                        """
-                        Hello my name is Jane and i am 42 years old.
-                        The Disk 2 contains 2.653 of data.
-                        The other disk 1 contains only 10.4 of data.
-                        We need a true and another false.
-                        Are you Joe Doe?
-                        Can you buy me bananas, apples?
-                        """
-                    )
-                    .and()
-                    .hasLevel(Level.INFO)
+            message.writeTo(new StringWriter()).toString(),
+            is(
+                """
+                Hello my name is Jane and i am 42 years old.
+                The Disk 2 contains 2.653 of data.
+                The other disk 1 contains only 10.4 of data.
+                We need a true and another false.
+                Are you Joe Doe?
+                Can you buy me bananas, apples?
+                """
             )
         );
     }
@@ -74,9 +61,25 @@ class LogEntryMediaTest {
     void should_do_nothing() {
         //not a good idea to use pitest?
         assertThat(
-            new FixedLevelLogEntryMedia(new DefaultNamedMessageFormat("Hello"))
-                .withValue("test", new FixedLevelLogEntryMedia(new DefaultNamedMessageFormat("Hello"))),
+            new TestMessageMediaExtension(new DefaultNamedMessageFormat("Hello"))
+                .withValue("test", new TestMessageMediaExtension(new DefaultNamedMessageFormat("Hello"))),
             is(not(nullValue()))
         );
+    }
+
+    private static class TestMessageMediaExtension extends MessageMediaExtension<TestMessageMediaExtension> {
+
+        public TestMessageMediaExtension(final NamedMessageFormat format) {
+            this(new MessageMedia(format));
+        }
+
+        private TestMessageMediaExtension(MessageMedia media) {
+            super(media);
+        }
+
+        @Override
+        protected TestMessageMediaExtension createWith(final MessageMedia message) {
+            return new TestMessageMediaExtension(message);
+        }
     }
 }

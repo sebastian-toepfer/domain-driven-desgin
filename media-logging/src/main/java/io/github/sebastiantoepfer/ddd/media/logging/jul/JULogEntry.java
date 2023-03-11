@@ -1,6 +1,8 @@
-package io.github.sebastiantoepfer.ddd.media.logging;
+package io.github.sebastiantoepfer.ddd.media.logging.jul;
 
-import io.github.sebastiantoepfer.ddd.media.message.MessageMedia;
+import io.github.sebastiantoepfer.ddd.media.core.Writeable;
+import io.github.sebastiantoepfer.ddd.media.logging.CanNotLog;
+import io.github.sebastiantoepfer.ddd.media.logging.LogEntry;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Objects;
@@ -8,12 +10,12 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-class FixedLevelLogEntry implements LogEntry {
+class JULogEntry implements LogEntry<Logger> {
 
     private final Level level;
-    private final MessageMedia message;
+    private final Writeable message;
 
-    public FixedLevelLogEntry(final Level level, final MessageMedia message) {
+    public JULogEntry(final Level level, final Writeable message) {
         this.level = Objects.requireNonNull(level);
         this.message = message;
     }
@@ -27,13 +29,6 @@ class FixedLevelLogEntry implements LogEntry {
             logger.log(logRecord);
         } catch (IOException e) {
             throw new CanNotLog(e);
-        }
-    }
-
-    private static class CanNotLog extends RuntimeException {
-
-        public CanNotLog(final Throwable cause) {
-            super(cause);
         }
     }
 }
