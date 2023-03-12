@@ -1,9 +1,8 @@
 package io.github.sebastiantoepfer.ddd.media.core;
 
-import static java.util.Map.copyOf;
-
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
+import io.github.sebastiantoepfer.ddd.media.core.utils.CopyMap;
 import io.github.sebastiantoepfer.ddd.media.core.utils.PrintableToObjectMapper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,49 +14,49 @@ import java.util.Set;
 
 public class HashMapMedia extends AbstractMap<String, Object> implements Media<HashMapMedia> {
 
-    private final Map<String, Object> values;
+    private final CopyMap<String, Object> entries;
 
     public HashMapMedia() {
-        this(new HashMap<>());
+        this(new CopyMap<>(new HashMap<>()));
     }
 
-    private HashMapMedia(final Map<String, Object> map) {
-        this.values = map;
+    private HashMapMedia(final CopyMap<String, Object> map) {
+        this.entries = map;
     }
 
     @Override
     public HashMapMedia withValue(final String name, final String value) {
-        return createCopyWithNewValue(name, value);
+        return new HashMapMedia(entries.withNewValue(name, value));
     }
 
     @Override
     public HashMapMedia withValue(final String name, final int value) {
-        return createCopyWithNewValue(name, value);
+        return new HashMapMedia(entries.withNewValue(name, value));
     }
 
     @Override
     public HashMapMedia withValue(final String name, final long value) {
-        return createCopyWithNewValue(name, value);
+        return new HashMapMedia(entries.withNewValue(name, value));
     }
 
     @Override
     public HashMapMedia withValue(final String name, final double value) {
-        return createCopyWithNewValue(name, value);
+        return new HashMapMedia(entries.withNewValue(name, value));
     }
 
     @Override
     public HashMapMedia withValue(final String name, final BigDecimal value) {
-        return createCopyWithNewValue(name, value);
+        return new HashMapMedia(entries.withNewValue(name, value));
     }
 
     @Override
     public HashMapMedia withValue(final String name, final BigInteger value) {
-        return createCopyWithNewValue(name, value);
+        return new HashMapMedia(entries.withNewValue(name, value));
     }
 
     @Override
     public HashMapMedia withValue(final String name, final boolean value) {
-        return createCopyWithNewValue(name, value);
+        return new HashMapMedia(entries.withNewValue(name, value));
     }
 
     @Override
@@ -67,29 +66,25 @@ public class HashMapMedia extends AbstractMap<String, Object> implements Media<H
 
     @Override
     public HashMapMedia withValue(final String name, final Collection<?> values) {
-        return createCopyWithNewValue(
-            name,
-            values
-                .stream()
-                .map(PrintableToObjectMapper::new)
-                .map(mapper -> mapper.toValue(p -> p.printOn(new HashMapMedia())))
-                .toList()
+        return new HashMapMedia(
+            this.entries.withNewValue(
+                    name,
+                    values
+                        .stream()
+                        .map(PrintableToObjectMapper::new)
+                        .map(mapper -> mapper.toValue(p -> p.printOn(new HashMapMedia())))
+                        .toList()
+                )
         );
     }
 
     @Override
     public HashMapMedia withValue(final String name, final HashMapMedia value) {
-        return createCopyWithNewValue(name, copyOf(value));
-    }
-
-    private HashMapMedia createCopyWithNewValue(final String name, final Object value) {
-        final Map<String, Object> newValues = new HashMap<>(values);
-        newValues.put(name, value);
-        return new HashMapMedia(newValues);
+        return new HashMapMedia(entries.withNewValue(name, Map.copyOf(value)));
     }
 
     @Override
     public Set<Entry<String, Object>> entrySet() {
-        return values.entrySet();
+        return entries.entrySet();
     }
 }

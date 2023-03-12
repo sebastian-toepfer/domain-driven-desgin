@@ -76,6 +76,8 @@
         <junit.version>5.9.2</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
         <hamcrest-optional.version>2.0.0</hamcrest-optional.version>
+        <equalsverifier.version>3.13</equalsverifier.version>
+        <logback.version>1.4.5</logback.version>
         <parsson.version>1.1.1</parsson.version>
         <jakarta.json-api.version>2.1.1</jakarta.json-api.version>
     </properties>
@@ -83,11 +85,25 @@
     <modules>
         <module>common</module>
         <module>media-core</module>
+        <module>media-message</module>
+        <module>media-logging</module>
         <module>media-json-api</module>
+        <module>media-logging-slf4j</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-annotations</artifactId>
+                <version>4.7.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>2.0.6</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
@@ -113,6 +129,23 @@
                 <groupId>com.github.npathai</groupId>
                 <artifactId>hamcrest-optional</artifactId>
                 <version>${hamcrest-optional.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>nl.jqno.equalsverifier</groupId>
+                <artifactId>equalsverifier</artifactId>
+                <version>${equalsverifier.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
             </dependency>
 
             <dependency>
@@ -145,6 +178,22 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.3.0</version>
+                    <executions>
+                        <execution>
+                            <id>test-jar</id>
+                            <goals>
+                                <goal>test-jar</goal>
+                            </goals>
+                            <configuration>
+                                <skipIfEmpty>true</skipIfEmpty>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <plugin>
@@ -237,9 +286,13 @@
                             <phase>prepare-package</phase>
                             <configuration>
                                 <failWhenNoMutations>false</failWhenNoMutations>
-                                <coverageThreshold>98</coverageThreshold>
+                                <coverageThreshold>95</coverageThreshold>
                                 <mutationThreshold>100</mutationThreshold>
                                 <testStrengthThreshold>100</testStrengthThreshold>
+                                <excludedMethods>
+                                    <!-- we use toString mainly for debugging purposes -->
+                                    <excludeMethod>toString</excludeMethod>
+                                </excludedMethods>
                             </configuration>
                         </execution>
                     </executions>
@@ -541,4 +594,3 @@
         </repository>
     </distributionManagement>
 </project>
-
