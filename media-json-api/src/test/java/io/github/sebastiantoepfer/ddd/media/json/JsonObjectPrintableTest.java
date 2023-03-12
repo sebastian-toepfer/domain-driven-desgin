@@ -33,7 +33,8 @@ class JsonObjectPrintableTest {
     @Test
     void should_print_decimalnumber_property() {
         assertThat(
-            new JsonObjectPrintable(Json.createObjectBuilder().add("name", 234.27261).build()).printOn(new HashMapMedia()),
+            new JsonObjectPrintable(Json.createObjectBuilder().add("name", 234.27261).build())
+                .printOn(new HashMapMedia()),
             hasEntry("name", 234.27261)
         );
     }
@@ -41,7 +42,9 @@ class JsonObjectPrintableTest {
     @Test
     void should_print_array_property() {
         assertThat(
-            new JsonObjectPrintable(Json.createObjectBuilder().add("name", Json.createArrayBuilder().add("Test")).build())
+            new JsonObjectPrintable(
+                Json.createObjectBuilder().add("name", Json.createArrayBuilder().add("Test")).build()
+            )
                 .printOn(new HashMapMedia()),
             (Matcher) hasEntry(is("name"), contains("Test"))
         );
