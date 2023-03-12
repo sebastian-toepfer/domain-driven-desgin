@@ -52,34 +52,11 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <prettier-maven-plugin>0.19</prettier-maven-plugin>
-        <directory-maven-plugin.version>1.0</directory-maven-plugin.version>
-        <maven-checkstyle-plugin.version>3.2.1</maven-checkstyle-plugin.version>
-        <spotbugs-maven-plugin.version>4.7.3.2</spotbugs-maven-plugin.version>
-        <pitest-maven.version>1.11.4</pitest-maven.version>
-        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
-        <versions-maven-plugin.version>2.15.0</versions-maven-plugin.version>
-        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
-        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-        <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
-        <build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
+        <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+        <maven.compiler.release>${maven.compiler.target}</maven.compiler.release>
 
         <prettierJavaVersion>2.0.0</prettierJavaVersion>
-        <checkstyle.version>10.8.1</checkstyle.version>
-        <pitest-junit5-plugin.version>1.1.2</pitest-junit5-plugin.version>
-
-        <junit.version>5.9.2</junit.version>
-        <hamcrest.version>2.2</hamcrest.version>
-        <hamcrest-optional.version>2.0.0</hamcrest-optional.version>
-        <equalsverifier.version>3.13</equalsverifier.version>
         <logback.version>1.4.5</logback.version>
-        <parsson.version>1.1.1</parsson.version>
-        <jakarta.json-api.version>2.1.1</jakarta.json-api.version>
     </properties>
 
     <modules>
@@ -105,36 +82,28 @@
             </dependency>
 
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-params</artifactId>
-                <version>${junit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit.version}</version>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>5.9.2</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest</artifactId>
-                <version>${hamcrest.version}</version>
+                <version>2.2</version>
             </dependency>
             <dependency>
                 <groupId>com.github.npathai</groupId>
                 <artifactId>hamcrest-optional</artifactId>
-                <version>${hamcrest-optional.version}</version>
+                <version>2.0.0</version>
             </dependency>
 
             <dependency>
                 <groupId>nl.jqno.equalsverifier</groupId>
                 <artifactId>equalsverifier</artifactId>
-                <version>${equalsverifier.version}</version>
+                <version>3.13.2</version>
             </dependency>
 
             <dependency>
@@ -151,13 +120,13 @@
             <dependency>
                 <groupId>org.eclipse.parsson</groupId>
                 <artifactId>parsson</artifactId>
-                <version>${parsson.version}</version>
+                <version>1.1.1</version>
             </dependency>
 
             <dependency>
                 <groupId>jakarta.json</groupId>
                 <artifactId>jakarta.json-api</artifactId>
-                <version>${jakarta.json-api.version}</version>
+                <version>2.1.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -169,15 +138,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <release>${maven.compiler.target}</release>
-                    </configuration>
+                    <version>3.11.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
+                    <version>2.22.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -199,7 +165,7 @@
                 <plugin>
                     <groupId>com.hubspot.maven.plugins</groupId>
                     <artifactId>prettier-maven-plugin</artifactId>
-                    <version>${prettier-maven-plugin}</version>
+                    <version>0.19</version>
                     <executions>
                         <execution>
                             <goals>
@@ -210,6 +176,8 @@
                     </executions>
                     <configuration>
                         <prettierJavaVersion>${prettierJavaVersion}</prettierJavaVersion>
+                        <ignoreConfigFile>false</ignoreConfigFile>
+                        <ignoreEditorConfig>false</ignoreEditorConfig>
                         <printWidth>120</printWidth>
                         <tabWidth>4</tabWidth>
                         <useTabs>false</useTabs>
@@ -219,7 +187,7 @@
                 <plugin>
                     <groupId>org.commonjava.maven.plugins</groupId>
                     <artifactId>directory-maven-plugin</artifactId>
-                    <version>${directory-maven-plugin.version}</version>
+                    <version>1.0</version>
                     <executions>
                         <execution>
                             <goals>
@@ -236,12 +204,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>${maven-checkstyle-plugin.version}</version>
+                    <version>3.2.1</version>
                     <dependencies>
                         <dependency>
                             <groupId>com.puppycrawl.tools</groupId>
                             <artifactId>checkstyle</artifactId>
-                            <version>${checkstyle.version}</version>
+                            <version>10.8.1</version>
                         </dependency>
                     </dependencies>
                     <executions>
@@ -263,7 +231,7 @@
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>${spotbugs-maven-plugin.version}</version>
+                    <version>4.7.3.2</version>
                     <executions>
                         <execution>
                             <goals>
@@ -277,7 +245,7 @@
                 <plugin>
                     <groupId>org.pitest</groupId>
                     <artifactId>pitest-maven</artifactId>
-                    <version>${pitest-maven.version}</version>
+                    <version>1.11.4</version>
                     <executions>
                         <execution>
                             <goals>
@@ -300,7 +268,7 @@
                         <dependency>
                             <groupId>org.pitest</groupId>
                             <artifactId>pitest-junit5-plugin</artifactId>
-                            <version>${pitest-junit5-plugin.version}</version>
+                            <version>1.1.2</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -308,7 +276,7 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco-maven-plugin.version}</version>
+                    <version>0.8.8</version>
                     <executions>
                         <execution>
                             <id>prepare-agent</id>
@@ -330,7 +298,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>${maven-source-plugin.version}</version>
+                    <version>3.2.1</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -343,7 +311,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>${maven-javadoc-plugin.version}</version>
+                    <version>3.5.0</version>
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>
@@ -356,7 +324,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>${maven-gpg-plugin.version}</version>
+                    <version>3.0.1</version>
                     <executions>
                         <execution>
                             <id>sign-artifacts</id>
@@ -371,7 +339,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>${maven-enforcer-plugin.version}</version>
+                    <version>3.2.1</version>
                     <executions>
                         <execution>
                             <id>enforce-maven</id>
@@ -401,7 +369,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
-                    <version>${versions-maven-plugin.version}</version>
+                    <version>2.15.0</version>
                     <configuration>
                         <allowMajorUpdates>false</allowMajorUpdates>
                     </configuration>
@@ -410,7 +378,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>${build-helper-maven-plugin.version}</version>
+                    <version>3.3.0</version>
                     <executions>
                         <execution>
                             <id>parse-version</id>
