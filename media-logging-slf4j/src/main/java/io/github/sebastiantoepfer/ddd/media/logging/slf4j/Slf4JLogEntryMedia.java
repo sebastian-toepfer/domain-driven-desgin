@@ -1,14 +1,23 @@
 package io.github.sebastiantoepfer.ddd.media.logging.slf4j;
 
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toMap;
+
+import io.github.sebastiantoepfer.ddd.common.Media;
+import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.core.Writeable;
 import io.github.sebastiantoepfer.ddd.media.core.utils.CopyMap;
 import io.github.sebastiantoepfer.ddd.media.logging.LogEntry;
 import io.github.sebastiantoepfer.ddd.media.logging.LogEntryMedia;
 import io.github.sebastiantoepfer.ddd.media.logging.LogLevelDecision;
 import io.github.sebastiantoepfer.ddd.media.message.NamedMessageFormat;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.MDC;
 import org.slf4j.event.Level;
@@ -23,6 +32,10 @@ public class Slf4JLogEntryMedia extends LogEntryMedia<Logger> {
         this(format, new FixedLogLevel(level), mdcs);
     }
 
+    public Slf4JLogEntryMedia(final NamedMessageFormat format, final Level level, final Map<String, String> mdcs) {
+        this(format, new FixedLogLevel(level), mdcs);
+    }
+
     public Slf4JLogEntryMedia(final NamedMessageFormat format, final LogLevelDecision<Logger> logLevelDecision) {
         this(format, logLevelDecision, List.of());
     }
@@ -32,44 +45,157 @@ public class Slf4JLogEntryMedia extends LogEntryMedia<Logger> {
         final LogLevelDecision<Logger> logLevelDecision,
         final List<String> mdcs
     ) {
+        this(format, logLevelDecision, mdcs.stream().collect(toMap(Function.identity(), Function.identity())));
+    }
+
+    public Slf4JLogEntryMedia(
+        final NamedMessageFormat format,
+        final LogLevelDecision<Logger> logLevelDecision,
+        final Map<String, String> mdcs
+    ) {
         super(format, new MDCLogLevelDecision(logLevelDecision, mdcs));
     }
 
     private static class MDCLogLevelDecision implements LogLevelDecision<Logger> {
 
         private final LogLevelDecision<Logger> decsision;
-        private final List<String> mdcNames;
+        private final Map<String, String> mdcNames;
         private final CopyMap<String, String> mdcValues;
 
-        public MDCLogLevelDecision(final LogLevelDecision<Logger> decsision, final List<String> mdcNames) {
+        public MDCLogLevelDecision(final LogLevelDecision<Logger> decsision, final Map<String, String> mdcNames) {
             this(decsision, mdcNames, Map.of());
         }
 
         public MDCLogLevelDecision(
             final LogLevelDecision<Logger> decsision,
-            final List<String> mdcNames,
+            final Map<String, String> mdcNames,
             final Map<String, String> mdcValues
         ) {
             this.decsision = Objects.requireNonNull(decsision);
-            this.mdcNames = List.copyOf(mdcNames);
+            this.mdcNames = Map.copyOf(mdcNames);
             this.mdcValues = new CopyMap<>(mdcValues);
         }
 
         @Override
         public LogLevelDecision<Logger> resolveLogLevelDecision(final String name, final Object value) {
-            final LogLevelDecision<Logger> newLogLevelDecision = decsision.resolveLogLevelDecision(name, value);
+            return new MDCLogLevelDecision(
+                decsision.resolveLogLevelDecision(name, value),
+                mdcNames,
+                newMdcValues(name, value)
+            );
+        }
+
+        private Map<String, String> newMdcValues(final String name, final Object value) {
             final Map<String, String> newMdcValues;
-            if (mdcNames.contains(name) && value != null) {
-                newMdcValues = mdcValues.withNewValue(name, String.valueOf(value));
+            if (value instanceof Printable p) {
+                newMdcValues = new MDCMedia(mdcNames, mdcValues).withValue(name, p).mdcValues();
             } else {
-                newMdcValues = mdcValues;
+                newMdcValues = new MDCMedia(mdcNames, mdcValues).withValue(name, String.valueOf(value)).mdcValues();
             }
-            return new MDCLogLevelDecision(newLogLevelDecision, mdcNames, newMdcValues);
+            return newMdcValues;
         }
 
         @Override
         public LogEntry<Logger> logEnty(final Writeable writeable) {
             return new MDCAwardLogEntry(decsision.logEnty(writeable), mdcValues);
+        }
+
+        private static class MDCMedia implements Media<MDCMedia> {
+
+            private final Map<String, String> mdcNames;
+            private final CopyMap<String, String> mdcValues;
+
+            public MDCMedia(final Map<String, String> mdcNames) {
+                this(mdcNames, new CopyMap<>(Map.of()));
+            }
+
+            MDCMedia(final Map<String, String> mdcNames, final CopyMap<String, String> map) {
+                this.mdcNames = mdcNames;
+                this.mdcValues = map;
+            }
+
+            @Override
+            public MDCMedia withValue(final String name, final String value) {
+                final MDCMedia result;
+                if (mdcNames.containsKey(name) && value != null) {
+                    result = new MDCMedia(mdcNames, mdcValues.withNewValue(mdcNames.get(name), value));
+                } else {
+                    result = this;
+                }
+                return result;
+            }
+
+            @Override
+            public MDCMedia withValue(final String name, final Printable value) {
+                final MDCMedia result;
+                if (mdcNames.keySet().stream().anyMatch(mdcName -> mdcName.startsWith(String.format("%s.", name)))) {
+                    result =
+                        new MDCMedia(
+                            mdcNames,
+                            new CopyMap.MergeOperator<String, String>()
+                                .apply(mdcValues, new CopyMap<>(printValue(value).mdcValues()))
+                        );
+                } else {
+                    result = this;
+                }
+                return result;
+            }
+
+            private MDCMedia printValue(final Printable value) {
+                return value.printOn(
+                    mdcNames
+                        .entrySet()
+                        .stream()
+                        .map(entry ->
+                            Map.entry(entry.getKey().substring(entry.getKey().indexOf('.') + 1), entry.getValue())
+                        )
+                        .collect(collectingAndThen(toMap(Map.Entry::getKey, Map.Entry::getValue), MDCMedia::new))
+                );
+            }
+
+            @Override
+            public MDCMedia withValue(final String name, final int value) {
+                return withValue(name, String.valueOf(value));
+            }
+
+            @Override
+            public MDCMedia withValue(final String name, final long value) {
+                return withValue(name, String.valueOf(value));
+            }
+
+            @Override
+            public MDCMedia withValue(final String name, final double value) {
+                return withValue(name, String.valueOf(value));
+            }
+
+            @Override
+            public MDCMedia withValue(final String name, final BigDecimal value) {
+                return withValue(name, String.valueOf(value));
+            }
+
+            @Override
+            public MDCMedia withValue(final String name, final BigInteger value) {
+                return withValue(name, String.valueOf(value));
+            }
+
+            @Override
+            public MDCMedia withValue(final String name, final boolean value) {
+                return withValue(name, String.valueOf(value));
+            }
+
+            @Override
+            public MDCMedia withValue(final String name, final Collection<?> values) {
+                return this;
+            }
+
+            @Override
+            public MDCMedia withValue(final String name, final MDCMedia value) {
+                throw new UnsupportedOperationException();
+            }
+
+            private Map<String, String> mdcValues() {
+                return mdcValues;
+            }
         }
 
         private static class MDCAwardLogEntry implements LogEntry<Logger> {

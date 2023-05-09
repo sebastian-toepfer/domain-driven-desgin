@@ -9,11 +9,17 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
+import io.github.sebastiantoepfer.ddd.common.Media;
+import io.github.sebastiantoepfer.ddd.common.Printable;
+import io.github.sebastiantoepfer.ddd.media.core.TestPrintable;
 import io.github.sebastiantoepfer.ddd.media.logging.slf4j.test.InMemoryAppender;
 import io.github.sebastiantoepfer.ddd.media.logging.slf4j.test.LogRecord;
 import io.github.sebastiantoepfer.ddd.media.message.DefaultNamedMessageFormat;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Spliterators;
 import java.util.stream.StreamSupport;
@@ -117,6 +123,76 @@ class Slf4JLogEntryMediaTest {
         assertThat(
             logRecords,
             hasItem(new LogRecord(Level.INFO, "user Jane was created.", Map.of("user_id", "user@github.com")))
+        );
+        assertThat(MDC.getCopyOfContextMap().entrySet(), is(empty()));
+    }
+
+    @Test
+    void should_write_values_to_mdc_with_othername() {
+        new Slf4JLogEntryMedia(
+            new DefaultNamedMessageFormat("user ${user.name} was created.", Locale.GERMANY),
+            org.slf4j.event.Level.INFO,
+            Map.of(
+                "user.user_id",
+                "username",
+                "user.int",
+                "int",
+                "unser.long",
+                "long",
+                "unser.double",
+                "double",
+                "unser.b1",
+                "true",
+                "unser.b2",
+                "false",
+                "test",
+                "other_value"
+            )
+        )
+            .withValue(
+                "user",
+                new Printable() {
+                    @Override
+                    public <T extends Media<T>> T printOn(final T media) {
+                        return media
+                            .withValue("name", "Jane")
+                            .withValue("user_id", "user@github.com")
+                            .withValue("int", 1)
+                            .withValue("long", 2L)
+                            .withValue("double", 2.1)
+                            .withValue("b1", true)
+                            .withValue("b2", false)
+                            .withValue("col", List.of())
+                            .withValue("bigi", BigInteger.ONE)
+                            .withValue("bigd", BigDecimal.TEN);
+                    }
+                }
+            )
+            .withValue("test", new TestPrintable(Map.of("name", "Maura", "user_id", "user@gitlab.com")))
+            .logTo(LoggerFactory.getLogger("io.github.sebastiantoepfer.ddd.TestLogging"));
+
+        assertThat(
+            logRecords,
+            hasItem(
+                new LogRecord(
+                    Level.INFO,
+                    "user Jane was created.",
+                    Map.of(
+                        "username",
+                        "user@github.com",
+                        "int",
+                        "1",
+                        "long",
+                        "2",
+                        "double",
+                        "2.1",
+                        "true",
+                        "true",
+                        "false",
+                        "false"
+                    )
+                )
+            )
         );
         assertThat(MDC.getCopyOfContextMap().entrySet(), is(empty()));
     }
