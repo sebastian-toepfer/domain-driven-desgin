@@ -137,16 +137,22 @@ class Slf4JLogEntryMediaTest {
                 "username",
                 "user.int",
                 "int",
-                "unser.long",
+                "user.long",
                 "long",
-                "unser.double",
+                "user.double",
                 "double",
-                "unser.b1",
+                "user.b1",
                 "true",
-                "unser.b2",
+                "user.b2",
                 "false",
-                "test",
-                "other_value"
+                "user.test",
+                "other_value",
+                "user.friend.user_id",
+                "username_of_friend",
+                "bigi",
+                "bigi",
+                "bigd",
+                "tina"
             )
         )
             .withValue(
@@ -164,7 +170,11 @@ class Slf4JLogEntryMediaTest {
                             .withValue("b2", false)
                             .withValue("col", List.of())
                             .withValue("bigi", BigInteger.ONE)
-                            .withValue("bigd", BigDecimal.TEN);
+                            .withValue("bigd", BigDecimal.TEN)
+                            .withValue(
+                                "friend",
+                                new TestPrintable(Map.of("name", "Maura", "user_id", "user@gitlab.com"))
+                            );
                     }
                 }
             )
@@ -189,7 +199,9 @@ class Slf4JLogEntryMediaTest {
                         "true",
                         "true",
                         "false",
-                        "false"
+                        "false",
+                        "username_of_friend",
+                        "user@gitlab.com"
                     )
                 )
             )

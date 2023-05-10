@@ -127,25 +127,19 @@ public class Slf4JLogEntryMedia extends LogEntryMedia<Logger> {
 
             @Override
             public MDCMedia withValue(final String name, final Printable value) {
-                final MDCMedia result;
-                if (mdcNames.keySet().stream().anyMatch(mdcName -> mdcName.startsWith(String.format("%s.", name)))) {
-                    result =
-                        new MDCMedia(
-                            mdcNames,
-                            new CopyMap.MergeOperator<String, String>()
-                                .apply(mdcValues, new CopyMap<>(printValue(value).mdcValues()))
-                        );
-                } else {
-                    result = this;
-                }
-                return result;
+                return new MDCMedia(
+                    mdcNames,
+                    new CopyMap.MergeOperator<String, String>()
+                        .apply(mdcValues, new CopyMap<>(printValue(name, value).mdcValues()))
+                );
             }
 
-            private MDCMedia printValue(final Printable value) {
+            private MDCMedia printValue(final String name, final Printable value) {
                 return value.printOn(
                     mdcNames
                         .entrySet()
                         .stream()
+                        .filter(mdcName -> mdcName.getKey().startsWith(name))
                         .map(entry ->
                             Map.entry(entry.getKey().substring(entry.getKey().indexOf('.') + 1), entry.getValue())
                         )
