@@ -97,7 +97,7 @@ public class Slf4JLogEntryMedia extends LogEntryMedia<Logger> {
 
         @Override
         public LogEntry<Logger> logEnty(final Writeable writeable) {
-            return new MDCAwardLogEntry(decsision.logEnty(writeable), mdcValues);
+            return new MDCAwareLogEntry(decsision.logEnty(writeable), mdcValues);
         }
 
         private static class MDCMedia implements Media<MDCMedia> {
@@ -127,25 +127,19 @@ public class Slf4JLogEntryMedia extends LogEntryMedia<Logger> {
 
             @Override
             public MDCMedia withValue(final String name, final Printable value) {
-                final MDCMedia result;
-                if (mdcNames.keySet().stream().anyMatch(mdcName -> mdcName.startsWith(String.format("%s.", name)))) {
-                    result =
-                        new MDCMedia(
-                            mdcNames,
-                            new CopyMap.MergeOperator<String, String>()
-                                .apply(mdcValues, new CopyMap<>(printValue(value).mdcValues()))
-                        );
-                } else {
-                    result = this;
-                }
-                return result;
+                return new MDCMedia(
+                    mdcNames,
+                    new CopyMap.MergeOperator<String, String>()
+                        .apply(mdcValues, new CopyMap<>(printValue(name, value).mdcValues()))
+                );
             }
 
-            private MDCMedia printValue(final Printable value) {
+            private MDCMedia printValue(final String name, final Printable value) {
                 return value.printOn(
                     mdcNames
                         .entrySet()
                         .stream()
+                        .filter(mdcName -> mdcName.getKey().startsWith(name))
                         .map(entry ->
                             Map.entry(entry.getKey().substring(entry.getKey().indexOf('.') + 1), entry.getValue())
                         )
@@ -198,12 +192,12 @@ public class Slf4JLogEntryMedia extends LogEntryMedia<Logger> {
             }
         }
 
-        private static class MDCAwardLogEntry implements LogEntry<Logger> {
+        private static class MDCAwareLogEntry implements LogEntry<Logger> {
 
             private final LogEntry<Logger> logger;
             private final Map<String, String> mdc;
 
-            public MDCAwardLogEntry(final LogEntry<Logger> logger, final Map<String, String> mdc) {
+            public MDCAwareLogEntry(final LogEntry<Logger> logger, final Map<String, String> mdc) {
                 this.logger = Objects.requireNonNull(logger);
                 this.mdc = Objects.requireNonNull(mdc);
             }
