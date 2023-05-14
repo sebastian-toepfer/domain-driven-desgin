@@ -5,7 +5,7 @@ import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.core.Writeable;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
@@ -71,8 +71,8 @@ public abstract class MessageMediaExtension<T extends MessageMediaExtension<T>> 
     }
 
     @Override
-    public final Writer writeTo(final Writer write) throws IOException {
-        return media.writeTo(write);
+    public final void writeTo(final OutputStream write) throws IOException {
+        media.writeTo(write);
     }
 
     protected abstract T createWith(final MessageMedia message);

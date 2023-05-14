@@ -8,9 +8,12 @@ import io.github.sebastiantoepfer.ddd.media.core.HashMapMedia;
 import io.github.sebastiantoepfer.ddd.media.core.Writeable;
 import io.github.sebastiantoepfer.ddd.media.core.utils.CopyMap;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,9 +33,10 @@ public class MessageMedia implements Media<MessageMedia>, Writeable {
     }
 
     @Override
-    public final Writer writeTo(final Writer write) throws IOException {
-        write.write(format.format(map));
-        return write;
+    public final void writeTo(final OutputStream write) throws IOException {
+        final Writer osw = new OutputStreamWriter(write, StandardCharsets.UTF_8);
+        osw.write(format.format(map));
+        osw.flush();
     }
 
     @Override

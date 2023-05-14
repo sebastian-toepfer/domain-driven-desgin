@@ -5,7 +5,6 @@ import io.github.sebastiantoepfer.ddd.media.logging.CanNotLog;
 import io.github.sebastiantoepfer.ddd.media.logging.LogEntry;
 import io.github.sebastiantoepfer.ddd.media.logging.LogLevelDecision;
 import java.io.IOException;
-import java.io.StringWriter;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
 
@@ -43,9 +42,8 @@ class FixedLogLevel implements LogLevelDecision<Logger> {
         }
 
         private String logmessage() {
-            try (final StringWriter sw = new StringWriter()) {
-                writeable.writeTo(sw);
-                return sw.getBuffer().toString();
+            try {
+                return writeable.asString();
             } catch (IOException e) {
                 throw new CanNotLog(e);
             }
