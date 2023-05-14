@@ -4,7 +4,6 @@ import io.github.sebastiantoepfer.ddd.media.core.Writeable;
 import io.github.sebastiantoepfer.ddd.media.logging.CanNotLog;
 import io.github.sebastiantoepfer.ddd.media.logging.LogEntry;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -22,8 +21,8 @@ class JULogEntry implements LogEntry<Logger> {
 
     @Override
     public void logTo(final Logger logger) {
-        try (final StringWriter sw = new StringWriter()) {
-            final LogRecord logRecord = new LogRecord(level, message.writeTo(sw).toString());
+        try {
+            final LogRecord logRecord = new LogRecord(level, message.asString());
             logRecord.setLoggerName(logger.getName());
             logRecord.setSourceClassName(logger.getName());
             logger.log(logRecord);

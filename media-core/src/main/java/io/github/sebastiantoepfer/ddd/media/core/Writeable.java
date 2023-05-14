@@ -1,8 +1,16 @@
 package io.github.sebastiantoepfer.ddd.media.core;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 public interface Writeable {
-    Writer writeTo(Writer write) throws IOException;
+    void writeTo(OutputStream output) throws IOException;
+
+    default String asString() throws IOException {
+        return new StringWriteable(this).asString();
+    }
+
+    default byte[] asBytes() throws IOException {
+        return new BytesWritebale(this).asBytes();
+    }
 }
