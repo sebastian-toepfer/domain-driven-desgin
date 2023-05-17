@@ -1,15 +1,10 @@
 package io.github.sebastiantoepfer.ddd.media.message;
 
-import static java.util.stream.Collectors.joining;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
 
 import io.github.sebastiantoepfer.ddd.media.core.TestPrintable;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.MessageFormat;
@@ -28,13 +23,7 @@ class MessageMediaTest {
             .withValue("lastName", "Doe")
             .withValue("firstName", "John");
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        media.writeTo(baos);
-        final String message = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())))
-            .lines()
-            .collect(joining("\n"));
-
-        assertThat(message, hasToString("Hello Mr. John Doe!"));
+        assertThat(media.asString(), hasToString("Hello Mr. John Doe!"));
     }
 
     @Test
@@ -48,13 +37,7 @@ class MessageMediaTest {
             .withValue("diskName", "MyDisk")
             .withValue("fileCount", 10);
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        media.writeTo(baos);
-        final String message = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())))
-            .lines()
-            .collect(joining("\n"));
-
-        assertThat(message, hasToString("The disk \"MyDisk\" contains 10 file(s)."));
+        assertThat(media.asString(), hasToString("The disk \"MyDisk\" contains 10 file(s)."));
     }
 
     @Test
@@ -68,13 +51,7 @@ class MessageMediaTest {
             .withValue("diskName", "MyDisk")
             .withValue("fileCount", 1273L);
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        media.writeTo(baos);
-        final String message = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())))
-            .lines()
-            .collect(joining("\n"));
-
-        assertThat(message, hasToString("The disk \"MyDisk\" contains 1.273 file(s)."));
+        assertThat(media.asString(), hasToString("The disk \"MyDisk\" contains 1.273 file(s)."));
     }
 
     @Test
@@ -87,13 +64,7 @@ class MessageMediaTest {
         )
             .withValue("pi", 3.1415);
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        media.writeTo(baos);
-        final String message = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())))
-            .lines()
-            .collect(joining("\n"));
-
-        assertThat(message, hasToString("3,14, 3,1"));
+        assertThat(media.asString(), hasToString("3,14, 3,1"));
     }
 
     @Test
@@ -106,13 +77,7 @@ class MessageMediaTest {
         )
             .withValue("pi", BigDecimal.valueOf(3.1415));
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        media.writeTo(baos);
-        final String message = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())))
-            .lines()
-            .collect(joining("\n"));
-
-        assertThat(message, hasToString("3,14, 3,1"));
+        assertThat(media.asString(), hasToString("3,14, 3,1"));
     }
 
     @Test
@@ -126,13 +91,7 @@ class MessageMediaTest {
             .withValue("diskName", "MyDisk")
             .withValue("fileCount", BigInteger.valueOf(8771242817265172523L));
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        media.writeTo(baos);
-        final String message = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())))
-            .lines()
-            .collect(joining("\n"));
-
-        assertThat(message, hasToString("The disk \"MyDisk\" contains 8,771,242,817,265,172,523 file(s)."));
+        assertThat(media.asString(), hasToString("The disk \"MyDisk\" contains 8,771,242,817,265,172,523 file(s)."));
     }
 
     @Test
@@ -142,13 +101,7 @@ class MessageMediaTest {
         )
             .withValue("successful", true);
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        media.writeTo(baos);
-        final String message = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())))
-            .lines()
-            .collect(joining("\n"));
-
-        assertThat(message, is("Was true."));
+        assertThat(media.asString(), is("Was true."));
     }
 
     @Test
@@ -163,13 +116,7 @@ class MessageMediaTest {
             .withValue("sal", "Mrs.")
             .withValue("person", new TestPrintable(Map.of("firstName", "Jane", "lastName", "Doe")));
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        media.writeTo(baos);
-        final String message = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())))
-            .lines()
-            .collect(joining("\n"));
-
-        assertThat(message, hasToString("Hello Mrs. Jane Doe."));
+        assertThat(media.asString(), hasToString("Hello Mrs. Jane Doe."));
     }
 
     @Test
@@ -179,13 +126,7 @@ class MessageMediaTest {
         )
             .withValue("values", List.of("apples", "bananas"));
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        media.writeTo(baos);
-        final String message = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())))
-            .lines()
-            .collect(joining("\n"));
-
-        assertThat(message, hasToString("Values are apples, bananas."));
+        assertThat(media.asString(), hasToString("Values are apples, bananas."));
     }
 
     @Test
@@ -205,12 +146,6 @@ class MessageMediaTest {
                     .withValue("firstName", "John")
             );
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        media.writeTo(baos);
-        final String message = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())))
-            .lines()
-            .collect(joining("\n"));
-
-        assertThat(message, hasToString("Hello Mr. John Doe!"));
+        assertThat(media.asString(), hasToString("Hello Mr. John Doe!"));
     }
 }
