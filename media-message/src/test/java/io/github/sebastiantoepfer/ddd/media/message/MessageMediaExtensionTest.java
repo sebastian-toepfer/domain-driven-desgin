@@ -1,16 +1,11 @@
 package io.github.sebastiantoepfer.ddd.media.message;
 
-import static java.util.stream.Collectors.joining;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 
 import io.github.sebastiantoepfer.ddd.media.core.TestPrintable;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
@@ -46,15 +41,8 @@ class MessageMediaExtensionTest {
             .withValue("person", new TestPrintable(Map.of("firstname", "Joe", "lastname", "Doe")))
             .withValue("list", List.of("bananas", "apples"));
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        message.writeTo(baos);
-        final String msg = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())))
-            .lines()
-            .collect(joining("\n")) +
-        "\n";
-
         assertThat(
-            msg,
+            message.asString(),
             is(
                 """
                 Hello my name is Jane and i am 42 years old.
@@ -62,8 +50,7 @@ class MessageMediaExtensionTest {
                 The other disk 1 contains only 10.4 of data.
                 We need a true and another false.
                 Are you Joe Doe?
-                Can you buy me bananas, apples?
-                """
+                Can you buy me bananas, apples?"""
             )
         );
     }
