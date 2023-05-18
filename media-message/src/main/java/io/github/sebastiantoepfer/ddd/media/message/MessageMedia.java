@@ -2,8 +2,8 @@ package io.github.sebastiantoepfer.ddd.media.message;
 
 import static java.util.stream.Collectors.joining;
 
-import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
+import io.github.sebastiantoepfer.ddd.media.core.BaseMedia;
 import io.github.sebastiantoepfer.ddd.media.core.HashMapMedia;
 import io.github.sebastiantoepfer.ddd.media.core.Writeable;
 import io.github.sebastiantoepfer.ddd.media.core.utils.CopyMap;
@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessageMedia implements Media<MessageMedia>, Writeable {
+public class MessageMedia implements BaseMedia<MessageMedia>, Writeable {
 
     private final NamedMessageFormat format;
     private final CopyMap<String, Object> map;

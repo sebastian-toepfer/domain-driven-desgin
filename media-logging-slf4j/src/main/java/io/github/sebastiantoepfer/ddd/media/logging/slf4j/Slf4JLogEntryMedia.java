@@ -3,8 +3,8 @@ package io.github.sebastiantoepfer.ddd.media.logging.slf4j;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toMap;
 
-import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
+import io.github.sebastiantoepfer.ddd.media.core.BaseMedia;
 import io.github.sebastiantoepfer.ddd.media.core.Writeable;
 import io.github.sebastiantoepfer.ddd.media.core.utils.CopyMap;
 import io.github.sebastiantoepfer.ddd.media.logging.LogEntry;
@@ -97,7 +97,7 @@ public class Slf4JLogEntryMedia extends LogEntryMedia<Logger> {
             return new MDCAwareLogEntry(decsision.logEnty(writeable), mdcValues);
         }
 
-        private static class MDCMedia implements Media<MDCMedia> {
+        private static class MDCMedia implements BaseMedia<MDCMedia> {
 
             private final Map<String, String> mdcNames;
             private final CopyMap<String, String> mdcValues;

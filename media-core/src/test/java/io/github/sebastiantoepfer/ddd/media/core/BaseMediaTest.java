@@ -21,61 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.sebastiantoepfer.ddd.common;
+package io.github.sebastiantoepfer.ddd.media.core;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
-import java.time.ZoneOffset;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
-class MediaTest {
-
-    @Test
-    void should_write_biginteger_as_long() {
-        assertThat(
-            new DefaultTestMedia().withValue("biginteger", BigInteger.TEN).values(),
-            hasEntry("biginteger", 10L)
-        );
-    }
-
-    @Test
-    void should_write_bigdecimal_as_double() {
-        assertThat(
-            new DefaultTestMedia().withValue("bigdecimal", BigDecimal.valueOf(3.14)).values(),
-            hasEntry("bigdecimal", 3.14)
-        );
-    }
-
-    @Test
-    void should_write_return_this_for_printables() {
-        final DefaultTestMedia media = new DefaultTestMedia();
-        assertThat(media.withValue("printable", new Empty()), Matchers.sameInstance(media));
-    }
-
-    @Test
-    void should_write_return_this_for_submedia() {
-        final DefaultTestMedia media = new DefaultTestMedia();
-        assertThat(media.withValue("media", new DefaultTestMedia()), Matchers.sameInstance(media));
-    }
-
-    @Test
-    void should_write_return_this_for_collection() {
-        final DefaultTestMedia media = new DefaultTestMedia();
-        assertThat(media.withValue("media", List.of()), Matchers.sameInstance(media));
-    }
+class BaseMediaTest {
 
     @Test
     void should_write_localdate_as_iso_formated_string() {
@@ -86,29 +48,22 @@ class MediaTest {
     }
 
     @Test
-    void should_write_offsettime_as_iso_formated_string() {
+    void should_write_localtime_as_iso_formated_string_with_current_offset() {
         assertThat(
-            new DefaultTestMedia()
-                .withValue("time", OffsetTime.of(LocalTime.of(8, 25, 55), ZoneOffset.ofHours(2)))
-                .values(),
-            hasEntry("time", "08:25:55+02:00")
+            new DefaultTestMedia().withValue("time", LocalTime.of(8, 25, 55)).values(),
+            hasEntry(is("time"), hasToString(startsWith("08:25:55")))
         );
     }
 
     @Test
-    void should_write_offsetdatetime_as_iso_formated_string() {
+    void should_write_localdatetime_as_iso_formated_string_with_current_offset() {
         assertThat(
-            new DefaultTestMedia()
-                .withValue(
-                    "date",
-                    OffsetDateTime.of(LocalDateTime.of(1982, Month.JUNE, 9, 8, 25, 55), ZoneOffset.ofHours(2))
-                )
-                .values(),
-            hasEntry("date", "1982-06-09T08:25:55+02:00")
+            new DefaultTestMedia().withValue("date", LocalDateTime.of(1982, Month.JUNE, 9, 8, 25, 55)).values(),
+            hasEntry(is("date"), hasToString(startsWith("1982-06-09T08:25:55")))
         );
     }
 
-    static final class DefaultTestMedia implements Media<DefaultTestMedia> {
+    static final class DefaultTestMedia implements BaseMedia<DefaultTestMedia> {
 
         private Map<String, Object> values;
 
@@ -152,26 +107,6 @@ class MediaTest {
         public DefaultTestMedia withValue(final String name, final boolean value) {
             values.put(name, value);
             return this;
-        }
-
-        @Override
-        public DefaultTestMedia withValue(final String name, final LocalTime value) {
-            values.put(name, value);
-            return this;
-        }
-
-        @Override
-        public DefaultTestMedia withValue(final String name, final LocalDateTime value) {
-            values.put(name, value);
-            return this;
-        }
-    }
-
-    static final class Empty implements Printable {
-
-        @Override
-        public <T extends Media<T>> T printOn(final T media) {
-            return media;
         }
     }
 }

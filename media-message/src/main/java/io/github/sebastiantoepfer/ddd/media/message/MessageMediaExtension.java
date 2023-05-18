@@ -1,15 +1,15 @@
 package io.github.sebastiantoepfer.ddd.media.message;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
+import io.github.sebastiantoepfer.ddd.media.core.BaseMedia;
 import io.github.sebastiantoepfer.ddd.media.core.Writeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Objects;
 
-public abstract class MessageMediaExtension<T extends MessageMediaExtension<T>> implements Media<T>, Writeable {
+public abstract class MessageMediaExtension<T extends MessageMediaExtension<T>> implements BaseMedia<T>, Writeable {
 
     private final MessageMedia media;
 

@@ -1,6 +1,5 @@
 package io.github.sebastiantoepfer.ddd.media.core;
 
-import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.core.utils.CopyMap;
 import io.github.sebastiantoepfer.ddd.media.core.utils.PrintableToObjectMapper;
@@ -12,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class HashMapMedia extends AbstractMap<String, Object> implements Media<HashMapMedia> {
+public class HashMapMedia extends AbstractMap<String, Object> implements BaseMedia<HashMapMedia> {
 
     private final CopyMap<String, Object> entries;
 
