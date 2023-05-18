@@ -29,6 +29,13 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 
+import com.sun.net.httpserver.HttpServer;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -69,6 +76,38 @@ class BaseMediaTest {
             new DefaultTestMedia().withValue("bytes", "I might be an image".getBytes()).values(),
             hasEntry("bytes", "SSBtaWdodCBiZSBhbiBpbWFnZQ==")
         );
+    }
+
+    @Test
+    void should_write_reactive_bytes_as_base64_encoded_string() throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress(8081), 0);
+        server.createContext(
+            "/strings",
+            he -> {
+                he.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                he.getResponseBody().write("I might be ".getBytes());
+                he.getResponseBody().flush();
+                he.getResponseBody().write("an image".getBytes());
+                he.getResponseBody().flush();
+                he.getResponseBody().close();
+            }
+        );
+        server.start();
+
+        final DefaultTestMedia response = HttpClient
+            .newHttpClient()
+            .sendAsync(
+                HttpRequest.newBuilder(URI.create("http://localhost:8081/strings")).GET().build(),
+                HttpResponse.BodyHandlers.fromSubscriber(
+                    new DefaultTestMedia().byteValueSubscriber("bytes"),
+                    BaseMedia.MediaAwareSubscriber::media
+                )
+            )
+            .thenApply(HttpResponse::body)
+            .join();
+        server.stop(0);
+
+        assertThat(response.values(), hasEntry("bytes", "SSBtaWdodCBiZSBhbiBpbWFnZQ=="));
     }
 
     static final class DefaultTestMedia implements BaseMedia<DefaultTestMedia> {

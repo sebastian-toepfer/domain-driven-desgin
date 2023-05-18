@@ -24,13 +24,19 @@
 package io.github.sebastiantoepfer.ddd.media.core;
 
 import io.github.sebastiantoepfer.ddd.common.Media;
+import io.github.sebastiantoepfer.ddd.common.Media.MediaAwareSubscriber;
+import java.nio.ByteBuffer;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Flow;
 
 public interface BaseMedia<T extends BaseMedia<T>> extends Media<T> {
     @Override
@@ -57,5 +63,49 @@ public interface BaseMedia<T extends BaseMedia<T>> extends Media<T> {
 
     default Base64.Encoder base64Encoder() {
         return Base64.getMimeEncoder();
+    }
+
+    @Override
+    default MediaAwareSubscriber<T> byteValueSubscriber(final String name) {
+        return new DefaultMediaAwareSubscriber<>((T) this, name);
+    }
+
+    class DefaultMediaAwareSubscriber<T extends Media<T>> implements MediaAwareSubscriber<T> {
+
+        private final T media;
+        private final String name;
+        private final List<ByteBuffer> bytes;
+
+        public DefaultMediaAwareSubscriber(final T media, final String name) {
+            this.media = Objects.requireNonNull(media);
+            this.name = Objects.requireNonNull(name);
+            bytes = new ArrayList<>();
+        }
+
+        @Override
+        public T media() {
+            final int size = bytes.stream().mapToInt(ByteBuffer::capacity).sum();
+            return media.withValue(name, bytes.stream().reduce(ByteBuffer.allocate(size), ByteBuffer::put).array());
+        }
+
+        @Override
+        public void onSubscribe(final Flow.Subscription s) {
+            s.request(Long.MAX_VALUE);
+        }
+
+        @Override
+        public void onNext(final List<ByteBuffer> t) {
+            bytes.addAll(t);
+        }
+
+        @Override
+        public void onError(final Throwable thrwbl) {
+            //will be ignored
+        }
+
+        @Override
+        public void onComplete() {
+            //will be ignored -> we use media(), with which we can return our media
+        }
     }
 }

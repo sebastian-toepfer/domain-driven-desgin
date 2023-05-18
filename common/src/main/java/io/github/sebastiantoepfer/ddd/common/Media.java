@@ -2,6 +2,7 @@ package io.github.sebastiantoepfer.ddd.common;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -9,6 +10,8 @@ import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.Flow;
 
 public interface Media<T extends Media<T>> {
     default T withValue(String name, LocalDate value) {
@@ -57,5 +60,11 @@ public interface Media<T extends Media<T>> {
 
     default T withValue(String name, T value) {
         return (T) this;
+    }
+
+    MediaAwareSubscriber<T> byteValueSubscriber(String name);
+
+    interface MediaAwareSubscriber<T extends Media<T>> extends Flow.Subscriber<List<ByteBuffer>> {
+        T media();
     }
 }

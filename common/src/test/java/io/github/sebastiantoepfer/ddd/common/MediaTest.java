@@ -171,6 +171,11 @@ class MediaTest {
             values.put(name, value);
             return this;
         }
+
+        @Override
+        public MediaAwareSubscriber<DefaultTestMedia> byteValueSubscriber(final String name) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
     }
 
     static final class Empty implements Printable {
