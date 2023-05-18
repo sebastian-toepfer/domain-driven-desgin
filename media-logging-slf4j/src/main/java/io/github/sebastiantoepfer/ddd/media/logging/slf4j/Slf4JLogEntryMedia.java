@@ -11,9 +11,6 @@ import io.github.sebastiantoepfer.ddd.media.logging.LogEntry;
 import io.github.sebastiantoepfer.ddd.media.logging.LogEntryMedia;
 import io.github.sebastiantoepfer.ddd.media.logging.LogLevelDecision;
 import io.github.sebastiantoepfer.ddd.media.message.NamedMessageFormat;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -163,28 +160,8 @@ public class Slf4JLogEntryMedia extends LogEntryMedia<Logger> {
             }
 
             @Override
-            public MDCMedia withValue(final String name, final BigDecimal value) {
-                return withValue(name, String.valueOf(value));
-            }
-
-            @Override
-            public MDCMedia withValue(final String name, final BigInteger value) {
-                return withValue(name, String.valueOf(value));
-            }
-
-            @Override
             public MDCMedia withValue(final String name, final boolean value) {
                 return withValue(name, String.valueOf(value));
-            }
-
-            @Override
-            public MDCMedia withValue(final String name, final Collection<?> values) {
-                return this;
-            }
-
-            @Override
-            public MDCMedia withValue(final String name, final MDCMedia value) {
-                throw new UnsupportedOperationException();
             }
 
             private Map<String, String> mdcValues() {

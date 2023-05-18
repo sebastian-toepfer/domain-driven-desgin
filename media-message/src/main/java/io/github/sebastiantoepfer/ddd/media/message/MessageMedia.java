@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
@@ -61,16 +59,6 @@ public class MessageMedia implements Media<MessageMedia>, Writeable {
 
     @Override
     public MessageMedia withValue(final String name, final double value) {
-        return new MessageMedia(format, map.withNewValue(name, value));
-    }
-
-    @Override
-    public MessageMedia withValue(final String name, final BigDecimal value) {
-        return new MessageMedia(format, map.withNewValue(name, value));
-    }
-
-    @Override
-    public MessageMedia withValue(final String name, final BigInteger value) {
         return new MessageMedia(format, map.withNewValue(name, value));
     }
 

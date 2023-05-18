@@ -6,8 +6,6 @@ import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.core.Writeable;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -37,16 +35,6 @@ public abstract class MessageMediaExtension<T extends MessageMediaExtension<T>> 
 
     @Override
     public final T withValue(final String name, final double value) {
-        return createWith(media.withValue(name, value));
-    }
-
-    @Override
-    public final T withValue(final String name, final BigDecimal value) {
-        return createWith(media.withValue(name, value));
-    }
-
-    @Override
-    public final T withValue(final String name, final BigInteger value) {
         return createWith(media.withValue(name, value));
     }
 
