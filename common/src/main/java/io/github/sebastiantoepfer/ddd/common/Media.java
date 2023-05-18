@@ -27,6 +27,8 @@ public interface Media<T extends Media<T>> {
         return withValue(name, value.format(DateTimeFormatter.ISO_DATE_TIME));
     }
 
+    T withValue(String name, byte[] bytes);
+
     T withValue(String name, String value);
 
     T withValue(String name, int value);

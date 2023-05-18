@@ -30,6 +30,7 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.time.ZoneId;
+import java.util.Base64;
 
 public interface BaseMedia<T extends BaseMedia<T>> extends Media<T> {
     @Override
@@ -47,5 +48,14 @@ public interface BaseMedia<T extends BaseMedia<T>> extends Media<T> {
 
     default ZoneId zoneId() {
         return ZoneId.systemDefault();
+    }
+
+    @Override
+    default T withValue(String name, byte[] bytes) {
+        return withValue("bytes", base64Encoder().encodeToString(bytes));
+    }
+
+    default Base64.Encoder base64Encoder() {
+        return Base64.getMimeEncoder();
     }
 }

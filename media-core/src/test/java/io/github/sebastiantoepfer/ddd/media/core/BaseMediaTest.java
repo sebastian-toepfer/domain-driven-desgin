@@ -63,6 +63,14 @@ class BaseMediaTest {
         );
     }
 
+    @Test
+    void should_write_bytes_as_base64_encoded_string() {
+        assertThat(
+            new DefaultTestMedia().withValue("bytes", "I might be an image".getBytes()).values(),
+            hasEntry("bytes", "SSBtaWdodCBiZSBhbiBpbWFnZQ==")
+        );
+    }
+
     static final class DefaultTestMedia implements BaseMedia<DefaultTestMedia> {
 
         private Map<String, Object> values;

@@ -165,6 +165,12 @@ class MediaTest {
             values.put(name, value);
             return this;
         }
+
+        @Override
+        public DefaultTestMedia withValue(final String name, final byte[] value) {
+            values.put(name, value);
+            return this;
+        }
     }
 
     static final class Empty implements Printable {
