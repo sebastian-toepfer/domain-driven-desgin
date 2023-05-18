@@ -1,7 +1,7 @@
 package io.github.sebastiantoepfer.ddd.media.logging;
 
-import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
+import io.github.sebastiantoepfer.ddd.media.core.BaseMedia;
 import io.github.sebastiantoepfer.ddd.media.message.MessageMedia;
 import io.github.sebastiantoepfer.ddd.media.message.NamedMessageFormat;
 import java.math.BigDecimal;
@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Objects;
 
-public class LogEntryMedia<T> implements Media<LogEntryMedia<T>>, LogEntry<T> {
+public class LogEntryMedia<T> implements BaseMedia<LogEntryMedia<T>>, LogEntry<T> {
 
     private final MessageMedia media;
     private final LogLevelDecision<T> logLevelResolver;

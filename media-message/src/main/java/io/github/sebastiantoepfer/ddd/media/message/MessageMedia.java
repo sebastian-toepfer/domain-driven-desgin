@@ -2,8 +2,8 @@ package io.github.sebastiantoepfer.ddd.media.message;
 
 import static java.util.stream.Collectors.joining;
 
-import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
+import io.github.sebastiantoepfer.ddd.media.core.BaseMedia;
 import io.github.sebastiantoepfer.ddd.media.core.HashMapMedia;
 import io.github.sebastiantoepfer.ddd.media.core.Writeable;
 import io.github.sebastiantoepfer.ddd.media.core.utils.CopyMap;
@@ -11,14 +11,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessageMedia implements Media<MessageMedia>, Writeable {
+public class MessageMedia implements BaseMedia<MessageMedia>, Writeable {
 
     private final NamedMessageFormat format;
     private final CopyMap<String, Object> map;
@@ -61,16 +59,6 @@ public class MessageMedia implements Media<MessageMedia>, Writeable {
 
     @Override
     public MessageMedia withValue(final String name, final double value) {
-        return new MessageMedia(format, map.withNewValue(name, value));
-    }
-
-    @Override
-    public MessageMedia withValue(final String name, final BigDecimal value) {
-        return new MessageMedia(format, map.withNewValue(name, value));
-    }
-
-    @Override
-    public MessageMedia withValue(final String name, final BigInteger value) {
         return new MessageMedia(format, map.withNewValue(name, value));
     }
 

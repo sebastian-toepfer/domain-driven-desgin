@@ -1,7 +1,7 @@
 package io.github.sebastiantoepfer.ddd.media.json;
 
-import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
+import io.github.sebastiantoepfer.ddd.media.core.BaseMedia;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonNumber;
@@ -15,7 +15,7 @@ import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Set;
 
-public class JsonObjectMedia extends AbstractMap<String, JsonValue> implements Media<JsonObjectMedia>, JsonObject {
+public class JsonObjectMedia extends AbstractMap<String, JsonValue> implements BaseMedia<JsonObjectMedia>, JsonObject {
 
     private final JsonObject json;
 
