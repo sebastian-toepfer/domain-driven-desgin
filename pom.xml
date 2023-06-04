@@ -146,14 +146,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.11.0</version>
-                    <executions>
-                        <execution>
-                            <id>default-testCompile</id>
-                            <configuration>
-                                <useModulePath>false</useModulePath>
-                            </configuration>
-                        </execution>
-                    </executions>
                     <configuration>
                         <compilerArgs>
                             <arg>-XDcompilePolicy=simple</arg>
