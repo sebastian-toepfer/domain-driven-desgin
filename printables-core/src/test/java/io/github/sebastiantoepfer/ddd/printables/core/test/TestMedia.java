@@ -23,10 +23,15 @@
  */
 package io.github.sebastiantoepfer.ddd.printables.core.test;
 
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+
 import io.github.sebastiantoepfer.ddd.common.Media;
+import io.github.sebastiantoepfer.ddd.common.Printable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.AbstractMap;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -67,12 +72,14 @@ public final class TestMedia extends AbstractMap<String, String> implements Medi
 
     @Override
     public TestMedia withValue(final String name, final int value) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        values.put(name, Integer.toString(value));
+        return this;
     }
 
     @Override
     public TestMedia withValue(final String name, final long value) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        values.put(name, Long.toString(value));
+        return this;
     }
 
     @Override
@@ -82,7 +89,27 @@ public final class TestMedia extends AbstractMap<String, String> implements Medi
 
     @Override
     public TestMedia withValue(final String name, final boolean value) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        values.put(name, Boolean.toString(value));
+        return this;
+    }
+
+    @Override
+    public TestMedia withValue(final String name, final Collection<?> values) {
+        this.values.put(
+                name,
+                values
+                    .stream()
+                    .map(Printable.class::cast)
+                    .map(p -> p.printOn(new TestMedia()))
+                    .collect(collectingAndThen(toList(), Object::toString))
+            );
+        return this;
+    }
+
+    @Override
+    public TestMedia withValue(final String name, final Printable value) {
+        values.put(name, value.printOn(new TestMedia()).toString());
+        return this;
     }
 
     @Override
