@@ -21,9 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+open module io.github.sebastiantoepfer.ddd.media.logging.slf4j {
+    exports io.github.sebastiantoepfer.ddd.media.logging.slf4j;
 
-open module io.github.sebastiantoepfer.ddd.media.core {
+    requires io.github.sebastiantoepfer.ddd.media.logging;
+    requires io.github.sebastiantoepfer.ddd.media.message;
+    requires io.github.sebastiantoepfer.ddd.media.core;
     requires io.github.sebastiantoepfer.ddd.common;
+
+    requires org.slf4j;
 
     requires com.github.spotbugs.annotations;
 
@@ -31,7 +37,6 @@ open module io.github.sebastiantoepfer.ddd.media.core {
     requires org.junit.jupiter.engine;
     requires org.hamcrest;
 
-    requires java.net.http;
-
-    requires jdk.httpserver;
+    requires ch.qos.logback.core;
+    requires ch.qos.logback.classic;
 }
