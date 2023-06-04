@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
 
-import io.github.sebastiantoepfer.ddd.media.core.TestPrintable;
+import io.github.sebastiantoepfer.ddd.printables.core.MapPrintable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.MessageFormat;
@@ -114,7 +114,7 @@ class MessageMediaTest {
             )
         )
             .withValue("sal", "Mrs.")
-            .withValue("person", new TestPrintable(Map.of("firstName", "Jane", "lastName", "Doe")));
+            .withValue("person", new MapPrintable(Map.of("firstName", "Jane", "lastName", "Doe")));
 
         assertThat(media.asString(), hasToString("Hello Mrs. Jane Doe."));
     }

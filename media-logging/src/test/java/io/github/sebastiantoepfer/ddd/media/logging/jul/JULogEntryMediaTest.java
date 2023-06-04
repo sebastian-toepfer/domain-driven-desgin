@@ -3,9 +3,9 @@ package io.github.sebastiantoepfer.ddd.media.logging.jul;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
-import io.github.sebastiantoepfer.ddd.media.core.TestPrintable;
 import io.github.sebastiantoepfer.ddd.media.logging.LogEntryMedia;
 import io.github.sebastiantoepfer.ddd.media.message.DefaultNamedMessageFormat;
+import io.github.sebastiantoepfer.ddd.printables.core.MapPrintable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
@@ -224,7 +224,7 @@ class JULogEntryMediaTest {
             )
         )
             .withValue("test", "INFO")
-            .withValue("person", new TestPrintable(Map.of("firstname", "Jane", "lastname", "Doe")))
+            .withValue("person", new MapPrintable(Map.of("firstname", "Jane", "lastname", "Doe")))
             .logTo(logger);
 
         assertThat(

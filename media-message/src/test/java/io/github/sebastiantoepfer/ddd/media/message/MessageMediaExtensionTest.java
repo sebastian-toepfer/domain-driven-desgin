@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 
-import io.github.sebastiantoepfer.ddd.media.core.TestPrintable;
+import io.github.sebastiantoepfer.ddd.printables.core.MapPrintable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
@@ -38,7 +38,7 @@ class MessageMediaExtensionTest {
             .withValue("bigDisk", BigInteger.ONE)
             .withValue("bool", true)
             .withValue("abool", false)
-            .withValue("person", new TestPrintable(Map.of("firstname", "Joe", "lastname", "Doe")))
+            .withValue("person", new MapPrintable(Map.of("firstname", "Joe", "lastname", "Doe")))
             .withValue("list", List.of("bananas", "apples"));
 
         assertThat(

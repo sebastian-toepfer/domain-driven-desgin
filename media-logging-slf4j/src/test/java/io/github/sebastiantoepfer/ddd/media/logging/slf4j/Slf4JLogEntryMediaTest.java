@@ -11,10 +11,10 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
-import io.github.sebastiantoepfer.ddd.media.core.TestPrintable;
 import io.github.sebastiantoepfer.ddd.media.logging.slf4j.test.InMemoryAppender;
 import io.github.sebastiantoepfer.ddd.media.logging.slf4j.test.LogRecord;
 import io.github.sebastiantoepfer.ddd.media.message.DefaultNamedMessageFormat;
+import io.github.sebastiantoepfer.ddd.printables.core.MapPrintable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
@@ -173,12 +173,12 @@ class Slf4JLogEntryMediaTest {
                             .withValue("bigd", BigDecimal.TEN)
                             .withValue(
                                 "friend",
-                                new TestPrintable(Map.of("name", "Maura", "user_id", "user@gitlab.com"))
+                                new MapPrintable(Map.of("name", "Maura", "user_id", "user@gitlab.com"))
                             );
                     }
                 }
             )
-            .withValue("test", new TestPrintable(Map.of("name", "Maura", "user_id", "user@gitlab.com")))
+            .withValue("test", new MapPrintable(Map.of("name", "Maura", "user_id", "user@gitlab.com")))
             .logTo(LoggerFactory.getLogger("io.github.sebastiantoepfer.ddd.TestLogging"));
 
         assertThat(

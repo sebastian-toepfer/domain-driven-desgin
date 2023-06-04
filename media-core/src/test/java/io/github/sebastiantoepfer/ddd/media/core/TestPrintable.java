@@ -4,7 +4,7 @@ import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import java.util.Map;
 
-public class TestPrintable implements Printable {
+public final class TestPrintable implements Printable {
 
     private final Map<String, String> values;
 
