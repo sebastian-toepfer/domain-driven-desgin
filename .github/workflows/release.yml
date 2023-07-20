@@ -52,7 +52,7 @@ jobs:
           git commit -a -m "bump version to ${{ steps.determine_version.outputs.version }}"
 
       - name: temporarily disable "include administrators" branch protection for ${{ github.event.repository.default_branch }}
-        uses: benjefferies/branch-protection-bot@1.0.8
+        uses: benjefferies/branch-protection-bot@1.0.9
         with:
           access_token: ${{ secrets.unprotect_the_protected }}
           branch: ${{ github.event.repository.default_branch }}
@@ -65,7 +65,7 @@ jobs:
           branch: ${{ github.event.repository.default_branch }}
 
       - name: enable "include administrators" branch protection for ${{ github.event.repository.default_branch }}
-        uses: benjefferies/branch-protection-bot@1.0.8
+        uses: benjefferies/branch-protection-bot@1.0.9
         if: always()
         with:
           access_token: ${{ secrets.unprotect_the_protected }}
@@ -114,7 +114,7 @@ jobs:
           git commit -a -m "bump version to ${MVN_VERSION}"
 
       - name: temporarily disable "include administrators" branch protection for ${{ github.event.repository.default_branch }}
-        uses: benjefferies/branch-protection-bot@1.0.8
+        uses: benjefferies/branch-protection-bot@1.0.9
         with:
           access_token: ${{ secrets.unprotect_the_protected }}
           branch: ${{ github.event.repository.default_branch }}
@@ -127,7 +127,7 @@ jobs:
           branch: ${{ github.event.repository.default_branch }}
 
       - name: enable "include administrators" branch protection for ${{ github.event.repository.default_branch }}
-        uses: benjefferies/branch-protection-bot@1.0.8
+        uses: benjefferies/branch-protection-bot@1.0.9
         if: always()
         with:
           access_token: ${{ secrets.unprotect_the_protected }}
