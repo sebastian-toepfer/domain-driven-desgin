@@ -56,7 +56,7 @@
         <maven.compiler.release>${maven.compiler.target}</maven.compiler.release>
 
         <prettierJavaVersion>2.0.0</prettierJavaVersion>
-        <logback.version>1.4.8</logback.version>
+        <logback.version>1.4.11</logback.version>
         <poi.version>5.2.3</poi.version>
     </properties>
 
