@@ -10,6 +10,11 @@ on:
 
 jobs:
   build:
+    strategy:
+      fail-fast: false
+      matrix:
+        jdk: [17, 21]
+
     name: build and analyze
     runs-on: ubuntu-latest
     steps:
@@ -20,7 +25,7 @@ jobs:
       - name: set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: 17
+          java-version: ${{ matrix.jdk }}
           distribution: adopt-hotspot
 
       - name: cache SonarCloud packages
