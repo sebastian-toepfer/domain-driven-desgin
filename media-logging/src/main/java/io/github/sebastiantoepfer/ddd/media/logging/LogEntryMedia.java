@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Objects;
 
-public class LogEntryMedia<T> implements BaseMedia<LogEntryMedia<T>>, LogEntry<T> {
+public final class LogEntryMedia<T> implements BaseMedia<LogEntryMedia<T>>, LogEntry<T> {
 
     private final MessageMedia media;
     private final LogLevelDecision<T> logLevelResolver;

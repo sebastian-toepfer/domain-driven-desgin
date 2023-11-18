@@ -19,39 +19,52 @@ import org.slf4j.Logger;
 import org.slf4j.MDC;
 import org.slf4j.event.Level;
 
-public class Slf4JLogEntryMedia extends LogEntryMedia<Logger> {
+public final class Slf4JLogEntryMedia {
 
-    public Slf4JLogEntryMedia(final NamedMessageFormat format, final Level level) {
-        this(format, level, List.of());
+    public static LogEntryMedia<Logger> of(final NamedMessageFormat format, final Level level) {
+        return of(format, level, List.of());
     }
 
-    public Slf4JLogEntryMedia(final NamedMessageFormat format, final Level level, final List<String> mdcs) {
-        this(format, new FixedLogLevel(level), mdcs);
+    public static LogEntryMedia<Logger> of(
+        final NamedMessageFormat format,
+        final Level level,
+        final List<String> mdcs
+    ) {
+        return of(format, new FixedLogLevel(level), mdcs);
     }
 
-    public Slf4JLogEntryMedia(final NamedMessageFormat format, final Level level, final Map<String, String> mdcs) {
-        this(format, new FixedLogLevel(level), mdcs);
+    public static LogEntryMedia<Logger> of(
+        final NamedMessageFormat format,
+        final Level level,
+        final Map<String, String> mdcs
+    ) {
+        return of(format, new FixedLogLevel(level), mdcs);
     }
 
-    public Slf4JLogEntryMedia(final NamedMessageFormat format, final LogLevelDecision<Logger> logLevelDecision) {
-        this(format, logLevelDecision, List.of());
+    public static LogEntryMedia<Logger> of(
+        final NamedMessageFormat format,
+        final LogLevelDecision<Logger> logLevelDecision
+    ) {
+        return of(format, logLevelDecision, List.of());
     }
 
-    public Slf4JLogEntryMedia(
+    public static LogEntryMedia<Logger> of(
         final NamedMessageFormat format,
         final LogLevelDecision<Logger> logLevelDecision,
         final List<String> mdcs
     ) {
-        this(format, logLevelDecision, mdcs.stream().collect(toMap(Function.identity(), Function.identity())));
+        return of(format, logLevelDecision, mdcs.stream().collect(toMap(Function.identity(), Function.identity())));
     }
 
-    public Slf4JLogEntryMedia(
+    public static LogEntryMedia<Logger> of(
         final NamedMessageFormat format,
         final LogLevelDecision<Logger> logLevelDecision,
         final Map<String, String> mdcs
     ) {
-        super(format, new MDCLogLevelDecision(logLevelDecision, mdcs));
+        new LogEntryMedia<>(format, new MDCLogLevelDecision(logLevelDecision, mdcs));
     }
+
+    private Slf4JLogEntryMedia() {}
 
     private static class MDCLogLevelDecision implements LogLevelDecision<Logger> {
 
