@@ -105,6 +105,7 @@ class InMemoryHandler extends Handler implements Collection<LogRecord> {
     }
 
     @Override
+    @SuppressWarnings("UndefinedEquals")
     public boolean equals(Object o) {
         return logrecords.equals(o);
     }

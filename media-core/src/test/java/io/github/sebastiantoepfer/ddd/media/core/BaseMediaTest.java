@@ -30,12 +30,14 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 
 import com.sun.net.httpserver.HttpServer;
+import io.github.sebastiantoepfer.ddd.common.Media;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -73,7 +75,7 @@ class BaseMediaTest {
     @Test
     void should_write_bytes_as_base64_encoded_string() {
         assertThat(
-            new DefaultTestMedia().withValue("bytes", "I might be an image".getBytes()).values(),
+            new DefaultTestMedia().withValue("bytes", "I might be an image".getBytes(StandardCharsets.UTF_8)).values(),
             hasEntry("bytes", "SSBtaWdodCBiZSBhbiBpbWFnZQ==")
         );
     }
@@ -85,9 +87,9 @@ class BaseMediaTest {
             "/strings",
             he -> {
                 he.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                he.getResponseBody().write("I might be ".getBytes());
+                he.getResponseBody().write("I might be ".getBytes(StandardCharsets.UTF_8));
                 he.getResponseBody().flush();
-                he.getResponseBody().write("an image".getBytes());
+                he.getResponseBody().write("an image".getBytes(StandardCharsets.UTF_8));
                 he.getResponseBody().flush();
                 he.getResponseBody().close();
             }
@@ -100,7 +102,7 @@ class BaseMediaTest {
                 HttpRequest.newBuilder(URI.create("http://localhost:8081/strings")).GET().build(),
                 HttpResponse.BodyHandlers.fromSubscriber(
                     new DefaultTestMedia().byteValueSubscriber("bytes"),
-                    BaseMedia.MediaAwareSubscriber::media
+                    Media.MediaAwareSubscriber::media
                 )
             )
             .thenApply(HttpResponse::body)

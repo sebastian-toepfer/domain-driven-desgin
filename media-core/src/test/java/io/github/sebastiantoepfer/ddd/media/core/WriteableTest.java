@@ -28,6 +28,7 @@ import static org.hamcrest.Matchers.is;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 
 class WriteableTest {
@@ -52,7 +53,7 @@ class WriteableTest {
             new Writeable() {
                 @Override
                 public void writeTo(final OutputStream output) throws IOException {
-                    output.write("hello".getBytes());
+                    output.write("hello".getBytes(StandardCharsets.UTF_8));
                 }
             }
                 .asString(),

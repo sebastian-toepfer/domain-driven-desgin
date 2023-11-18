@@ -97,7 +97,7 @@ public class TranslateNameDecorator<T extends Media<T>> extends MediaDecorator<T
         }
 
         @Override
-        public <T extends Media<T>> T printOn(final T media) {
+        public <M extends Media<M>> M printOn(final M media) {
             return delegate.printOn(new TranslateNameDecorator<>(media, translator)).decoratedMedia();
         }
     }

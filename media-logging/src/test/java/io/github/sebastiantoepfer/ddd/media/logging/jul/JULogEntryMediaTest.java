@@ -143,6 +143,7 @@ class JULogEntryMediaTest {
     }
 
     @Test
+    @SuppressWarnings("BigDecimalEquals")
     void should_log_bigdecimal_at_warn() {
         JULogEntryMedia
             .of(

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 class CopyMapTest {
 
     @Test
+    @SuppressWarnings("EqualsIncompatibleType")
     void equalsContract() {
         assertThat(new CopyMap<>(new HashMap<>()).equals(new CopyMap<>(new HashMap<>())), is(true));
         assertThat(new CopyMap<>(Map.of("a", "a")).equals(new CopyMap<>(Map.of("a", "a"))), is(true));
