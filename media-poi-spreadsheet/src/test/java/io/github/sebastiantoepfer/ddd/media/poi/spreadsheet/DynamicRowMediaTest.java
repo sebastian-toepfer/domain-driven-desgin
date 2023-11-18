@@ -28,6 +28,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 class DynamicRowMediaTest extends RowMediaTest {
 
+    @Override
     DynamicRowMedia createRowMedia() {
         final Workbook workbook = new XSSFWorkbook();
         workbook.createSheet();
