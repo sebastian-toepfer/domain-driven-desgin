@@ -159,14 +159,13 @@ public final class Slf4JLogEntryMedia {
             }
 
             private MDCMedia printValue(final String name, final Printable value) {
-                return value.printOn(
-                    mdcNames
-                        .entrySet()
-                        .stream()
-                        .filter(mdcName -> mdcName.getKey().startsWith(name))
-                        .map(entry -> Map.entry(entry.getKey().subPath(name), entry.getValue()))
-                        .collect(collectingAndThen(toMap(Map.Entry::getKey, Map.Entry::getValue), MDCMedia::new))
-                );
+                final MDCMedia media = mdcNames
+                    .entrySet()
+                    .stream()
+                    .filter(mdcName -> mdcName.getKey().startsWith(name))
+                    .map(entry -> Map.entry(entry.getKey().subPath(name), entry.getValue()))
+                    .collect(collectingAndThen(toMap(Map.Entry::getKey, Map.Entry::getValue), MDCMedia::new));
+                return value.printOn(media);
             }
 
             @Override
