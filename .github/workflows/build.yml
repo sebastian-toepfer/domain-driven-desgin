@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        jdk: [17, 21, EA]
+        jdk: [17, 21]
 
     name: build and analyze
     runs-on: ubuntu-latest
