@@ -57,7 +57,7 @@
 
         <prettierJavaVersion>2.4.0</prettierJavaVersion>
         <logback.version>1.4.13</logback.version>
-        <poi.version>5.2.4</poi.version>
+        <poi.version>5.2.5</poi.version>
     </properties>
 
     <modules>
