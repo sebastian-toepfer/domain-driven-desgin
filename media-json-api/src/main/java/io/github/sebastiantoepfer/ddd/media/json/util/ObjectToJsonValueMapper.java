@@ -1,13 +1,14 @@
-package io.github.sebastiantoepfer.ddd.media.json;
+package io.github.sebastiantoepfer.ddd.media.json.util;
 
 import io.github.sebastiantoepfer.ddd.common.Printable;
+import io.github.sebastiantoepfer.ddd.media.json.JsonObjectMedia;
 import jakarta.json.Json;
 import jakarta.json.JsonValue;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 
-class ObjectToJsonValueMapper implements ToJsonValueMapper {
+public class ObjectToJsonValueMapper implements ToJsonValueMapper {
 
     private final Object o;
 

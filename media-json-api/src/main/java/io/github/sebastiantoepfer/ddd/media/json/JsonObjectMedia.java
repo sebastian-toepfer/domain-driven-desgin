@@ -2,6 +2,7 @@ package io.github.sebastiantoepfer.ddd.media.json;
 
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.core.BaseMedia;
+import io.github.sebastiantoepfer.ddd.media.json.util.CollectionToJsonValueMapper;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonNumber;
