@@ -59,4 +59,21 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <configuration>
+                        <excludedMethods combine.children="append">
+                            <!-- unable to kill mutants in a reproducible manner (without a mock!) -->
+                            <excludeMethod>flush</excludeMethod>
+                        </excludedMethods>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>

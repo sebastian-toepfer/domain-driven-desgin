@@ -22,12 +22,12 @@
  * THE SOFTWARE.
  */
 
-module io.github.sebastiantoepfer.ddd.media.json {
-    exports io.github.sebastiantoepfer.ddd.media.json;
-    exports io.github.sebastiantoepfer.ddd.media.json.stream;
-
+open module io.github.sebastiantoepfer.ddd.media.json {
     requires io.github.sebastiantoepfer.ddd.media.core;
     requires io.github.sebastiantoepfer.ddd.common;
     requires com.github.spotbugs.annotations;
     requires jakarta.json;
+
+    requires org.junit.jupiter.api;
+    requires org.hamcrest;
 }

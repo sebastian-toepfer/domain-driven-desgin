@@ -1,4 +1,4 @@
-package io.github.sebastiantoepfer.ddd.media.json;
+package io.github.sebastiantoepfer.ddd.media.json.util;
 
 import static jakarta.json.stream.JsonCollectors.toJsonArray;
 
@@ -7,7 +7,7 @@ import jakarta.json.JsonValue;
 import java.util.Collection;
 import java.util.List;
 
-class CollectionToJsonValueMapper implements ToJsonValueMapper {
+public class CollectionToJsonValueMapper implements ToJsonValueMapper {
 
     private final Collection<Object> values;
 

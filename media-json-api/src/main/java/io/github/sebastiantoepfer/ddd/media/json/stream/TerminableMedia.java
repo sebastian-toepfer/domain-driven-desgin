@@ -21,13 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package io.github.sebastiantoepfer.ddd.media.json.stream;
 
-module io.github.sebastiantoepfer.ddd.media.json {
-    exports io.github.sebastiantoepfer.ddd.media.json;
-    exports io.github.sebastiantoepfer.ddd.media.json.stream;
+import io.github.sebastiantoepfer.ddd.media.core.BaseMedia;
+import java.io.Flushable;
 
-    requires io.github.sebastiantoepfer.ddd.media.core;
-    requires io.github.sebastiantoepfer.ddd.common;
-    requires com.github.spotbugs.annotations;
-    requires jakarta.json;
+public interface TerminableMedia<T extends TerminableMedia<T>> extends BaseMedia<T>, AutoCloseable, Flushable {
+    TerminableMedia<T> end();
 }
