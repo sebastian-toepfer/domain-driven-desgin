@@ -98,7 +98,7 @@ public class TodoDTO {
     private final booelan done;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public ToDoDTO(
+    public TodoDTO(
         @JsonProperty("id") final Long id,
         @JsonProperty("title") final String title,
         @JsonPropery("desciption") final String description,
@@ -165,9 +165,7 @@ What if we need xml?
 ```java
 @GET
 @Produces("application/json")
-public Response create(
-    final long id
-) {
+public Response getAll() {
     final List<TodoDTO> dtos = todos.findAll()
         .map(entity -> new TodoDTO(
             entiy.getId(),
