@@ -202,6 +202,10 @@ How to stream the data?
 
 # How to use this project?
 
+Note on the version:
+Release version means that the function was already available at the time of writing.
+Snapshot version means that the function had not yet been released at the time of writing. Check the releases to see if the version is now available.
+
 ## Lets start with the domain
 
 add maven dependency
