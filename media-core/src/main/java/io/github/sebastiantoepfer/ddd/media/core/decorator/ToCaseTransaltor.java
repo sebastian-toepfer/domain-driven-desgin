@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-public final class ToCaseTransaltor implements Translator {
+final class ToCaseTransaltor implements Translator {
 
     private final Function<String, Cased> toCase;
 

@@ -26,11 +26,15 @@ package io.github.sebastiantoepfer.ddd.media.core;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 
 import com.sun.net.httpserver.HttpServer;
 import io.github.sebastiantoepfer.ddd.common.Media;
+import io.github.sebastiantoepfer.ddd.common.Printable.Empty;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -42,7 +46,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
@@ -77,6 +85,63 @@ class BaseMediaTest {
         assertThat(
             new DefaultTestMedia().withValue("bytes", "I might be an image".getBytes(StandardCharsets.UTF_8)).values(),
             hasEntry("bytes", "SSBtaWdodCBiZSBhbiBpbWFnZQ==")
+        );
+    }
+
+    @Test
+    void should_write_biginteger_as_long() {
+        assertThat(
+            new DefaultTestMedia().withValue("biginteger", BigInteger.TEN).values(),
+            hasEntry("biginteger", 10L)
+        );
+    }
+
+    @Test
+    void should_write_bigdecimal_as_double() {
+        assertThat(
+            new DefaultTestMedia().withValue("bigdecimal", BigDecimal.valueOf(3.14)).values(),
+            hasEntry("bigdecimal", 3.14)
+        );
+    }
+
+    @Test
+    void should_write_return_this_for_printables() {
+        final DefaultTestMedia media = new DefaultTestMedia();
+        assertThat(media.withValue("printable", new Empty()), sameInstance(media));
+    }
+
+    @Test
+    void should_write_return_this_for_submedia() {
+        final DefaultTestMedia media = new DefaultTestMedia();
+        assertThat(media.withValue("media", new DefaultTestMedia()), sameInstance(media));
+    }
+
+    @Test
+    void should_write_return_this_for_collection() {
+        final DefaultTestMedia media = new DefaultTestMedia();
+        assertThat(media.withValue("media", List.of()), sameInstance(media));
+    }
+
+    @Test
+    void should_write_offsettime_as_iso_formated_string() {
+        assertThat(
+            new DefaultTestMedia()
+                .withValue("time", OffsetTime.of(LocalTime.of(8, 25, 55), ZoneOffset.ofHours(2)))
+                .values(),
+            hasEntry("time", "08:25:55+02:00")
+        );
+    }
+
+    @Test
+    void should_write_offsetdatetime_as_iso_formated_string() {
+        assertThat(
+            new DefaultTestMedia()
+                .withValue(
+                    "date",
+                    OffsetDateTime.of(LocalDateTime.of(1982, Month.JUNE, 9, 8, 25, 55), ZoneOffset.ofHours(2))
+                )
+                .values(),
+            hasEntry("date", "1982-06-09T08:25:55+02:00")
         );
     }
 

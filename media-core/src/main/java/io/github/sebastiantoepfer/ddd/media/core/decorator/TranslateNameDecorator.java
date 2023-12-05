@@ -5,15 +5,21 @@ import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.core.utils.PrintableToObjectMapper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.Collection;
 import java.util.Objects;
 
-public class TranslateNameDecorator<T extends Media<T>> extends MediaDecorator<T, TranslateNameDecorator<T>> {
+public final class TranslateNameDecorator<T extends Media<T>> implements MediaDecorator<T, TranslateNameDecorator<T>> {
 
+    private final T decoratedMedia;
     private final Translator translator;
 
     public TranslateNameDecorator(final T decoratedMedia, final Translator translate) {
-        super(decoratedMedia);
+        this.decoratedMedia = Objects.requireNonNull(decoratedMedia);
         this.translator = translate;
     }
 
@@ -84,8 +90,48 @@ public class TranslateNameDecorator<T extends Media<T>> extends MediaDecorator<T
         );
     }
 
+    @Override
+    public TranslateNameDecorator<T> withValue(final String name, final LocalTime value) {
+        return new TranslateNameDecorator<>(decoratedMedia().withValue(translate(name), value), translator);
+    }
+
+    @Override
+    public TranslateNameDecorator<T> withValue(final String name, final LocalDateTime value) {
+        return new TranslateNameDecorator<>(decoratedMedia().withValue(translate(name), value), translator);
+    }
+
+    @Override
+    public TranslateNameDecorator<T> withValue(final String name, final LocalDate value) {
+        return new TranslateNameDecorator<>(decoratedMedia().withValue(translate(name), value), translator);
+    }
+
+    @Override
+    public TranslateNameDecorator<T> withValue(final String name, final OffsetTime value) {
+        return new TranslateNameDecorator<>(decoratedMedia().withValue(translate(name), value), translator);
+    }
+
+    @Override
+    public TranslateNameDecorator<T> withValue(final String name, final OffsetDateTime value) {
+        return new TranslateNameDecorator<>(decoratedMedia().withValue(translate(name), value), translator);
+    }
+
+    @Override
+    public TranslateNameDecorator<T> withValue(final String name, final byte[] bytes) {
+        return new TranslateNameDecorator<>(decoratedMedia().withValue(translate(name), bytes), translator);
+    }
+
+    @Override
+    public MediaAwareSubscriber<TranslateNameDecorator<T>> byteValueSubscriber(final String name) {
+        throw new UnsupportedOperationException();
+    }
+
     private String translate(final String name) {
         return translator.translate(name).orElse(name);
+    }
+
+    @Override
+    public T decoratedMedia() {
+        return decoratedMedia;
     }
 
     private class TranslatedNamePrintableDecorator implements Printable {

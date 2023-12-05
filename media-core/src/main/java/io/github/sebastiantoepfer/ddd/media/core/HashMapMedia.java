@@ -1,17 +1,23 @@
 package io.github.sebastiantoepfer.ddd.media.core;
 
+import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.core.utils.CopyMap;
 import io.github.sebastiantoepfer.ddd.media.core.utils.PrintableToObjectMapper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class HashMapMedia extends AbstractMap<String, Object> implements BaseMedia<HashMapMedia> {
+public class HashMapMedia extends AbstractMap<String, Object> implements Media<HashMapMedia> {
 
     private final CopyMap<String, Object> entries;
 
@@ -80,6 +86,41 @@ public class HashMapMedia extends AbstractMap<String, Object> implements BaseMed
     @Override
     public HashMapMedia withValue(final String name, final HashMapMedia value) {
         return new HashMapMedia(entries.withNewValue(name, Map.copyOf(value)));
+    }
+
+    @Override
+    public HashMapMedia withValue(final String name, final LocalTime value) {
+        return new HashMapMedia(entries.withNewValue(name, value));
+    }
+
+    @Override
+    public HashMapMedia withValue(final String name, final LocalDateTime value) {
+        return new HashMapMedia(entries.withNewValue(name, value));
+    }
+
+    @Override
+    public HashMapMedia withValue(final String name, final byte[] bytes) {
+        return new HashMapMedia(entries.withNewValue(name, bytes));
+    }
+
+    @Override
+    public HashMapMedia withValue(final String name, final LocalDate value) {
+        return new HashMapMedia(entries.withNewValue(name, value));
+    }
+
+    @Override
+    public HashMapMedia withValue(final String name, final OffsetTime value) {
+        return new HashMapMedia(entries.withNewValue(name, value));
+    }
+
+    @Override
+    public HashMapMedia withValue(final String name, final OffsetDateTime value) {
+        return new HashMapMedia(entries.withNewValue(name, value));
+    }
+
+    @Override
+    public MediaAwareSubscriber<HashMapMedia> byteValueSubscriber(final String name) {
+        return new DefaultMediaAwareSubscriber<>(this, name);
     }
 
     @Override

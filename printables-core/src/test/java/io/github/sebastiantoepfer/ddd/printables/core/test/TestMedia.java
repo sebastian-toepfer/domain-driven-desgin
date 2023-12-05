@@ -27,9 +27,15 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
 import io.github.sebastiantoepfer.ddd.common.Media;
+import io.github.sebastiantoepfer.ddd.common.Media.MediaAwareSubscriber;
 import io.github.sebastiantoepfer.ddd.common.Printable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashMap;
@@ -61,6 +67,36 @@ public final class TestMedia extends AbstractMap<String, String> implements Medi
 
     @Override
     public TestMedia withValue(final String name, final byte[] bytes) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public TestMedia withValue(final String name, final LocalDate value) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public TestMedia withValue(final String name, final OffsetTime value) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public TestMedia withValue(final String name, final OffsetDateTime value) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public TestMedia withValue(final String name, final BigInteger value) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public TestMedia withValue(final String name, final BigDecimal value) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public TestMedia withValue(final String name, final TestMedia value) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

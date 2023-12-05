@@ -25,20 +25,25 @@ package io.github.sebastiantoepfer.ddd.media.core;
 
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Media.MediaAwareSubscriber;
-import java.nio.ByteBuffer;
+import io.github.sebastiantoepfer.ddd.common.Printable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Flow;
+import java.util.Collection;
 
 public interface BaseMedia<T extends BaseMedia<T>> extends Media<T> {
+    @Override
+    default T withValue(String name, LocalDate value) {
+        return withValue(name, value.format(DateTimeFormatter.ISO_DATE));
+    }
+
     @Override
     default T withValue(String name, LocalTime time) {
         return withValue(
@@ -52,8 +57,43 @@ public interface BaseMedia<T extends BaseMedia<T>> extends Media<T> {
         return withValue(name, OffsetDateTime.of(datetime, zoneId().getRules().getOffset(datetime)));
     }
 
+    @Override
+    default T withValue(String name, OffsetTime value) {
+        return withValue(name, value.format(DateTimeFormatter.ISO_TIME));
+    }
+
+    @Override
+    default T withValue(String name, OffsetDateTime value) {
+        return withValue(name, value.format(DateTimeFormatter.ISO_DATE_TIME));
+    }
+
     default ZoneId zoneId() {
         return ZoneId.systemDefault();
+    }
+
+    @Override
+    default T withValue(String name, BigInteger value) {
+        return withValue(name, value.longValue());
+    }
+
+    @Override
+    default T withValue(String name, BigDecimal value) {
+        return withValue(name, value.doubleValue());
+    }
+
+    @Override
+    default T withValue(String name, Printable value) {
+        return (T) this;
+    }
+
+    @Override
+    default T withValue(String name, Collection<?> values) {
+        return (T) this;
+    }
+
+    @Override
+    default T withValue(String name, T value) {
+        return (T) this;
     }
 
     @Override
@@ -68,44 +108,5 @@ public interface BaseMedia<T extends BaseMedia<T>> extends Media<T> {
     @Override
     default MediaAwareSubscriber<T> byteValueSubscriber(final String name) {
         return new DefaultMediaAwareSubscriber<>((T) this, name);
-    }
-
-    class DefaultMediaAwareSubscriber<T extends Media<T>> implements MediaAwareSubscriber<T> {
-
-        private final T media;
-        private final String name;
-        private final List<ByteBuffer> bytes;
-
-        public DefaultMediaAwareSubscriber(final T media, final String name) {
-            this.media = Objects.requireNonNull(media);
-            this.name = Objects.requireNonNull(name);
-            bytes = new ArrayList<>();
-        }
-
-        @Override
-        public T media() {
-            final int size = bytes.stream().mapToInt(ByteBuffer::capacity).sum();
-            return media.withValue(name, bytes.stream().reduce(ByteBuffer.allocate(size), ByteBuffer::put).array());
-        }
-
-        @Override
-        public void onSubscribe(final Flow.Subscription s) {
-            s.request(Long.MAX_VALUE);
-        }
-
-        @Override
-        public void onNext(final List<ByteBuffer> t) {
-            bytes.addAll(t);
-        }
-
-        @Override
-        public void onError(final Throwable thrwbl) {
-            //will be ignored
-        }
-
-        @Override
-        public void onComplete() {
-            //will be ignored -> we use media(), with which we can return our media
-        }
     }
 }
