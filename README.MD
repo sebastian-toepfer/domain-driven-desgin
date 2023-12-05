@@ -114,6 +114,20 @@ public class TodoDTO {
         return new Todo(id, title, description, done);
     }
 }
+
+public class TodoIdentity {
+
+    private final Todo todo;
+
+    public TodoIdentity(final Todo todo) {
+        this.todo = Objects.requireNonNull(todo);
+    }
+
+    @JsonProperry("id")
+    public long getId() {
+        return todo.getId();
+    }
+}
 ```
 
 # Rest Boundary
@@ -131,6 +145,7 @@ public Response create(
     todos.add(todo);
     return Response
         .created(uriInfo.getAbsolutePathBuilder().path(todo.getId()).build())
+        .entity(new TodoIdentity(todo))
         .build();
 }
 ```
@@ -257,6 +272,25 @@ we start without one. no DTO's are required.
 ## Rest Boundary
 without a framework, so more pseudo code!
 ### Create a new TODO
+
+To get Json-Support add maven dependency
+```xml
+<dependency>
+  <groupId>io.github.sebastian-toepfer.ddd</groupId>
+  <artifactId>media-json-api</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+
+to get filter ...
+```xml
+<dependency>
+  <groupId>io.github.sebastian-toepfer.ddd</groupId>
+  <artifactId>media-core</artifactId>
+  <version>0.6.0-SNAPSHOT</version>
+</dependency>
+```
+
 ```java
 @POST
 @Produces("application/json")
@@ -272,21 +306,13 @@ public Response create(
     todos.add(todo);
     return Response
         .created(uriInfo.getAbsolutePathBuilder().path(todo.identifier()).build())
+        .entity(DefaultFilters.onlyWith(new JsonObjectMedia(), "id"))
         .build();
 }
 ```
 okay without dto more code at this place.
 
 ### Read methods
-
-To get Json-Support add maven dependency
-```xml
-<dependency>
-  <groupId>io.github.sebastian-toepfer.ddd</groupId>
-  <artifactId>media-json-api</artifactId>
-  <version>0.5.0</version>
-</dependency>
-```
 
 #### Get a Todo
 
@@ -313,14 +339,6 @@ But we can now simple change the representation.
 How? Change the media.
 
 ##### Let do some i18n.
-add dependency
-```xml
-<dependency>
-  <groupId>io.github.sebastian-toepfer.ddd</groupId>
-  <artifactId>media-core</artifactId>
-  <version>0.5.0</version>
-</dependency>
-```
 
 ```java
 @GET
