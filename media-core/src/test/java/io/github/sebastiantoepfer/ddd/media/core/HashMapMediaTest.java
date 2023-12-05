@@ -7,9 +7,16 @@ import static org.hamcrest.Matchers.is;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.List;
 import java.util.Map;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 class HashMapMediaTest {
@@ -50,6 +57,42 @@ class HashMapMediaTest {
     }
 
     @Test
+    void should_add_localtime_value() {
+        final LocalTime time = LocalTime.now();
+        assertThat(new HashMapMedia().withValue("test", time), hasEntry("test", time));
+    }
+
+    @Test
+    void should_add_localdate_value() {
+        final LocalDate date = LocalDate.now();
+        assertThat(new HashMapMedia().withValue("test", date), hasEntry("test", date));
+    }
+
+    @Test
+    void should_add_localdatetime_value() {
+        final LocalDateTime datetime = LocalDateTime.now();
+        assertThat(new HashMapMedia().withValue("test", datetime), hasEntry("test", datetime));
+    }
+
+    @Test
+    void should_add_offsetdatetime_value() {
+        final OffsetDateTime datetime = OffsetDateTime.now();
+        assertThat(new HashMapMedia().withValue("test", datetime), hasEntry("test", datetime));
+    }
+
+    @Test
+    void should_add_offsettime_value() {
+        final OffsetTime time = OffsetTime.now();
+        assertThat(new HashMapMedia().withValue("test", time), hasEntry("test", time));
+    }
+
+    @Test
+    void should_add_bytes_value() {
+        final byte[] bytes = "Hello".getBytes(StandardCharsets.UTF_8);
+        assertThat(new HashMapMedia().withValue("test", bytes), hasEntry("test", bytes));
+    }
+
+    @Test
     void should_add_printable() {
         assertThat(
             new HashMapMedia().withValue("name", new TestPrintable(Map.of("test", "hello"))),
@@ -75,6 +118,14 @@ class HashMapMediaTest {
         assertThat(
             new HashMapMedia().withValue("test", List.of(new TestPrintable(Map.of("name", "value")))),
             hasEntry(is("test"), (Matcher) contains(hasEntry("name", "value")))
+        );
+    }
+
+    @Test
+    void should_return_default_subscriber() {
+        assertThat(
+            new HashMapMedia().byteValueSubscriber("test"),
+            is(Matchers.instanceOf(DefaultMediaAwareSubscriber.class))
         );
     }
 }

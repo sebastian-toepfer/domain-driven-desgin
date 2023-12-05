@@ -23,9 +23,15 @@
  */
 package io.github.sebastiantoepfer.ddd.common;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.AbstractMap;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -91,6 +97,54 @@ final class DefaultTestMedia extends AbstractMap<String, Object> implements Medi
 
     @Override
     public DefaultTestMedia withValue(final String name, final byte[] value) {
+        values.put(name, value);
+        return this;
+    }
+
+    @Override
+    public DefaultTestMedia withValue(final String name, final LocalDate value) {
+        values.put(name, value);
+        return this;
+    }
+
+    @Override
+    public DefaultTestMedia withValue(final String name, final OffsetTime value) {
+        values.put(name, value);
+        return this;
+    }
+
+    @Override
+    public DefaultTestMedia withValue(final String name, final OffsetDateTime value) {
+        values.put(name, value);
+        return this;
+    }
+
+    @Override
+    public DefaultTestMedia withValue(final String name, final BigInteger value) {
+        values.put(name, value);
+        return this;
+    }
+
+    @Override
+    public DefaultTestMedia withValue(final String name, final BigDecimal value) {
+        values.put(name, value);
+        return this;
+    }
+
+    @Override
+    public DefaultTestMedia withValue(final String name, final Printable value) {
+        values.put(name, value);
+        return this;
+    }
+
+    @Override
+    public DefaultTestMedia withValue(final String name, final Collection<?> value) {
+        values.put(name, value);
+        return this;
+    }
+
+    @Override
+    public DefaultTestMedia withValue(final String name, final DefaultTestMedia value) {
         values.put(name, value);
         return this;
     }

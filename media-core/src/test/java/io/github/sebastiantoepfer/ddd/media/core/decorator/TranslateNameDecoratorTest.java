@@ -10,6 +10,12 @@ import io.github.sebastiantoepfer.ddd.media.core.HashMapMedia;
 import io.github.sebastiantoepfer.ddd.media.core.TestPrintable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.List;
 import java.util.Map;
 import org.hamcrest.Matcher;
@@ -154,6 +160,66 @@ class TranslateNameDecoratorTest {
                 .withValue("test", Boolean.FALSE)
                 .decoratedMedia(),
             hasEntry("test", Boolean.FALSE)
+        );
+    }
+
+    @Test
+    void should_add_localtime_under_untranslated_name_into_decoraded_media_if_no_translation_is_avalible() {
+        assertThat(
+            new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of()))
+                .withValue("test", LocalTime.MIDNIGHT)
+                .decoratedMedia(),
+            hasEntry("test", LocalTime.MIDNIGHT)
+        );
+    }
+
+    @Test
+    void should_add_localdate_under_untranslated_name_into_decoraded_media_if_no_translation_is_avalible() {
+        assertThat(
+            new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of()))
+                .withValue("test", LocalDate.EPOCH)
+                .decoratedMedia(),
+            hasEntry("test", LocalDate.EPOCH)
+        );
+    }
+
+    @Test
+    void should_add_localdatetime_under_untranslated_name_into_decoraded_media_if_no_translation_is_avalible() {
+        assertThat(
+            new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of()))
+                .withValue("test", LocalDateTime.MIN)
+                .decoratedMedia(),
+            hasEntry("test", LocalDateTime.MIN)
+        );
+    }
+
+    @Test
+    void should_add_offsettime_under_untranslated_name_into_decoraded_media_if_no_translation_is_avalible() {
+        assertThat(
+            new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of()))
+                .withValue("test", OffsetTime.MAX)
+                .decoratedMedia(),
+            hasEntry("test", OffsetTime.MAX)
+        );
+    }
+
+    @Test
+    void should_add_offsetdatetime_under_untranslated_name_into_decoraded_media_if_no_translation_is_avalible() {
+        assertThat(
+            new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of()))
+                .withValue("test", OffsetDateTime.MIN)
+                .decoratedMedia(),
+            hasEntry("test", OffsetDateTime.MIN)
+        );
+    }
+
+    @Test
+    void should_add_bytes_under_untranslated_name_into_decoraded_media_if_no_translation_is_avalible() {
+        assertThat(
+            new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of()))
+                .withValue("test", "test".getBytes(StandardCharsets.UTF_8))
+                .decoratedMedia(),
+            hasEntry("test", "test".getBytes(StandardCharsets.UTF_8))
         );
     }
 
