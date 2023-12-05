@@ -13,7 +13,7 @@ import java.time.OffsetTime;
 import java.util.Collection;
 import java.util.Objects;
 
-public class TranslateNameDecorator<T extends Media<T>> implements MediaDecorator<T, TranslateNameDecorator<T>> {
+public final class TranslateNameDecorator<T extends Media<T>> implements MediaDecorator<T, TranslateNameDecorator<T>> {
 
     private final T decoratedMedia;
     private final Translator translator;
