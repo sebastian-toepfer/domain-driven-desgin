@@ -8,7 +8,7 @@
     <parent>
         <groupId>io.github.sebastian-toepfer.ddd</groupId>
         <artifactId>domain-driven-desgin</artifactId>
-        <version>0.5.0</version>
+        <version>0.5.1</version>
     </parent>
 
     <artifactId>media-json-api</artifactId>
