@@ -26,9 +26,9 @@ package io.github.sebastiantoepfer.ddd.media.json.stream;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import jakarta.json.Json;
 import jakarta.json.stream.JsonGenerator;
-import java.io.ByteArrayOutputStream;
 import java.io.Flushable;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -37,15 +37,15 @@ public final class JsonArrayStreamMediaPrintableAdapter implements Flushable, Au
     private final JsonGenerator generator;
     private final Function<JsonObjectStreamMedia, TerminableMedia<?>> mediaDecorator;
 
-    public JsonArrayStreamMediaPrintableAdapter(final ByteArrayOutputStream baos) {
-        this(baos, m -> m);
+    public JsonArrayStreamMediaPrintableAdapter(final OutputStream os) {
+        this(os, m -> m);
     }
 
     public JsonArrayStreamMediaPrintableAdapter(
-        final ByteArrayOutputStream baos,
+        final OutputStream os,
         final Function<JsonObjectStreamMedia, TerminableMedia<?>> mediaDecorator
     ) {
-        this(Json.createGenerator(baos), mediaDecorator);
+        this(Json.createGenerator(os), mediaDecorator);
     }
 
     private JsonArrayStreamMediaPrintableAdapter(
