@@ -6,45 +6,8 @@ on:
       - created
 
 jobs:
-  publish:
-    name: publish
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.release.tag_name }}
-
-      - name: import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.gpg_private_key }}
-          passphrase: ${{ secrets.gpg_passphrase }}
-
-      - name: set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: 17
-          distribution: adopt-hotspot
-
-      - name: cache maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-      - name: setup maven settings.xml
-        uses: whelk-io/maven-settings-xml-action@v21
-        with:
-          servers: >
-            [
-              {
-                "id": "ossrh",
-                "username": "${{ secrets.mvn_username }}",
-                "password": "${{ secrets.mvn_password }}"
-              }
-            ]
-
-      - name: build and publish
-        run: |
-          mvn -B -Possrh deploy
+  release:
+    uses: sebastian-toepfer/gh-common/.github/workflows/publish.yml@v1.0
+    with:
+      tag_name: ${{ github.event.release.tag_name }}
+    secrets: inherit
