@@ -29,6 +29,7 @@ import static org.hamcrest.Matchers.is;
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import jakarta.json.Json;
+import jakarta.json.spi.JsonProvider;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -43,7 +44,7 @@ class JsonObjectStreamMediaTest {
     @BeforeEach
     void initMedia() {
         baos = new ByteArrayOutputStream();
-        media = new JsonObjectStreamMedia(baos);
+        media = new JsonObjectStreamMedia(JsonProvider.provider(), baos);
     }
 
     @Test

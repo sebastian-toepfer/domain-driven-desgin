@@ -58,6 +58,7 @@
         <prettierJavaVersion>2.4.0</prettierJavaVersion>
         <logback.version>1.4.14</logback.version>
         <poi.version>5.2.5</poi.version>
+        <jmh.version>1.37</jmh.version>
     </properties>
 
     <modules>
@@ -68,7 +69,7 @@
         <module>media-logging</module>
         <module>media-json-api</module>
         <module>media-logging-slf4j</module>
-        <module>media-poi-spreadsheet</module>
+        <module>media-poi-spreadsheet</module>        
     </modules>
 
     <dependencyManagement>
@@ -93,6 +94,12 @@
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-core</artifactId>
+                <version>${jmh.version}</version>
             </dependency>
 
             <dependency>
@@ -472,6 +479,17 @@
 
     <profiles>
         <profile>
+            <id>full</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <modules>
+                <module>benchmark</module>
+            </modules>
+        </profile>
+
+        <profile>
             <id>ci</id>
             <activation>
                 <property>
@@ -512,6 +530,10 @@
         <profile>
             <id>bump-patch</id>
 
+            <modules>
+                <module>benchmark</module>
+            </modules>
+
             <build>
                 <plugins>
                     <plugin>
@@ -542,6 +564,10 @@
         <profile>
             <id>bump-minor</id>
 
+            <modules>
+                <module>benchmark</module>
+            </modules>
+
             <build>
                 <plugins>
                     <plugin>
@@ -571,6 +597,10 @@
 
         <profile>
             <id>bump-major</id>
+
+            <modules>
+                <module>benchmark</module>
+            </modules>
 
             <build>
                 <plugins>
