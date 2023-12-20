@@ -3,13 +3,13 @@ package io.github.sebastiantoepfer.ddd.media.json;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.core.BaseMedia;
 import io.github.sebastiantoepfer.ddd.media.json.util.CollectionToJsonValueMapper;
-import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonNumber;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonString;
 import jakarta.json.JsonValue;
+import jakarta.json.spi.JsonProvider;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.AbstractMap;
@@ -18,49 +18,56 @@ import java.util.Set;
 
 public class JsonObjectMedia extends AbstractMap<String, JsonValue> implements BaseMedia<JsonObjectMedia>, JsonObject {
 
+    private static final JsonProvider JSONP = JsonProvider.provider();
+    private final JsonProvider jsonProvider;
     private final JsonObject json;
 
     public JsonObjectMedia() {
-        this(Json.createObjectBuilder());
+        this(JSONP);
     }
 
-    private JsonObjectMedia(final JsonObjectBuilder builder) {
+    public JsonObjectMedia(final JsonProvider jsonProvider) {
+        this(jsonProvider, jsonProvider.createObjectBuilder());
+    }
+
+    private JsonObjectMedia(final JsonProvider jsonProvider, final JsonObjectBuilder builder) {
+        this.jsonProvider = jsonProvider;
         this.json = builder.build();
     }
 
     @Override
     public JsonObjectMedia withValue(final String name, final String value) {
-        return new JsonObjectMedia(Json.createObjectBuilder(json).add(name, value));
+        return new JsonObjectMedia(jsonProvider, asJsonBuilder().add(name, value));
     }
 
     @Override
     public JsonObjectMedia withValue(final String name, final int value) {
-        return new JsonObjectMedia(Json.createObjectBuilder(json).add(name, value));
+        return new JsonObjectMedia(jsonProvider, asJsonBuilder().add(name, value));
     }
 
     @Override
     public JsonObjectMedia withValue(final String name, final long value) {
-        return new JsonObjectMedia(Json.createObjectBuilder(json).add(name, value));
+        return new JsonObjectMedia(jsonProvider, asJsonBuilder().add(name, value));
     }
 
     @Override
     public JsonObjectMedia withValue(final String name, final double value) {
-        return new JsonObjectMedia(Json.createObjectBuilder(json).add(name, value));
+        return new JsonObjectMedia(jsonProvider, asJsonBuilder().add(name, value));
     }
 
     @Override
     public JsonObjectMedia withValue(final String name, final BigDecimal value) {
-        return new JsonObjectMedia(Json.createObjectBuilder(json).add(name, value));
+        return new JsonObjectMedia(jsonProvider, asJsonBuilder().add(name, value));
     }
 
     @Override
     public JsonObjectMedia withValue(final String name, final BigInteger value) {
-        return new JsonObjectMedia(Json.createObjectBuilder(json).add(name, value));
+        return new JsonObjectMedia(jsonProvider, asJsonBuilder().add(name, value));
     }
 
     @Override
     public JsonObjectMedia withValue(final String name, final boolean value) {
-        return new JsonObjectMedia(Json.createObjectBuilder(json).add(name, value));
+        return new JsonObjectMedia(jsonProvider, asJsonBuilder().add(name, value));
     }
 
     @Override
@@ -71,18 +78,23 @@ public class JsonObjectMedia extends AbstractMap<String, JsonValue> implements B
     @Override
     public JsonObjectMedia withValue(final String name, final Collection<?> values) {
         return new JsonObjectMedia(
-            Json.createObjectBuilder(json).add(name, new CollectionToJsonValueMapper(values).asJsonValue())
+            jsonProvider,
+            asJsonBuilder().add(name, new CollectionToJsonValueMapper(jsonProvider, values).asJsonValue())
         );
     }
 
     @Override
     public JsonObjectMedia withValue(final String name, final JsonObjectMedia value) {
-        return new JsonObjectMedia(Json.createObjectBuilder(json).add(name, value));
+        return new JsonObjectMedia(jsonProvider, asJsonBuilder().add(name, value));
     }
 
     @Override
     public String toString() {
         return json.toString();
+    }
+
+    private JsonObjectBuilder asJsonBuilder() {
+        return jsonProvider.createObjectBuilder(json);
     }
 
     @Override

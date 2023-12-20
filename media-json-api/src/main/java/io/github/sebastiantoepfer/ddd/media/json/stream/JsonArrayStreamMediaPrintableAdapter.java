@@ -24,7 +24,7 @@
 package io.github.sebastiantoepfer.ddd.media.json.stream;
 
 import io.github.sebastiantoepfer.ddd.common.Printable;
-import jakarta.json.Json;
+import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 import java.io.Flushable;
 import java.io.IOException;
@@ -34,6 +34,8 @@ import java.util.function.Function;
 
 public final class JsonArrayStreamMediaPrintableAdapter implements Flushable, AutoCloseable {
 
+    private static final JsonProvider JSONP = JsonProvider.provider();
+    private final JsonProvider jsonProvider;
     private final JsonGenerator generator;
     private final Function<JsonObjectStreamMedia, TerminableMedia<?>> mediaDecorator;
 
@@ -45,13 +47,23 @@ public final class JsonArrayStreamMediaPrintableAdapter implements Flushable, Au
         final OutputStream os,
         final Function<JsonObjectStreamMedia, TerminableMedia<?>> mediaDecorator
     ) {
-        this(Json.createGenerator(os), mediaDecorator);
+        this(JSONP, os, mediaDecorator);
+    }
+
+    public JsonArrayStreamMediaPrintableAdapter(
+        final JsonProvider provider,
+        final OutputStream os,
+        final Function<JsonObjectStreamMedia, TerminableMedia<?>> mediaDecorator
+    ) {
+        this(provider, provider.createGenerator(os), mediaDecorator);
     }
 
     private JsonArrayStreamMediaPrintableAdapter(
+        final JsonProvider jsonProvider,
         final JsonGenerator generator,
         final Function<JsonObjectStreamMedia, TerminableMedia<?>> mediaDecorator
     ) {
+        this.jsonProvider = Objects.requireNonNull(jsonProvider);
         this.generator = Objects.requireNonNull(generator).writeStartArray();
         this.mediaDecorator = Objects.requireNonNull(mediaDecorator);
     }
@@ -73,7 +85,9 @@ public final class JsonArrayStreamMediaPrintableAdapter implements Flushable, Au
     }
 
     public JsonArrayStreamMediaPrintableAdapter print(final Printable printable) {
-        printable.printOn((TerminableMedia) mediaDecorator.apply(new JsonObjectStreamMedia(generator))).end();
+        printable
+            .printOn((TerminableMedia) mediaDecorator.apply(new JsonObjectStreamMedia(jsonProvider, generator)))
+            .end();
         return this;
     }
 }

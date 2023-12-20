@@ -31,6 +31,7 @@ import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.core.decorator.TranslateNameDecorator;
 import io.github.sebastiantoepfer.ddd.media.core.decorator.Translator;
 import jakarta.json.Json;
+import jakarta.json.spi.JsonProvider;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
@@ -52,7 +53,7 @@ class TerminableDecoratorTest {
         media =
             new TerminableDecorator(
                 new TranslateNameDecorator<>(
-                    new JsonObjectStreamMedia(baos),
+                    new JsonObjectStreamMedia(JsonProvider.provider(), baos),
                     new Translator() {
                         @Override
                         public Optional<String> translate(final String translate) {

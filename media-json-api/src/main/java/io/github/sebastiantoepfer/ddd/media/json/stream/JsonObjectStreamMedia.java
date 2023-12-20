@@ -28,8 +28,8 @@ import static java.util.function.Predicate.not;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.json.util.ObjectToJsonValueMapper;
 import io.github.sebastiantoepfer.ddd.media.json.util.ToJsonValueMapper;
-import jakarta.json.Json;
 import jakarta.json.JsonValue;
+import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 import java.io.Flushable;
 import java.io.IOException;
@@ -41,13 +41,15 @@ import java.util.Objects;
 
 public final class JsonObjectStreamMedia implements TerminableMedia<JsonObjectStreamMedia>, AutoCloseable, Flushable {
 
+    private final JsonProvider provider;
     private final JsonGenerator generator;
 
-    public JsonObjectStreamMedia(final OutputStream os) {
-        this(Json.createGenerator(os));
+    public JsonObjectStreamMedia(final JsonProvider provider, final OutputStream os) {
+        this(provider, provider.createGenerator(os));
     }
 
-    JsonObjectStreamMedia(final JsonGenerator generator) {
+    JsonObjectStreamMedia(final JsonProvider provider, final JsonGenerator generator) {
+        this.provider = Objects.requireNonNull(provider);
         this.generator = Objects.requireNonNull(generator).writeStartObject();
     }
 
@@ -123,7 +125,7 @@ public final class JsonObjectStreamMedia implements TerminableMedia<JsonObjectSt
         generator.writeStartArray(name);
         values
             .stream()
-            .map(ObjectToJsonValueMapper::new)
+            .map(o -> new ObjectToJsonValueMapper(provider, o))
             .map(ToJsonValueMapper::asJsonValue)
             .filter(not(value -> value.getValueType() == JsonValue.ValueType.NULL))
             .forEach(generator::write);
