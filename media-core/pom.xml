@@ -8,7 +8,7 @@
     <parent>
         <groupId>io.github.sebastian-toepfer.ddd</groupId>
         <artifactId>domain-driven-desgin</artifactId>
-        <version>0.6.0-SNAPSHOT</version>
+        <version>0.6.0</version>
     </parent>
 
     <artifactId>media-core</artifactId>
