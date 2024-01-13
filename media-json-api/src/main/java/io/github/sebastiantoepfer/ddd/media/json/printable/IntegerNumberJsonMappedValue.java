@@ -3,6 +3,7 @@ package io.github.sebastiantoepfer.ddd.media.json.printable;
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import jakarta.json.JsonNumber;
+import java.math.BigInteger;
 
 class IntegerNumberJsonMappedValue implements JsonMappedValue {
 
@@ -23,7 +24,7 @@ class IntegerNumberJsonMappedValue implements JsonMappedValue {
     }
 
     @Override
-    public Long toValue() {
-        return value.longValueExact();
+    public BigInteger toValue() {
+        return value.bigIntegerValueExact();
     }
 }
