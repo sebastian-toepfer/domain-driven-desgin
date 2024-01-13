@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.is;
 import io.github.sebastiantoepfer.ddd.media.core.HashMapMedia;
 import jakarta.json.Json;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,7 @@ class JsonObjectPrintableTest {
     void should_print_number_property() {
         assertThat(
             new JsonObjectPrintable(Json.createObjectBuilder().add("name", 234).build()).printOn(new HashMapMedia()),
-            hasEntry("name", 234L)
+            hasEntry("name", BigInteger.valueOf(234L))
         );
     }
 
@@ -35,7 +36,7 @@ class JsonObjectPrintableTest {
         assertThat(
             new JsonObjectPrintable(Json.createObjectBuilder().add("name", 234.27261).build())
                 .printOn(new HashMapMedia()),
-            hasEntry("name", 234.27261)
+            hasEntry("name", BigDecimal.valueOf(234.27261))
         );
     }
 
@@ -73,7 +74,7 @@ class JsonObjectPrintableTest {
                 Json.createObjectBuilder().add("name", Json.createObjectBuilder().add("test", BigDecimal.ONE)).build()
             )
                 .printOn(new HashMapMedia()),
-            (Matcher) hasEntry(is("name"), hasEntry("test", 1L))
+            (Matcher) hasEntry(is("name"), hasEntry("test", BigInteger.valueOf(1L)))
         );
     }
 

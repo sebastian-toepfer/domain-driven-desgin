@@ -3,6 +3,7 @@ package io.github.sebastiantoepfer.ddd.media.json.printable;
 import io.github.sebastiantoepfer.ddd.common.Media;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import jakarta.json.JsonNumber;
+import java.math.BigDecimal;
 
 class DecimalNumberJsonMappedValue implements JsonMappedValue {
 
@@ -23,7 +24,7 @@ class DecimalNumberJsonMappedValue implements JsonMappedValue {
     }
 
     @Override
-    public Double toValue() {
-        return value.doubleValue();
+    public BigDecimal toValue() {
+        return value.bigDecimalValue();
     }
 }
