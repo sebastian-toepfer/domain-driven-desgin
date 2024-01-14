@@ -16,16 +16,16 @@ Let's look at all this using an example:
 ```java
 public final class Todo {
 
-    private final long id;
+    private long id;
     private String title;
     private String description;
-    private String done;
+    private boolean done;
 
     public Todo(
         final String title,
         final String description
     ) {
-        this(0, title, description, false);
+        this(Math.abs(ThreadLocalRandom.current().nextInt()), title, description, false);
     }
 
     public Todo(
@@ -144,7 +144,7 @@ public Response create(
     final Todo todo = newToDo.asEntity();
     todos.add(todo);
     return Response
-        .created(uriInfo.getAbsolutePathBuilder().path(todo.getId()).build())
+        .created(uriInfo.getAbsolutePathBuilder().path(Long.toString(todo.getId())).build())
         .entity(new TodoIdentity(todo))
         .build();
 }
@@ -221,10 +221,10 @@ Implement Printable.
 ```java
 public final class Todo implements Printable {
 
-    private final long id;
+    private long id;
     private String title;
     private String description;
-    private String done;
+    private boolean done;
 
     public Todo(
         final String title,
@@ -282,7 +282,7 @@ To get Json-Support add maven dependency
 <dependency>
   <groupId>io.github.sebastian-toepfer.ddd</groupId>
   <artifactId>media-json-api</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 
@@ -291,7 +291,7 @@ to get filter ...
 <dependency>
   <groupId>io.github.sebastian-toepfer.ddd</groupId>
   <artifactId>media-core</artifactId>
-  <version>0.6.0-SNAPSHOT</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 
@@ -303,14 +303,15 @@ public Response create(
     final JsonObject newTodo
     @Context UriInfo uriInfo
 ) {
-    final Todo todo = new Todo(
-        newTodo.getString("title"),
-        newTodo.getString("description")
-    );
-    todos.add(todo);
+    final Todo todo = todos.add(new Todo(newTodo.getString("title"), newTodo.getString("description")));
     return Response
-        .created(uriInfo.getAbsolutePathBuilder().path(todo.identifier()).build())
-        .entity(DefaultFilters.onlyWith(new JsonObjectMedia(), "id"))
+        .created(uriInfo.getAbsolutePathBuilder().path(Long.toString(todo.identifier())).build())
+        .encoding(StandardCharsets.UTF_8.name())
+        .entity(
+            todo
+                .printOn(new NameFilteredDecorator<>(new JsonObjectMedia(), List.of("id")::contains))
+                .decoratedMedia()
+        )
         .build();
 }
 ```
@@ -327,15 +328,12 @@ okay without dto more code at this place.
 public Response getById(
     @PathParam("id") final long id
 ) {
-    return todos.findById(id)
-        .map(entity -> entity.printOn(new JsonObjectMedia()))
-        .map(json -> Response
-            .ok()
-            .type(MediaType.APPLICATION_JSON)
-            .encoding("UTF-8")
-            .entity(json))
-        .orElseGet(() -> Response.status(404))
-        .build();
+    return todos
+            .findById(id)
+            .map(entity -> entity.printOn(new JsonObjectMedia()))
+            .map(Response.ok().type(MediaType.APPLICATION_JSON)::entity)
+            .orElseGet(() -> Response.status(HttpURLConnection.HTTP_NOT_FOUND))
+            .build();
 }
 ```
 looks similar to the way with dto.
@@ -372,11 +370,7 @@ public Response getById(
                 }
             )
         )
-        .map(json -> Response
-            .ok()
-            .type(MediaType.APPLICATION_JSON)
-            .encoding("UTF-8")
-            .entity(json))
+        .map(Response.ok().type(MediaType.APPLICATION_JSON)::entity)
         .orElseGet(() -> Response.status(404))
         .build();
 }
@@ -410,17 +404,19 @@ How to stream the data? Since 0.5.0 change the media.
 @GET
 @Produces("application/json")
 public Response getAll() {
-    return Response
+    final Stream<Todo> todos = this.todos.findAll();
+        return Response
             .ok()
             .type(MediaType.APPLICATION_JSON)
-            .encoding("UTF-8")
             .entity(
                 (StreamingOutput) out -> {
-                    final var media = new JsonArrayStreamMediaPrintableAdapter(out);
-                    todos.findAll().forEach(media::print);
-                    media.end();
-                    media.close();
-            })
+                    try (var media = new JsonArrayStreamMediaPrintableAdapter(out)) {
+                        todos.forEach(media::print);
+                    } catch (Exception ex) {
+                        out.close();
+                    }
+                }
+            )
             .build();
 }
 ```
