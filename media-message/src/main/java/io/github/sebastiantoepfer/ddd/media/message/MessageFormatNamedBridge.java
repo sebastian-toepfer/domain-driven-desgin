@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class MessageFormatNamedBridge implements NamedMessageFormat {
+public final class MessageFormatNamedBridge implements NamedMessageFormat {
 
     private static final Logger LOGGER = Logger.getLogger(MessageFormatNamedBridge.class.getName());
     private final MessageFormat format;
