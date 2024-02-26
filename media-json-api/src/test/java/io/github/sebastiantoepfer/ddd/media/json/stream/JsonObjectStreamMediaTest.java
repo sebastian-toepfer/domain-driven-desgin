@@ -125,12 +125,10 @@ class JsonObjectStreamMediaTest {
         assertThat(
             Json.createReader(new ByteArrayInputStream(baos.toByteArray())).readObject(),
             is(
-                Json
-                    .createObjectBuilder()
+                Json.createObjectBuilder()
                     .add(
                         "test",
-                        Json
-                            .createArrayBuilder()
+                        Json.createArrayBuilder()
                             .add(Json.createObjectBuilder().add("name", "1"))
                             .add(Json.createObjectBuilder().add("name", "2"))
                     )

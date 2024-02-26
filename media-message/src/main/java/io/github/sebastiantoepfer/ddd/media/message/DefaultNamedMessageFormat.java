@@ -32,8 +32,7 @@ public class DefaultNamedMessageFormat implements NamedMessageFormat {
     @Override
     public Collection<String> placeholderNames() {
         LOGGER.entering(DefaultNamedMessageFormat.class.getName(), "placeholderNames");
-        final Collection<String> result = StreamSupport
-            .stream(extractPlaceholders().spliterator(), false)
+        final Collection<String> result = StreamSupport.stream(extractPlaceholders().spliterator(), false)
             .map(Placeholder::name)
             .collect(toUnmodifiableSet());
         LOGGER.exiting(DefaultNamedMessageFormat.class.getName(), "placeholderNames", result);

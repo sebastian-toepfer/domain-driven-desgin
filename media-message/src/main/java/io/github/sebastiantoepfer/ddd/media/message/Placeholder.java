@@ -45,8 +45,7 @@ final class Placeholder {
 
     Optional<String> style() {
         LOGGER.entering(Placeholder.class.getName(), "style");
-        final Optional<String> result = Optional
-            .of(PATTERN.matcher(value))
+        final Optional<String> result = Optional.of(PATTERN.matcher(value))
             .filter(Matcher::find)
             .map(m -> m.group("style"))
             .filter(not(String::isBlank));

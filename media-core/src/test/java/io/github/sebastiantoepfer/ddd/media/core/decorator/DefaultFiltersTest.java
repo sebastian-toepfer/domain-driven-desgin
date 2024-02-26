@@ -37,8 +37,7 @@ class DefaultFiltersTest {
     @Test
     void should_create_media_with_does_ignore_given_names() {
         assertThat(
-            DefaultFilters
-                .without(new HashMapMedia(), "test", "hallo")
+            DefaultFilters.without(new HashMapMedia(), "test", "hallo")
                 .withValue("test", "testValue")
                 .withValue("hallo", "testValue")
                 .withValue("value", "testValue")
@@ -50,8 +49,7 @@ class DefaultFiltersTest {
     @Test
     void should_create_media_with_allow_only_given_names() {
         assertThat(
-            DefaultFilters
-                .onlyWith(new HashMapMedia(), "value", "hallo")
+            DefaultFilters.onlyWith(new HashMapMedia(), "value", "hallo")
                 .withValue("test", "testValue")
                 .withValue("hallo", "testValue")
                 .withValue("value", "testValue")

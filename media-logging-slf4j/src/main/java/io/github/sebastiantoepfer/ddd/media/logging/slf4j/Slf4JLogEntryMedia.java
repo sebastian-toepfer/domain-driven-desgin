@@ -153,8 +153,10 @@ public final class Slf4JLogEntryMedia {
             public MDCMedia withValue(final String name, final Printable value) {
                 return new MDCMedia(
                     mdcNames,
-                    new CopyMap.MergeOperator<String, String>()
-                        .apply(mdcValues, new CopyMap<>(printValue(name, value).mdcValues()))
+                    new CopyMap.MergeOperator<String, String>().apply(
+                        mdcValues,
+                        new CopyMap<>(printValue(name, value).mdcValues())
+                    )
                 );
             }
 

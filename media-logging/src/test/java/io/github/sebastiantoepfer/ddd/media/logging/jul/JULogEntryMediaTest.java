@@ -29,21 +29,16 @@ class JULogEntryMediaTest {
 
     @Test
     void should_log_string_at_info() {
-        JULogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("${test}"),
-                new DefaultLogLevelDecision(
-                    Level.SEVERE,
-                    "test",
-                    v -> {
-                        if ("info".equals(v)) {
-                            return Level.INFO;
-                        } else {
-                            return Level.FINEST;
-                        }
-                    }
-                )
-            )
+        JULogEntryMedia.of(
+            new DefaultNamedMessageFormat("${test}"),
+            new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
+                if ("info".equals(v)) {
+                    return Level.INFO;
+                } else {
+                    return Level.FINEST;
+                }
+            })
+        )
             .withValue("test", "info")
             .logTo(logger);
 
@@ -52,21 +47,16 @@ class JULogEntryMediaTest {
 
     @Test
     void should_log_string_at_warn() {
-        JULogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("${test}"),
-                new DefaultLogLevelDecision(
-                    Level.SEVERE,
-                    "test",
-                    v -> {
-                        if ("info".equals(v)) {
-                            return Level.INFO;
-                        } else {
-                            return Level.WARNING;
-                        }
-                    }
-                )
-            )
+        JULogEntryMedia.of(
+            new DefaultNamedMessageFormat("${test}"),
+            new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
+                if ("info".equals(v)) {
+                    return Level.INFO;
+                } else {
+                    return Level.WARNING;
+                }
+            })
+        )
             .withValue("test", "test")
             .logTo(logger);
 
@@ -75,21 +65,16 @@ class JULogEntryMediaTest {
 
     @Test
     void should_log_int_at_warn() {
-        JULogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("${test}"),
-                new DefaultLogLevelDecision(
-                    Level.SEVERE,
-                    "test",
-                    v -> {
-                        if (Integer.valueOf(12).equals(v)) {
-                            return Level.INFO;
-                        } else {
-                            return Level.WARNING;
-                        }
-                    }
-                )
-            )
+        JULogEntryMedia.of(
+            new DefaultNamedMessageFormat("${test}"),
+            new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
+                if (Integer.valueOf(12).equals(v)) {
+                    return Level.INFO;
+                } else {
+                    return Level.WARNING;
+                }
+            })
+        )
             .withValue("test", 14)
             .logTo(logger);
 
@@ -98,21 +83,16 @@ class JULogEntryMediaTest {
 
     @Test
     void should_log_long_at_warn() {
-        JULogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("${test}"),
-                new DefaultLogLevelDecision(
-                    Level.SEVERE,
-                    "test",
-                    v -> {
-                        if (Long.valueOf(12L).equals(v)) {
-                            return Level.INFO;
-                        } else {
-                            return Level.WARNING;
-                        }
-                    }
-                )
-            )
+        JULogEntryMedia.of(
+            new DefaultNamedMessageFormat("${test}"),
+            new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
+                if (Long.valueOf(12L).equals(v)) {
+                    return Level.INFO;
+                } else {
+                    return Level.WARNING;
+                }
+            })
+        )
             .withValue("test", 14L)
             .logTo(logger);
 
@@ -121,21 +101,16 @@ class JULogEntryMediaTest {
 
     @Test
     void should_log_double_at_warn() {
-        JULogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("${test}"),
-                new DefaultLogLevelDecision(
-                    Level.SEVERE,
-                    "test",
-                    v -> {
-                        if (Double.valueOf(12.1).equals(v)) {
-                            return Level.WARNING;
-                        } else {
-                            return Level.INFO;
-                        }
-                    }
-                )
-            )
+        JULogEntryMedia.of(
+            new DefaultNamedMessageFormat("${test}"),
+            new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
+                if (Double.valueOf(12.1).equals(v)) {
+                    return Level.WARNING;
+                } else {
+                    return Level.INFO;
+                }
+            })
+        )
             .withValue("test", 12.1)
             .logTo(logger);
 
@@ -145,21 +120,16 @@ class JULogEntryMediaTest {
     @Test
     @SuppressWarnings("BigDecimalEquals")
     void should_log_bigdecimal_at_warn() {
-        JULogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("${test}"),
-                new DefaultLogLevelDecision(
-                    Level.SEVERE,
-                    "test",
-                    v -> {
-                        if (BigDecimal.valueOf(12.1).equals(v)) {
-                            return Level.WARNING;
-                        } else {
-                            return Level.INFO;
-                        }
-                    }
-                )
-            )
+        JULogEntryMedia.of(
+            new DefaultNamedMessageFormat("${test}"),
+            new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
+                if (BigDecimal.valueOf(12.1).equals(v)) {
+                    return Level.WARNING;
+                } else {
+                    return Level.INFO;
+                }
+            })
+        )
             .withValue("test", BigDecimal.valueOf(12.1))
             .logTo(logger);
 
@@ -168,21 +138,16 @@ class JULogEntryMediaTest {
 
     @Test
     void should_log_biginteger_at_info() {
-        JULogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("${test}"),
-                new DefaultLogLevelDecision(
-                    Level.SEVERE,
-                    "test",
-                    v -> {
-                        if (BigInteger.valueOf(121).equals(v)) {
-                            return Level.WARNING;
-                        } else {
-                            return Level.INFO;
-                        }
-                    }
-                )
-            )
+        JULogEntryMedia.of(
+            new DefaultNamedMessageFormat("${test}"),
+            new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
+                if (BigInteger.valueOf(121).equals(v)) {
+                    return Level.WARNING;
+                } else {
+                    return Level.INFO;
+                }
+            })
+        )
             .withValue("test", BigInteger.valueOf(120))
             .logTo(logger);
 
@@ -191,21 +156,16 @@ class JULogEntryMediaTest {
 
     @Test
     void should_log_boolean_at_warn() {
-        JULogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("${success}"),
-                new DefaultLogLevelDecision(
-                    Level.SEVERE,
-                    "test",
-                    v -> {
-                        if (Boolean.TRUE.equals(v)) {
-                            return Level.WARNING;
-                        } else {
-                            return Level.INFO;
-                        }
-                    }
-                )
-            )
+        JULogEntryMedia.of(
+            new DefaultNamedMessageFormat("${success}"),
+            new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
+                if (Boolean.TRUE.equals(v)) {
+                    return Level.WARNING;
+                } else {
+                    return Level.INFO;
+                }
+            })
+        )
             .withValue("test", true)
             .withValue("success", false)
             .logTo(logger);
@@ -218,21 +178,16 @@ class JULogEntryMediaTest {
 
     @Test
     void should_log_printable_at_info() {
-        JULogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("${person.firstname} ${person.lastname}"),
-                new DefaultLogLevelDecision(
-                    Level.SEVERE,
-                    "test",
-                    v -> {
-                        if ("WARN".equals(v)) {
-                            return Level.WARNING;
-                        } else {
-                            return Level.INFO;
-                        }
-                    }
-                )
-            )
+        JULogEntryMedia.of(
+            new DefaultNamedMessageFormat("${person.firstname} ${person.lastname}"),
+            new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
+                if ("WARN".equals(v)) {
+                    return Level.WARNING;
+                } else {
+                    return Level.INFO;
+                }
+            })
+        )
             .withValue("test", "INFO")
             .withValue("person", new MapPrintable(Map.of("firstname", "Jane", "lastname", "Doe")))
             .logTo(logger);
@@ -245,21 +200,16 @@ class JULogEntryMediaTest {
 
     @Test
     void should_log_collection_at_info() {
-        JULogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("${fruits}"),
-                new DefaultLogLevelDecision(
-                    Level.SEVERE,
-                    "test",
-                    v -> {
-                        if ("WARN".equals(v)) {
-                            return Level.WARNING;
-                        } else {
-                            return Level.INFO;
-                        }
-                    }
-                )
-            )
+        JULogEntryMedia.of(
+            new DefaultNamedMessageFormat("${fruits}"),
+            new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
+                if ("WARN".equals(v)) {
+                    return Level.WARNING;
+                } else {
+                    return Level.INFO;
+                }
+            })
+        )
             .withValue("test", "INFO")
             .withValue("fruits", List.of("bananas", "apples"))
             .logTo(logger);
@@ -274,17 +224,13 @@ class JULogEntryMediaTest {
     void should_not_change_log_with_sublogger() {
         final LogEntryMedia logMedia = JULogEntryMedia.of(
             new DefaultNamedMessageFormat("${fruits}"),
-            new DefaultLogLevelDecision(
-                Level.SEVERE,
-                "test",
-                v -> {
-                    if ("WARN".equals(v)) {
-                        return Level.WARNING;
-                    } else {
-                        return Level.INFO;
-                    }
+            new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
+                if ("WARN".equals(v)) {
+                    return Level.WARNING;
+                } else {
+                    return Level.INFO;
                 }
-            )
+            })
         );
         logMedia
             .withValue("test", "INFO")
@@ -300,8 +246,7 @@ class JULogEntryMediaTest {
 
     @Test
     void should_log_at_given_level() {
-        JULogEntryMedia
-            .of(new DefaultNamedMessageFormat("Test message for ${name}"), Level.INFO)
+        JULogEntryMedia.of(new DefaultNamedMessageFormat("Test message for ${name}"), Level.INFO)
             .withValue("name", "Jane")
             .logTo(logger);
 

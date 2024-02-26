@@ -61,8 +61,7 @@ class MessageMediaTest {
                 new MessageFormat("{0,number,#.##}, {0,number,#.#}", Locale.GERMANY),
                 Map.of("pi", 0)
             )
-        )
-            .withValue("pi", 3.1415);
+        ).withValue("pi", 3.1415);
 
         assertThat(media.asString(), hasToString("3,14, 3,1"));
     }
@@ -74,8 +73,7 @@ class MessageMediaTest {
                 new MessageFormat("{0,number,#.##}, {0,number,#.#}", Locale.GERMANY),
                 Map.of("pi", 0)
             )
-        )
-            .withValue("pi", BigDecimal.valueOf(3.1415));
+        ).withValue("pi", BigDecimal.valueOf(3.1415));
 
         assertThat(media.asString(), hasToString("3,14, 3,1"));
     }
@@ -98,8 +96,7 @@ class MessageMediaTest {
     void should_format_with_boolean() throws Exception {
         final MessageMedia media = new MessageMedia(
             new MessageFormatNamedBridge(new MessageFormat("Was {0}."), Map.of("successful", 0))
-        )
-            .withValue("successful", true);
+        ).withValue("successful", true);
 
         assertThat(media.asString(), is("Was true."));
     }
@@ -123,8 +120,7 @@ class MessageMediaTest {
     void should_format_with_collection() throws Exception {
         final MessageMedia media = new MessageMedia(
             new MessageFormatNamedBridge(new MessageFormat("Values are {0}."), Map.of("values", 0))
-        )
-            .withValue("values", List.of("apples", "bananas"));
+        ).withValue("values", List.of("apples", "bananas"));
 
         assertThat(media.asString(), hasToString("Values are apples, bananas."));
     }
@@ -136,15 +132,14 @@ class MessageMediaTest {
                 new MessageFormat("Hello Mr. {0} {1}!"),
                 Map.of("person.firstName", 0, "person.lastName", 1)
             )
-        )
-            .withValue(
-                "person",
-                new MessageMedia(
-                    new MessageFormatNamedBridge(new MessageFormat("{0} {1}"), Map.of("firstName", 0, "lastName", 1))
-                )
-                    .withValue("lastName", "Doe")
-                    .withValue("firstName", "John")
-            );
+        ).withValue(
+            "person",
+            new MessageMedia(
+                new MessageFormatNamedBridge(new MessageFormat("{0} {1}"), Map.of("firstName", 0, "lastName", 1))
+            )
+                .withValue("lastName", "Doe")
+                .withValue("firstName", "John")
+        );
 
         assertThat(media.asString(), hasToString("Hello Mr. John Doe!"));
     }

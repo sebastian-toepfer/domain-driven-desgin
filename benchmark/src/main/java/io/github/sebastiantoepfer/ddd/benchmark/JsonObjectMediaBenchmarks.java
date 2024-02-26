@@ -44,8 +44,7 @@ public class JsonObjectMediaBenchmarks {
 
     @Benchmark
     public void printAsJsonObject() {
-        var unused = IntStream
-            .range(1, 100)
+        var unused = IntStream.range(1, 100)
             .boxed()
             .reduce(
                 new JsonObjectMedia(JSONP),
