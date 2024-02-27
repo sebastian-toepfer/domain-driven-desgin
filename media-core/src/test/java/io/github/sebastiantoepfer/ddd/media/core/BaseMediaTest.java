@@ -148,21 +148,17 @@ class BaseMediaTest {
     @Test
     void should_write_reactive_bytes_as_base64_encoded_string() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8081), 0);
-        server.createContext(
-            "/strings",
-            he -> {
-                he.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                he.getResponseBody().write("I might be ".getBytes(StandardCharsets.UTF_8));
-                he.getResponseBody().flush();
-                he.getResponseBody().write("an image".getBytes(StandardCharsets.UTF_8));
-                he.getResponseBody().flush();
-                he.getResponseBody().close();
-            }
-        );
+        server.createContext("/strings", he -> {
+            he.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+            he.getResponseBody().write("I might be ".getBytes(StandardCharsets.UTF_8));
+            he.getResponseBody().flush();
+            he.getResponseBody().write("an image".getBytes(StandardCharsets.UTF_8));
+            he.getResponseBody().flush();
+            he.getResponseBody().close();
+        });
         server.start();
 
-        final DefaultTestMedia response = HttpClient
-            .newHttpClient()
+        final DefaultTestMedia response = HttpClient.newHttpClient()
             .sendAsync(
                 HttpRequest.newBuilder(URI.create("http://localhost:8081/strings")).GET().build(),
                 HttpResponse.BodyHandlers.fromSubscriber(

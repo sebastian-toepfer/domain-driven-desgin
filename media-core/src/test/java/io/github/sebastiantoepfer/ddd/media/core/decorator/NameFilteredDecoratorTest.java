@@ -445,8 +445,10 @@ class NameFilteredDecoratorTest {
 
     @Test
     void should_not_add_filtered_submedia_value_into_media() {
-        final NameFilteredDecorator<HashMapMedia> value = new NameFilteredDecorator<>(new HashMapMedia(), name -> true)
-            .withValue("test", "test");
+        final NameFilteredDecorator<HashMapMedia> value = new NameFilteredDecorator<>(
+            new HashMapMedia(),
+            name -> true
+        ).withValue("test", "test");
         assertThat(
             new NameFilteredDecorator<>(new HashMapMedia(), name -> !name.equals("test"))
                 .withValue("test", value)
@@ -458,8 +460,10 @@ class NameFilteredDecoratorTest {
 
     @Test
     void should_only_add_filtered_submedia_value_into_media() {
-        final NameFilteredDecorator<HashMapMedia> value = new NameFilteredDecorator<>(new HashMapMedia(), name -> true)
-            .withValue("test", "test");
+        final NameFilteredDecorator<HashMapMedia> value = new NameFilteredDecorator<>(
+            new HashMapMedia(),
+            name -> true
+        ).withValue("test", "test");
         assertThat(
             new NameFilteredDecorator<>(new HashMapMedia(), name -> name.equals("value"))
                 .withValue("test", value)

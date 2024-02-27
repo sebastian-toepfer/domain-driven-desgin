@@ -18,8 +18,10 @@ class MessageFormatNamedBridgeTest {
     @Test
     void should_return_all_know_placeholdernames() {
         assertThat(
-            new MessageFormatNamedBridge(new MessageFormat("{0} -> {1}"), Map.of("test", 1, "name", 0))
-                .placeholderNames(),
+            new MessageFormatNamedBridge(
+                new MessageFormat("{0} -> {1}"),
+                Map.of("test", 1, "name", 0)
+            ).placeholderNames(),
             containsInAnyOrder("test", "name")
         );
     }
@@ -29,8 +31,10 @@ class MessageFormatNamedBridgeTest {
         final MessageFormat format = new MessageFormat("{0}");
         final Map<String, Integer> nameIndices = Map.of();
         assertThat(
-            assertThrows(IllegalArgumentException.class, () -> new MessageFormatNamedBridge(format, nameIndices))
-                .getMessage(),
+            assertThrows(
+                IllegalArgumentException.class,
+                () -> new MessageFormatNamedBridge(format, nameIndices)
+            ).getMessage(),
             is("Not all placeholders have a name assignment!")
         );
     }
@@ -44,8 +48,7 @@ class MessageFormatNamedBridgeTest {
             new MessageFormatNamedBridge(
                 new MessageFormat("My name is {1} {2} and i am {0, number, integer} years old"),
                 nameIndeices
-            )
-                .format(new TreeMap<>(Map.of("firstname", "Jane", "years", 31.6, "lastname", "Doe"))),
+            ).format(new TreeMap<>(Map.of("firstname", "Jane", "years", 31.6, "lastname", "Doe"))),
             is("My name is Jane Doe and i am 32 years old")
         );
     }

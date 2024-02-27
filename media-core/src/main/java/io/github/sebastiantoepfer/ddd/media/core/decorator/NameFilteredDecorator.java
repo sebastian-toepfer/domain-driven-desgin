@@ -202,11 +202,10 @@ public final class NameFilteredDecorator<T extends Media<T>> implements MediaDec
     public NameFilteredDecorator<T> withValue(final String name, final Printable value) {
         final NameFilteredDecorator<T> result;
         if (namePredicate.test(name)) {
-            result =
-                new NameFilteredDecorator<>(
-                    decoratedMedia().withValue(name, new FilteredPrintable(value)),
-                    namePredicate
-                );
+            result = new NameFilteredDecorator<>(
+                decoratedMedia().withValue(name, new FilteredPrintable(value)),
+                namePredicate
+            );
         } else {
             result = this;
         }
@@ -217,18 +216,17 @@ public final class NameFilteredDecorator<T extends Media<T>> implements MediaDec
     public NameFilteredDecorator<T> withValue(final String name, final Collection<?> values) {
         final NameFilteredDecorator<T> result;
         if (namePredicate.test(name)) {
-            result =
-                values
-                    .stream()
-                    .map(PrintableToObjectMapper::new)
-                    .map(mapper -> mapper.toValue(FilteredPrintable::new))
-                    .collect(
-                        collectingAndThen(
-                            toList(),
-                            mappedValues ->
-                                new NameFilteredDecorator<>(decoratedMedia.withValue(name, mappedValues), namePredicate)
-                        )
-                    );
+            result = values
+                .stream()
+                .map(PrintableToObjectMapper::new)
+                .map(mapper -> mapper.toValue(FilteredPrintable::new))
+                .collect(
+                    collectingAndThen(
+                        toList(),
+                        mappedValues ->
+                            new NameFilteredDecorator<>(decoratedMedia.withValue(name, mappedValues), namePredicate)
+                    )
+                );
         } else {
             result = this;
         }
@@ -239,8 +237,10 @@ public final class NameFilteredDecorator<T extends Media<T>> implements MediaDec
     public NameFilteredDecorator<T> withValue(final String name, final NameFilteredDecorator<T> value) {
         final NameFilteredDecorator<T> result;
         if (namePredicate.test(name)) {
-            result =
-                new NameFilteredDecorator<>(decoratedMedia().withValue(name, value.decoratedMedia()), namePredicate);
+            result = new NameFilteredDecorator<>(
+                decoratedMedia().withValue(name, value.decoratedMedia()),
+                namePredicate
+            );
         } else {
             result = this;
         }

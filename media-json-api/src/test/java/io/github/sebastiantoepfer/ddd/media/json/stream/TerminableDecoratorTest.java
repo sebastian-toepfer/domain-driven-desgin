@@ -50,18 +50,17 @@ class TerminableDecoratorTest {
     @BeforeEach
     void initMedia() {
         baos = new ByteArrayOutputStream();
-        media =
-            new TerminableDecorator(
-                new TranslateNameDecorator<>(
-                    new JsonObjectStreamMedia(JsonProvider.provider(), baos),
-                    new Translator() {
-                        @Override
-                        public Optional<String> translate(final String translate) {
-                            return Optional.of(translate).filter(Predicate.isEqual("name")).map(s -> "NAME");
-                        }
+        media = new TerminableDecorator(
+            new TranslateNameDecorator<>(
+                new JsonObjectStreamMedia(JsonProvider.provider(), baos),
+                new Translator() {
+                    @Override
+                    public Optional<String> translate(final String translate) {
+                        return Optional.of(translate).filter(Predicate.isEqual("name")).map(s -> "NAME");
                     }
-                )
-            );
+                }
+            )
+        );
     }
 
     @Test
@@ -160,12 +159,10 @@ class TerminableDecoratorTest {
         assertThat(
             Json.createReader(new ByteArrayInputStream(baos.toByteArray())).readObject(),
             is(
-                Json
-                    .createObjectBuilder()
+                Json.createObjectBuilder()
                     .add(
                         "NAME",
-                        Json
-                            .createArrayBuilder()
+                        Json.createArrayBuilder()
                             .add(Json.createObjectBuilder().add("NAME", "1"))
                             .add(Json.createObjectBuilder().add("NAME", "2"))
                     )

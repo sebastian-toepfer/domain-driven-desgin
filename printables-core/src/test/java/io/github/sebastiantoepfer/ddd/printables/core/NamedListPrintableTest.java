@@ -40,8 +40,7 @@ class NamedListPrintableTest {
                 "test",
                 new MapPrintable(Map.of("name", "jane")),
                 new MapPrintable(Map.of("name", "maura"))
-            )
-                .printOn(new TestMedia()),
+            ).printOn(new TestMedia()),
             hasEntry("test", "[{name=jane}, {name=maura}]")
         );
     }
@@ -52,8 +51,7 @@ class NamedListPrintableTest {
             new NamedListPrintable(
                 "test",
                 List.of(new MapPrintable(Map.of("name", "jane")), new MapPrintable(Map.of("name", "maura")))
-            )
-                .printOn(new TestMedia()),
+            ).printOn(new TestMedia()),
             hasEntry("test", "[{name=jane}, {name=maura}]")
         );
     }

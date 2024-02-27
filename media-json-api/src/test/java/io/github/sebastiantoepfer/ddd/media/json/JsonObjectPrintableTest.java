@@ -34,8 +34,9 @@ class JsonObjectPrintableTest {
     @Test
     void should_print_decimalnumber_property() {
         assertThat(
-            new JsonObjectPrintable(Json.createObjectBuilder().add("name", 234.27261).build())
-                .printOn(new HashMapMedia()),
+            new JsonObjectPrintable(Json.createObjectBuilder().add("name", 234.27261).build()).printOn(
+                new HashMapMedia()
+            ),
             hasEntry("name", BigDecimal.valueOf(234.27261))
         );
     }
@@ -45,8 +46,7 @@ class JsonObjectPrintableTest {
         assertThat(
             new JsonObjectPrintable(
                 Json.createObjectBuilder().add("name", Json.createArrayBuilder().add("Test")).build()
-            )
-                .printOn(new HashMapMedia()),
+            ).printOn(new HashMapMedia()),
             (Matcher) hasEntry(is("name"), contains("Test"))
         );
     }
@@ -72,8 +72,7 @@ class JsonObjectPrintableTest {
         assertThat(
             new JsonObjectPrintable(
                 Json.createObjectBuilder().add("name", Json.createObjectBuilder().add("test", BigDecimal.ONE)).build()
-            )
-                .printOn(new HashMapMedia()),
+            ).printOn(new HashMapMedia()),
             (Matcher) hasEntry(is("name"), hasEntry("test", BigInteger.valueOf(1L)))
         );
     }

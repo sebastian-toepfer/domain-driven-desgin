@@ -59,8 +59,10 @@ class MessageMediaExtensionTest {
     void should_do_nothing() {
         //not a good idea to use pitest?
         assertThat(
-            new TestMessageMediaExtension(new DefaultNamedMessageFormat("Hello"))
-                .withValue("test", new TestMessageMediaExtension(new DefaultNamedMessageFormat("Hello"))),
+            new TestMessageMediaExtension(new DefaultNamedMessageFormat("Hello")).withValue(
+                "test",
+                new TestMessageMediaExtension(new DefaultNamedMessageFormat("Hello"))
+            ),
             is(not(nullValue()))
         );
     }

@@ -40,10 +40,10 @@ class Slf4JLogEntryMediaTest {
         final Logger rootLogger = (Logger) LoggerFactory.getLogger("ROOT");
         rootLogLevel = rootLogger.getLevel();
         rootLogger.setLevel(Level.ERROR);
-        rootLogAppenders =
-            StreamSupport
-                .stream(Spliterators.spliteratorUnknownSize(rootLogger.iteratorForAppenders(), 0), true)
-                .toList();
+        rootLogAppenders = StreamSupport.stream(
+            Spliterators.spliteratorUnknownSize(rootLogger.iteratorForAppenders(), 0),
+            true
+        ).toList();
         rootLogger.detachAndStopAllAppenders();
 
         final Logger log = (Logger) LoggerFactory.getLogger("io.github.sebastiantoepfer.ddd.TestLogging");
@@ -70,8 +70,7 @@ class Slf4JLogEntryMediaTest {
 
     @Test
     void should_write_formated_message_as_log() {
-        Slf4JLogEntryMedia
-            .of(new DefaultNamedMessageFormat("user ${name} was created."), org.slf4j.event.Level.DEBUG)
+        Slf4JLogEntryMedia.of(new DefaultNamedMessageFormat("user ${name} was created."), org.slf4j.event.Level.DEBUG)
             .withValue("name", "Jane")
             .logTo(LoggerFactory.getLogger("io.github.sebastiantoepfer.ddd.TestLogging"));
 
@@ -80,21 +79,16 @@ class Slf4JLogEntryMediaTest {
 
     @Test
     void should_log_at_info() {
-        Slf4JLogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("user ${name} was created."),
-                new DefaultLogLevelDescision(
-                    org.slf4j.event.Level.DEBUG,
-                    "name",
-                    v -> {
-                        if ("Jane".equals(v)) {
-                            return org.slf4j.event.Level.INFO;
-                        } else {
-                            return org.slf4j.event.Level.TRACE;
-                        }
-                    }
-                )
-            )
+        Slf4JLogEntryMedia.of(
+            new DefaultNamedMessageFormat("user ${name} was created."),
+            new DefaultLogLevelDescision(org.slf4j.event.Level.DEBUG, "name", v -> {
+                if ("Jane".equals(v)) {
+                    return org.slf4j.event.Level.INFO;
+                } else {
+                    return org.slf4j.event.Level.TRACE;
+                }
+            })
+        )
             .withValue("name", "Jane")
             .logTo(LoggerFactory.getLogger("io.github.sebastiantoepfer.ddd.TestLogging"));
 
@@ -103,22 +97,17 @@ class Slf4JLogEntryMediaTest {
 
     @Test
     void should_write_values_to_mdc() {
-        Slf4JLogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("user ${name} was created."),
-                new DefaultLogLevelDescision(
-                    org.slf4j.event.Level.DEBUG,
-                    "name",
-                    v -> {
-                        if ("Jane".equals(v)) {
-                            return org.slf4j.event.Level.INFO;
-                        } else {
-                            return org.slf4j.event.Level.TRACE;
-                        }
-                    }
-                ),
-                List.of("user_id")
-            )
+        Slf4JLogEntryMedia.of(
+            new DefaultNamedMessageFormat("user ${name} was created."),
+            new DefaultLogLevelDescision(org.slf4j.event.Level.DEBUG, "name", v -> {
+                if ("Jane".equals(v)) {
+                    return org.slf4j.event.Level.INFO;
+                } else {
+                    return org.slf4j.event.Level.TRACE;
+                }
+            }),
+            List.of("user_id")
+        )
             .withValue("name", "Jane")
             .withValue("user_id", "user@github.com")
             .logTo(LoggerFactory.getLogger("io.github.sebastiantoepfer.ddd.TestLogging"));
@@ -132,33 +121,32 @@ class Slf4JLogEntryMediaTest {
 
     @Test
     void should_write_values_to_mdc_with_othername() {
-        Slf4JLogEntryMedia
-            .of(
-                new DefaultNamedMessageFormat("user ${user.name} was created.", Locale.GERMANY),
-                org.slf4j.event.Level.INFO,
-                Map.of(
-                    "user.user_id",
-                    "username",
-                    "user.int",
-                    "int",
-                    "user.long",
-                    "long",
-                    "user.double",
-                    "double",
-                    "user.b1",
-                    "true",
-                    "user.b2",
-                    "false",
-                    "user.test",
-                    "other_value",
-                    "user.friend.user_id",
-                    "username_of_friend",
-                    "bigi",
-                    "bigi",
-                    "bigd",
-                    "tina"
-                )
+        Slf4JLogEntryMedia.of(
+            new DefaultNamedMessageFormat("user ${user.name} was created.", Locale.GERMANY),
+            org.slf4j.event.Level.INFO,
+            Map.of(
+                "user.user_id",
+                "username",
+                "user.int",
+                "int",
+                "user.long",
+                "long",
+                "user.double",
+                "double",
+                "user.b1",
+                "true",
+                "user.b2",
+                "false",
+                "user.test",
+                "other_value",
+                "user.friend.user_id",
+                "username_of_friend",
+                "bigi",
+                "bigi",
+                "bigd",
+                "tina"
             )
+        )
             .withValue(
                 "user",
                 new Printable() {

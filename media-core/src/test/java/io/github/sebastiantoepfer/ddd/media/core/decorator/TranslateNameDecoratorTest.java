@@ -239,8 +239,10 @@ class TranslateNameDecoratorTest {
             new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of()))
                 .withValue(
                     "test",
-                    new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of()))
-                        .withValue("sub", "test")
+                    new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of())).withValue(
+                        "sub",
+                        "test"
+                    )
                 )
                 .decoratedMedia(),
             hasEntry(is("test"), (Matcher) hasEntry("sub", "test"))
@@ -253,8 +255,10 @@ class TranslateNameDecoratorTest {
             new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of("test", "new_test")))
                 .withValue(
                     "test",
-                    new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of()))
-                        .withValue("sub", "test")
+                    new TranslateNameDecorator<>(new HashMapMedia(), new DefaultTranslator(Map.of())).withValue(
+                        "sub",
+                        "test"
+                    )
                 )
                 .decoratedMedia(),
             hasEntry(is("new_test"), (Matcher) hasEntry("sub", "test"))

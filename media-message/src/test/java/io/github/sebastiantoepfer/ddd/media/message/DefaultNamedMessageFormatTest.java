@@ -21,8 +21,9 @@ class DefaultNamedMessageFormatTest {
     @Test
     void should_format_message_without_style() {
         assertThat(
-            new DefaultNamedMessageFormat("My name is ${name} and I am ${age} years old.")
-                .format(Map.of("name", "Jane", "age", 42.34)),
+            new DefaultNamedMessageFormat("My name is ${name} and I am ${age} years old.").format(
+                Map.of("name", "Jane", "age", 42.34)
+            ),
             is("My name is Jane and I am 42.34 years old.")
         );
     }
@@ -30,8 +31,9 @@ class DefaultNamedMessageFormatTest {
     @Test
     void should_format_message_with_style() {
         assertThat(
-            new DefaultNamedMessageFormat("My name is ${name} and I am ${age, number, integer} years old.")
-                .format(Map.of("name", "Jane", "age", 42.34)),
+            new DefaultNamedMessageFormat("My name is ${name} and I am ${age, number, integer} years old.").format(
+                Map.of("name", "Jane", "age", 42.34)
+            ),
             is("My name is Jane and I am 42 years old.")
         );
     }

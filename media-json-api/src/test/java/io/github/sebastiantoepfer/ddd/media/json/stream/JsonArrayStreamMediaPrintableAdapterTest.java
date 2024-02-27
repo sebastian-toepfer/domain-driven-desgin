@@ -52,8 +52,7 @@ class JsonArrayStreamMediaPrintableAdapterTest {
 
     @Test
     void should_create_array_with_printables() throws Exception {
-        List
-            .of(testPrintable("ernie"), testPrintable("bert"))
+        List.of(testPrintable("ernie"), testPrintable("bert"))
             .stream()
             .reduce(
                 new JsonArrayStreamMediaPrintableAdapter(baos),
@@ -66,8 +65,7 @@ class JsonArrayStreamMediaPrintableAdapterTest {
         assertThat(
             Json.createReader(new ByteArrayInputStream(baos.toByteArray())).readArray(),
             is(
-                Json
-                    .createArrayBuilder()
+                Json.createArrayBuilder()
                     .add(Json.createObjectBuilder().add("name", "ernie"))
                     .add(Json.createObjectBuilder().add("name", "bert"))
                     .build()
@@ -77,8 +75,7 @@ class JsonArrayStreamMediaPrintableAdapterTest {
 
     @Test
     void should_create_array_with_decorated_printables() throws Exception {
-        List
-            .of(testPrintable("ernie"), testPrintable("bert"))
+        List.of(testPrintable("ernie"), testPrintable("bert"))
             .stream()
             .reduce(
                 new JsonArrayStreamMediaPrintableAdapter(
@@ -90,8 +87,7 @@ class JsonArrayStreamMediaPrintableAdapterTest {
                                 new Translator() {
                                     @Override
                                     public Optional<String> translate(final String translate) {
-                                        return Optional
-                                            .of(translate)
+                                        return Optional.of(translate)
                                             .filter(Predicate.isEqual("name"))
                                             .map(s -> "NAME");
                                     }
@@ -107,8 +103,7 @@ class JsonArrayStreamMediaPrintableAdapterTest {
         assertThat(
             Json.createReader(new ByteArrayInputStream(baos.toByteArray())).readArray(),
             is(
-                Json
-                    .createArrayBuilder()
+                Json.createArrayBuilder()
                     .add(Json.createObjectBuilder().add("NAME", "ernie"))
                     .add(Json.createObjectBuilder().add("NAME", "bert"))
                     .build()
