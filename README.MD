@@ -1,4 +1,14 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sebastian-toepfer_domain-driven-desgin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sebastian-toepfer_domain-driven-desgin)
+![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/sebastian-toepfer_domain-driven-desgin?server=https%3A%2F%2Fsonarcloud.io)
+![Sonar Tests](https://img.shields.io/sonar/tests/sebastian-toepfer_domain-driven-desgin?server=https%3A%2F%2Fsonarcloud.io)
+![Sonar Violations](https://img.shields.io/sonar/violations/sebastian-toepfer_domain-driven-desgin?server=https%3A%2F%2Fsonarcloud.io)
+
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/sebastian-toepfer/domain-driven-desgin/build.yml)
+
+![Maven Central Version](https://img.shields.io/maven-central/v/io.github.sebastian-toepfer.ddd/domain-driven-desgin)
+![GitHub Release](https://img.shields.io/github/v/release/sebastian-toepfer/domain-driven-desgin)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/sebastian-toepfer/domain-driven-desgin/latest)
+
+[![Reproducible Builds](https://img.shields.io/badge/Reproducible_Builds-ok-success?labelColor=1e5b96)](https://github.com/jvm-repo-rebuild/reproducible-central/blob/master/content/io/github/sebastian-toepfer/ddd/domain-driven-desgin/README.md)
 
 # Why this Project
 
