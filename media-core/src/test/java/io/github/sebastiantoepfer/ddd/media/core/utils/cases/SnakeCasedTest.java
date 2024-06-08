@@ -3,7 +3,6 @@ package io.github.sebastiantoepfer.ddd.media.core.utils.cases;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import io.github.sebastiantoepfer.ddd.media.core.utils.cases.SnakeCased;
 import org.junit.jupiter.api.Test;
 
 class SnakeCasedTest {

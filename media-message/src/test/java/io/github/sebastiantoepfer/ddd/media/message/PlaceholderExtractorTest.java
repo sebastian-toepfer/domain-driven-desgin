@@ -6,8 +6,6 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import io.github.sebastiantoepfer.ddd.media.message.Placeholder;
-import io.github.sebastiantoepfer.ddd.media.message.PlaceholderExtractor;
 import org.junit.jupiter.api.Test;
 
 class PlaceholderExtractorTest {

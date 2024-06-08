@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import io.github.sebastiantoepfer.ddd.media.message.MessageFormatNamedBridge;
 import java.text.MessageFormat;
 import java.util.Comparator;
 import java.util.Map;
