@@ -3,7 +3,6 @@ package io.github.sebastiantoepfer.ddd.media.message;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import io.github.sebastiantoepfer.ddd.media.message.Placeholder;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 

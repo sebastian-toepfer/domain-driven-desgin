@@ -41,13 +41,11 @@ import org.junit.jupiter.api.Test;
 
 class JsonArrayStreamMediaPrintableAdapterTest {
 
-    private JsonArrayStreamMediaPrintableAdapter media;
     private ByteArrayOutputStream baos;
 
     @BeforeEach
     void initMedia() {
         baos = new ByteArrayOutputStream();
-        media = new JsonArrayStreamMediaPrintableAdapter(baos);
     }
 
     @Test

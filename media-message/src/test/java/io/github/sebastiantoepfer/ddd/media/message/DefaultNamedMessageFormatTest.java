@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 
-import io.github.sebastiantoepfer.ddd.media.message.DefaultNamedMessageFormat;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 

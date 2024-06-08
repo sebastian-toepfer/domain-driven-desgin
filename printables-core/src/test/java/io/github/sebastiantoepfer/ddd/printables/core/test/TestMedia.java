@@ -27,7 +27,6 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
 import io.github.sebastiantoepfer.ddd.common.Media;
-import io.github.sebastiantoepfer.ddd.common.Media.MediaAwareSubscriber;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import java.math.BigDecimal;
 import java.math.BigInteger;

@@ -41,7 +41,7 @@ import org.junit.jupiter.api.Test;
 class WorkbookMediaTest {
 
     @Test
-    void should_create_new_row_in_activeSheet_with_values_from_printable() throws IOException {
+    void should_create_new_row_in_activeSheet_with_values_from_printable() {
         final Workbook workbook = new XSSFWorkbook();
         workbook.createSheet();
         assertThat(
