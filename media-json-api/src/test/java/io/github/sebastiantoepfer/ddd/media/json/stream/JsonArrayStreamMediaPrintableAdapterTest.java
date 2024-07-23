@@ -76,22 +76,18 @@ class JsonArrayStreamMediaPrintableAdapterTest {
         List.of(testPrintable("ernie"), testPrintable("bert"))
             .stream()
             .reduce(
-                new JsonArrayStreamMediaPrintableAdapter(
-                    baos,
-                    media ->
-                        new TerminableDecorator(
-                            new TranslateNameDecorator<>(
-                                media,
-                                new Translator() {
-                                    @Override
-                                    public Optional<String> translate(final String translate) {
-                                        return Optional.of(translate)
-                                            .filter(Predicate.isEqual("name"))
-                                            .map(s -> "NAME");
-                                    }
+                new JsonArrayStreamMediaPrintableAdapter(baos, media ->
+                    new TerminableDecorator(
+                        new TranslateNameDecorator<>(
+                            media,
+                            new Translator() {
+                                @Override
+                                public Optional<String> translate(final String translate) {
+                                    return Optional.of(translate).filter(Predicate.isEqual("name")).map(s -> "NAME");
                                 }
-                            )
+                            }
                         )
+                    )
                 ),
                 JsonArrayStreamMediaPrintableAdapter::print,
                 (l, r) -> null
