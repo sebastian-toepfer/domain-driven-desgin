@@ -221,10 +221,8 @@ public final class NameFilteredDecorator<T extends Media<T>> implements MediaDec
                 .map(PrintableToObjectMapper::new)
                 .map(mapper -> mapper.toValue(FilteredPrintable::new))
                 .collect(
-                    collectingAndThen(
-                        toList(),
-                        mappedValues ->
-                            new NameFilteredDecorator<>(decoratedMedia.withValue(name, mappedValues), namePredicate)
+                    collectingAndThen(toList(), mappedValues ->
+                        new NameFilteredDecorator<>(decoratedMedia.withValue(name, mappedValues), namePredicate)
                     )
                 );
         } else {
