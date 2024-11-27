@@ -9,6 +9,7 @@ import io.github.sebastiantoepfer.ddd.printables.core.MapPrintable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,7 +103,7 @@ class JULogEntryMediaTest {
     @Test
     void should_log_double_at_warn() {
         JULogEntryMedia.of(
-            new DefaultNamedMessageFormat("${test}"),
+            new DefaultNamedMessageFormat("${test}", Locale.CANADA),
             new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
                 if (Double.valueOf(12.1).equals(v)) {
                     return Level.WARNING;
@@ -121,7 +122,7 @@ class JULogEntryMediaTest {
     @SuppressWarnings("BigDecimalEquals")
     void should_log_bigdecimal_at_warn() {
         JULogEntryMedia.of(
-            new DefaultNamedMessageFormat("${test}"),
+            new DefaultNamedMessageFormat("${test}", Locale.CANADA),
             new DefaultLogLevelDecision(Level.SEVERE, "test", v -> {
                 if (BigDecimal.valueOf(12.1).equals(v)) {
                     return Level.WARNING;
