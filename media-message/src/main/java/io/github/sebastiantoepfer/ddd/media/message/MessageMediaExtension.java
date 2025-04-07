@@ -1,6 +1,5 @@
 package io.github.sebastiantoepfer.ddd.media.message;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.sebastiantoepfer.ddd.common.Printable;
 import io.github.sebastiantoepfer.ddd.media.core.BaseMedia;
 import io.github.sebastiantoepfer.ddd.media.core.Writeable;
@@ -13,7 +12,6 @@ public abstract class MessageMediaExtension<T extends MessageMediaExtension<T>> 
 
     private final MessageMedia media;
 
-    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "false positiv. messagemedia is immutable!")
     protected MessageMediaExtension(final MessageMedia media) {
         this.media = Objects.requireNonNull(media);
     }
