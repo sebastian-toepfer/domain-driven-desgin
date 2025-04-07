@@ -23,7 +23,6 @@
  */
 package io.github.sebastiantoepfer.ddd.media.core;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Objects;
@@ -32,7 +31,6 @@ class BytesWritebale {
 
     private final Writeable writable;
 
-    @SuppressFBWarnings(value = "EI_EXPOSE_REP2")
     public BytesWritebale(final Writeable writable) {
         this.writable = Objects.requireNonNull(writable);
     }
