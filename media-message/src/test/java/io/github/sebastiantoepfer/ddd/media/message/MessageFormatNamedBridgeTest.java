@@ -30,7 +30,8 @@ class MessageFormatNamedBridgeTest {
         final MessageFormat format = new MessageFormat("{0}");
         final Map<String, Integer> nameIndices = Map.of();
         assertThat(
-            assertThrows(IllegalArgumentException.class, () -> new MessageFormatNamedBridge(format, nameIndices)
+            assertThrows(IllegalArgumentException.class, () ->
+                new MessageFormatNamedBridge(format, nameIndices)
             ).getMessage(),
             is("Not all placeholders have a name assignment!")
         );

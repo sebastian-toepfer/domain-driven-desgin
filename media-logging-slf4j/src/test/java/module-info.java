@@ -38,4 +38,5 @@ open module io.github.sebastiantoepfer.ddd.media.logging.slf4j {
 
     requires ch.qos.logback.core;
     requires ch.qos.logback.classic;
+    requires nl.jqno.equalsverifier;
 }

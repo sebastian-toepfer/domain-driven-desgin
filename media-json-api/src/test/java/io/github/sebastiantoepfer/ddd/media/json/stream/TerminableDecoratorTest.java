@@ -56,7 +56,9 @@ class TerminableDecoratorTest {
                 new Translator() {
                     @Override
                     public Optional<String> translate(final String translate) {
-                        return Optional.of(translate).filter(Predicate.isEqual("name")).map(s -> "NAME");
+                        return Optional.of(translate)
+                            .filter(Predicate.isEqual("name"))
+                            .map(s -> "NAME");
                     }
                 }
             )
