@@ -42,7 +42,7 @@ class StringWriteable {
         try (
             BufferedReader br = new BufferedReader(
                 new InputStreamReader(new ByteArrayInputStream(bytes.asBytes()), StandardCharsets.UTF_8)
-            )
+            );
         ) {
             return br.lines().collect(Collectors.joining("\n"));
         }

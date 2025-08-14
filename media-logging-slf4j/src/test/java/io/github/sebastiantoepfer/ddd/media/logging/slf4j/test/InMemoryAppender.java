@@ -123,5 +123,4 @@ public class InMemoryAppender extends AppenderBase<ILoggingEvent> implements Col
         return records.parallelStream();
     }
     //</editor-fold>
-
 }

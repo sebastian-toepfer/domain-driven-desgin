@@ -34,8 +34,10 @@ class CopyMapTest {
     @Test
     void should_merge_with_other() {
         assertThat(
-            (Map<String, String>) new CopyMap.MergeOperator()
-                .apply(new CopyMap<>(Map.of("a", "a")), new CopyMap<>(Map.of("b", "b"))),
+            (Map<String, String>) new CopyMap.MergeOperator().apply(
+                new CopyMap<>(Map.of("a", "a")),
+                new CopyMap<>(Map.of("b", "b"))
+            ),
             allOf(hasEntry("a", "a"), hasEntry("b", "b"))
         );
     }

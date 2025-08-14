@@ -69,8 +69,7 @@ public final class TranslateNameDecorator<T extends Media<T>> implements MediaDe
     @Override
     public TranslateNameDecorator<T> withValue(final String name, final Collection<?> values) {
         return new TranslateNameDecorator<>(
-            decoratedMedia()
-                .withValue(
+            decoratedMedia().withValue(
                     translate(name),
                     values
                         .stream()

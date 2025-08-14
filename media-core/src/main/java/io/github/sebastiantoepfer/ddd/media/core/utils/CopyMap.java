@@ -38,7 +38,13 @@ public class CopyMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     @Override
     public int hashCode() {
-        return 97 * entrySet().stream().mapToInt(entry -> Objects.hash(entry.getKey(), entry.getValue())).sum();
+        return (
+            97 *
+            entrySet()
+                .stream()
+                .mapToInt(entry -> Objects.hash(entry.getKey(), entry.getValue()))
+                .sum()
+        );
     }
 
     @Override

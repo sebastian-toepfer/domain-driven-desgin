@@ -75,23 +75,21 @@ class JsonArrayStreamMediaPrintableAdapterTest {
     void should_create_array_with_decorated_printables() throws Exception {
         List.of(testPrintable("ernie"), testPrintable("bert"))
             .stream()
-            .reduce(
-                new JsonArrayStreamMediaPrintableAdapter(baos, media ->
-                    new TerminableDecorator(
-                        new TranslateNameDecorator<>(
-                            media,
-                            new Translator() {
-                                @Override
-                                public Optional<String> translate(final String translate) {
-                                    return Optional.of(translate).filter(Predicate.isEqual("name")).map(s -> "NAME");
-                                }
+            .reduce(new JsonArrayStreamMediaPrintableAdapter(baos, media ->
+                new TerminableDecorator(
+                    new TranslateNameDecorator<>(
+                        media,
+                        new Translator() {
+                            @Override
+                            public Optional<String> translate(final String translate) {
+                                return Optional.of(translate)
+                                    .filter(Predicate.isEqual("name"))
+                                    .map(s -> "NAME");
                             }
-                        )
+                        }
                     )
-                ),
-                JsonArrayStreamMediaPrintableAdapter::print,
-                (l, r) -> null
-            )
+                )
+            ), JsonArrayStreamMediaPrintableAdapter::print, (l, r) -> null)
             .close();
 
         assertThat(
