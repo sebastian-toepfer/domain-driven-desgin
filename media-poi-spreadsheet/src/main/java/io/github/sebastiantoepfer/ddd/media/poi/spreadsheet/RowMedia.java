@@ -32,7 +32,7 @@ public interface RowMedia extends BaseMedia<RowMedia>, Syncable<SheetMedia> {
     }
 
     @Override
-    default RowMedia withValue(String name, long value) {
+    default RowMedia withValue(final String name, final long value) {
         return withValue(name, (double) value);
     }
 }
