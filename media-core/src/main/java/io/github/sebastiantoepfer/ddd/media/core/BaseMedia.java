@@ -40,12 +40,12 @@ import java.util.Collection;
 
 public interface BaseMedia<T extends BaseMedia<T>> extends Media<T> {
     @Override
-    default T withValue(String name, LocalDate value) {
+    default T withValue(final String name, final LocalDate value) {
         return withValue(name, value.format(DateTimeFormatter.ISO_DATE));
     }
 
     @Override
-    default T withValue(String name, LocalTime time) {
+    default T withValue(final String name, final LocalTime time) {
         return withValue(
             name,
             OffsetTime.of(time, zoneId().getRules().getOffset(LocalDateTime.of(LocalDate.now(zoneId()), time)))
@@ -53,17 +53,17 @@ public interface BaseMedia<T extends BaseMedia<T>> extends Media<T> {
     }
 
     @Override
-    default T withValue(String name, LocalDateTime datetime) {
+    default T withValue(final String name, final LocalDateTime datetime) {
         return withValue(name, OffsetDateTime.of(datetime, zoneId().getRules().getOffset(datetime)));
     }
 
     @Override
-    default T withValue(String name, OffsetTime value) {
+    default T withValue(final String name, final OffsetTime value) {
         return withValue(name, value.format(DateTimeFormatter.ISO_TIME));
     }
 
     @Override
-    default T withValue(String name, OffsetDateTime value) {
+    default T withValue(final String name, final OffsetDateTime value) {
         return withValue(name, value.format(DateTimeFormatter.ISO_DATE_TIME));
     }
 
@@ -72,32 +72,32 @@ public interface BaseMedia<T extends BaseMedia<T>> extends Media<T> {
     }
 
     @Override
-    default T withValue(String name, BigInteger value) {
+    default T withValue(final String name, final BigInteger value) {
         return withValue(name, value.longValue());
     }
 
     @Override
-    default T withValue(String name, BigDecimal value) {
+    default T withValue(final String name, final BigDecimal value) {
         return withValue(name, value.doubleValue());
     }
 
     @Override
-    default T withValue(String name, Printable value) {
+    default T withValue(final String name, final Printable value) {
         return (T) this;
     }
 
     @Override
-    default T withValue(String name, Collection<?> values) {
+    default T withValue(final String name, final Collection<?> values) {
         return (T) this;
     }
 
     @Override
-    default T withValue(String name, T value) {
+    default T withValue(final String name, final T value) {
         return (T) this;
     }
 
     @Override
-    default T withValue(String name, byte[] bytes) {
+    default T withValue(final String name, final byte[] bytes) {
         return withValue("bytes", base64Encoder().encodeToString(bytes));
     }
 
