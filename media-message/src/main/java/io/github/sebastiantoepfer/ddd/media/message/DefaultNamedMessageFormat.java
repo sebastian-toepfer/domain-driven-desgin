@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 
-public class DefaultNamedMessageFormat implements NamedMessageFormat {
+public final class DefaultNamedMessageFormat implements NamedMessageFormat {
 
     private static final Logger LOGGER = Logger.getLogger(DefaultNamedMessageFormat.class.getName());
 
@@ -61,7 +61,7 @@ public class DefaultNamedMessageFormat implements NamedMessageFormat {
         return "DefaultNamedMessageFormat{" + "format=" + format + '}';
     }
 
-    private class Placeholders implements Iterable<Placeholder> {
+    private final class Placeholders implements Iterable<Placeholder> {
 
         private final List<Placeholder> wildcard;
 

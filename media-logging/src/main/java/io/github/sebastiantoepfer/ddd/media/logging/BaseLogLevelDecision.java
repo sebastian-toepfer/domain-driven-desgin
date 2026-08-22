@@ -36,5 +36,10 @@ public abstract class BaseLogLevelDecision<T, L> implements LogLevelDecision<T> 
         return level.logEnty(writeable);
     }
 
+    @Override
+    protected final void finalize() throws Throwable {
+        //nop
+    }
+
     protected abstract LogLevelDecision<T> create(L newLevel, String name, Function<Object, L> decide);
 }

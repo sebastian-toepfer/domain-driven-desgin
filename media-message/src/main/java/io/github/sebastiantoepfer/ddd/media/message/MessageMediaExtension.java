@@ -61,5 +61,10 @@ public abstract class MessageMediaExtension<T extends MessageMediaExtension<T>> 
         media.writeTo(write);
     }
 
+    @Override
+    protected final void finalize() throws Throwable {
+        //nop
+    }
+
     protected abstract T createWith(final MessageMedia message);
 }

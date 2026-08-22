@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-class FixedLogLevel implements LogLevelDecision<Logger> {
+final class FixedLogLevel implements LogLevelDecision<Logger> {
 
     private final Level level;
 

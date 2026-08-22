@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public class CollectionToJsonValueMapper implements ToJsonValueMapper {
+public final class CollectionToJsonValueMapper implements ToJsonValueMapper {
 
     private final JsonProvider jsonProvider;
     private final Collection<Object> values;
