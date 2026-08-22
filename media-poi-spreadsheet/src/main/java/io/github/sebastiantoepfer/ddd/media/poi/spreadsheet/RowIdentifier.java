@@ -34,7 +34,7 @@ public interface RowIdentifier {
 
     Optional<Row> findRow(Iterable<Row> rows);
 
-    class IndexIsValueOfProperty implements RowIdentifier {
+    final class IndexIsValueOfProperty implements RowIdentifier {
 
         private static final Pattern POSITIV_NUMBER = Pattern.compile("^\\d+$");
 
@@ -60,7 +60,7 @@ public interface RowIdentifier {
             return Optional.empty();
         }
 
-        private static class IndexRowFinder implements RowIdentifier {
+        private static final class IndexRowFinder implements RowIdentifier {
 
             private final int rowIdx;
 

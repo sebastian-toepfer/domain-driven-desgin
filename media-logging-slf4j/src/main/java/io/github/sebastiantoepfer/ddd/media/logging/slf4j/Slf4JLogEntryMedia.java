@@ -76,7 +76,7 @@ public final class Slf4JLogEntryMedia {
 
     private Slf4JLogEntryMedia() {}
 
-    private static class MDCLogLevelDecision implements LogLevelDecision<Logger> {
+    private static final class MDCLogLevelDecision implements LogLevelDecision<Logger> {
 
         private final LogLevelDecision<Logger> decsision;
         private final Map<PropertyPath, String> mdcNames;
@@ -195,7 +195,7 @@ public final class Slf4JLogEntryMedia {
             }
         }
 
-        private static class MDCAwareLogEntry implements LogEntry<Logger> {
+        private static final class MDCAwareLogEntry implements LogEntry<Logger> {
 
             private final LogEntry<Logger> logger;
             private final Map<String, String> mdc;

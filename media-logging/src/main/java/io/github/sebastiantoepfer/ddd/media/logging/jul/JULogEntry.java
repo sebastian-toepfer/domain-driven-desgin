@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-class JULogEntry implements LogEntry<Logger> {
+final class JULogEntry implements LogEntry<Logger> {
 
     private final Level level;
     private final Writeable message;

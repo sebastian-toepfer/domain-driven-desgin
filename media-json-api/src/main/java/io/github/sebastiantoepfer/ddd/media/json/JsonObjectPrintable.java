@@ -6,7 +6,7 @@ import io.github.sebastiantoepfer.ddd.media.json.printable.JsonMappedPrintables;
 import jakarta.json.JsonObject;
 import java.util.Objects;
 
-public class JsonObjectPrintable implements Printable {
+public final class JsonObjectPrintable implements Printable {
 
     private final JsonObject json;
 

@@ -133,7 +133,7 @@ public final class TranslateNameDecorator<T extends Media<T>> implements MediaDe
         return decoratedMedia;
     }
 
-    private class TranslatedNamePrintableDecorator implements Printable {
+    private final class TranslatedNamePrintableDecorator implements Printable {
 
         private final Printable delegate;
 
