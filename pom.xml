@@ -53,7 +53,7 @@
 
         <maven.compiler.source>17</maven.compiler.source>
 
-        <logback.version>1.6.5</logback.version>
+        <logback.version>1.6.6</logback.version>
         <poi.version>6.0.0</poi.version>
         <jmh.version>1.37</jmh.version>
     </properties>
